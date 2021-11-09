@@ -9,10 +9,19 @@
         <div class="col-9 pt-5">
             <div class = "d-flex justify-content-between align-items-baseline">
                 <h1>{{ $user -> username}}</h1>
-                <a href = "#">Új kérdés</a>
+
+                @can('update', $user->profile)
+                <a href = "/q/create">Új kérdés</a>
+                @endcan
+
             </div>
+
+            @can('update', $user->profile)
+                <a href = "/profile/{{ $user->id}}/edit">Profil szerkesztése</a>
+            @endcan
+
             <div class="d-flex">
-                <div class="pr-5"><strong>153</strong> questions</div>
+                <div class="pr-5"><strong>{{ $user->questions->count() }}</strong> kérdés</div>
                 <div class="pr-5"><strong>23k</strong> followers</div>
                 <div class="pr-5"><strong>213</strong> following</div>
             </div>
@@ -20,7 +29,15 @@
             <div>{{ $user->profile->description }}</div>
         </div>
     </div>
-    <h2><strong>Demon Slayer-hez és jujutsu kaisen-hez hasonló animék?</strong></h2>
-    <div>Demon Slayer és jujutsu Kaisen nekem nagyon megtetszett, szóval ha tudtok hasonló animéket mondani, akkor azt nagyon megköszönném!<div>
+    
+    <div>
+        @foreach($user->questions as $question)
+        <div>
+            <h2><strong>{{ $question->title }}</strong></h2>
+            <div class="pb-4">{{ $question->description }}</div>
+        </div>
+        @endforeach
+    </div>
+
 </div>
 @endsection

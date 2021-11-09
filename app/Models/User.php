@@ -45,7 +45,7 @@ class User extends Authenticatable
 
     public function questions() {
         
-        return $this->hasMany(Question::class);
+        return $this->hasMany(Question::class)->orderBy('created_at', 'DESC');
     }
 
     public function profile() {

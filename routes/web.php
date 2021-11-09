@@ -19,6 +19,10 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/profile/{user}', [App\Http\Controllers\ProfilesController::class, 'index'])->name('profile.show');
-
 Route::get('/q/create', [App\Http\Controllers\QuestionsController::class, 'create']);
+Route::post('/q', [App\Http\Controllers\QuestionsController::class, 'store']);
+Route::post('/q/{post}', [App\Http\Controllers\QuestionsController::class, 'show']);
+
+Route::get('/profile/{user}', [App\Http\Controllers\ProfilesController::class, 'index'])->name('profile.show');
+Route::get('/profile/{user}/edit', [App\Http\Controllers\ProfilesController::class, 'edit'])->name('profile.edit');
+Route::patch('/profile/{user}', [App\Http\Controllers\ProfilesController::class, 'update'])->name('profile.update');
