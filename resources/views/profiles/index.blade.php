@@ -4,7 +4,7 @@
 <div class="container text">
     <div class="row">
         <div class="col-3 p-5">
-            <img src="https://hottopic.scene7.com/is/image/HotTopic/12750928_hi?$productMainDesktop$" height="200px;" class="rounded-circle"></img>
+            <img src="/storage/{{ $user->profile->image }}" class="rounded-circle w-100"></img>
         </div>
         <div class="col-9 pt-5">
             <div class = "d-flex justify-content-between align-items-baseline">
@@ -32,9 +32,14 @@
     
     <div>
         @foreach($user->questions as $question)
-        <div>
-            <h2><strong>{{ $question->title }}</strong></h2>
-            <div class="pb-4">{{ $question->description }}</div>
+        <div class="d-flex align-items-center pb-5">
+            <div class="pr-3">
+                <img src="/storage/{{ $user->profile->image }}" class="rounded-circle w-100" style="max-width: 90px;"></img>
+            </div>
+            <div>
+                <h3>{{ $question->title }}</h3>
+                <h5>{{ $question->description }}</h5>
+            </div>
         </div>
         @endforeach
     </div>
