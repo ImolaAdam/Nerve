@@ -12,19 +12,19 @@
                 </div>
 
                 <div class="form-group row">
-                        <label for="title" class="col-md-4 col-form-label">Kérdés</label> 
-                        <input id="title"
-                        type="text"
-                        class="form-control @error('title') is-invalid @enderror"
-                        name="title"
-                        value="{{ old('title') }}"
-                        required autocomplete="title" autofocus>
+                    <label for="title" class="col-md-4 col-form-label">Kérdés</label> 
+                    <input id="title"
+                    type="text"
+                    class="form-control @error('title') is-invalid @enderror"
+                    name="title"
+                    value="{{ old('title') }}"
+                    required autocomplete="title" autofocus>
 
-                            @error('title')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
+                    @error('title')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                                 
                 </div>
 
@@ -38,10 +38,10 @@
                         required autocomplete="description" autofocus>
                     
                     @error('description')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                    @enderror
                 </div>
 
                 <div class="row pt-4">

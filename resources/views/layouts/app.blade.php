@@ -7,6 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <link rel="shortcut icon" href="{{URL::asset('/png/nLogo.png')}}" />
     <title>Nerve</title>
 
     <!-- Scripts -->
@@ -25,7 +26,7 @@
             <div class="container text">
                 <a class="navbar-brand d-flex" href="{{ url('/') }}">
                 <!-- URL::asset() directly access the public folder -->
-                    <div><img src="{{URL::asset('/png/nLogo.png')}}" alt="N logo" height="25px"; class="pr-3"></div>
+                    <div><img src="{{URL::asset('/png/nLogo.png')}}" alt="N logo" height="35px"; class="pr-3"></div>
                     <div style="border-left: 1px solid #333;" class="pl-3">Nerve</div>
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -59,7 +60,12 @@
                                     {{ Auth::user()->username }}
                                 </a>
 
+                                
+
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    
+                                    <a href="/profile/{{ Auth::user()->id }}" class="dropdown-item">Profil</a>
+
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

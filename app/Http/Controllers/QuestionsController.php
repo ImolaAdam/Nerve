@@ -24,7 +24,8 @@ class QuestionsController extends Controller
         ]);
 
         auth()->user()->questions()->create($data);
-
+        
         return redirect('/profile/' . auth()->user()->id);
     }
+
 }
