@@ -24,22 +24,34 @@
                 <h2 class="pb-2"><strong>Kérdések</strong></h2>
                 <div>
 
-                    @foreach($users as $user)
-                        @foreach($user->questions as $question)
+                        @foreach($questions as $question)
                             <div class="d-flex align-items-center pt-4">
                                 <div class="pr-3">
-                                    <img src="{{ $user->profile->profileImage() }}" class="rounded-circle" style="max-width: 90px;"></img>
+                                    <img src="{{ $question->user->profile->profileImage() }}" class="rounded-circle" style="max-width: 90px;"></img>
                                     <div>
-                                        <a href="/profile/{{ $user->id}}" class="plink">{{ $user->username }}</a>
+                                        <a href="/profile/{{ $question->user->id }}" class="plink">{{ $question->user->username }}</a>
                                     </div>
                                 </div>
                                 <div>
-                                    <a href="/a/{{ $question->id }}" class="qlink">{{ $question->title }}</a>
-                                    <div>6 válasz</div>
+                                    <a href="/a/{{ $question->id }}" class="qlink">
+                                        @if( strlen($question->title) > 200)
+                                            {{ substr($question->title, 0, 200) }}...
+                                        @else
+                                            {{ $question->title }}
+                                        @endif
+                                    </a>
+                                    <div class="d-flex">
+                                        <h6 class="pr-3">6 válasz</h6>
+                                        <h6>
+                                            <time datetime="{{ $question->created_at }}">
+                                                {{ $question->created_at->diffForHumans() }}
+                                            </time>
+                                        </h6>
+                                    </div>
+                                    
                                 </div>
                             </div>
                         @endforeach
-                    @endforeach
 
                 </div> 
             </div>
