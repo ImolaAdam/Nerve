@@ -1,4 +1,4 @@
-Nerve is a social question-and-answer website where users can collaborate by editing questions and commenting on answers that have been submitted by other users.
+Nerve is a social question-and-answer website where users can collaborate by asking questions and answering those which have been submitted by other users.
 You can follow profiles and upvote / downvote the questions and answers.
 
 ## Setup
