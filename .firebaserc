@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "nerve-4d316": {
+      "hosting": {
+        "Nerve": [
+          "nerve-4d316"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "nerve-4d316"
+  }
+}
