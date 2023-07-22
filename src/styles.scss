@@ -6,4 +6,19 @@ html {
 
 a {
     text-decoration: none;
-  }
+}
+
+a:hover {
+    color: #595c5f !important;
+}
+
+.btn-info {
+    //background-color: #6ea4a8;
+    background-color: #bdd0d4;
+    border: unset;
+}
+
+.btn-info:hover {
+    background-color: #518587;
+    color: white;
+}

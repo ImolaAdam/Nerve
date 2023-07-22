@@ -1,31 +1,25 @@
-<div class="container-fluid">
-    <div class="row mt-5">
-        <div class="col"></div>
-        <div class="col-4">
-            <div class="card shadow">
-                <div class="card-body">
-                    <form>
-                        <div class="mb-3">
-                            <h4 class="text-dark text-muted">Registration</h4>
-                        </div>
-                        <div class="mb-3">
-                            <label for="inputEmail" class="form-label">Email address</label>
-                            <input type="email" class="form-control" name="email" [(ngModel)]="email">
-                        </div>
-                        <div class="mb-3">
-                            <label for="inputPassword" class="form-label">Password</label>
-                            <input type="password" class="form-control" name="password" [(ngModel)]="password">
-                        </div>
-                        <button type="submit" class="btn btn-info" (click)="register()">Register</button>
-                        <div class="row">
-                            <div class="col-6">
-                                <a href="/login">Already existing account? <span class="text-danger">Login</span></a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+<div class="registration-background">
+    <div class="registration-card">
+        <div class="card shadow">
+            <div class="card-body">
+                <form>
+                    <div class="mb-3">
+                        <h3 class="text-dark text-muted">Registration</h3>
+                    </div>
+                    <div class="mb-3">
+                        <label for="inputEmail" class="form-label">Email address</label>
+                        <input type="email" class="form-control" name="email" [(ngModel)]="email">
+                    </div>
+                    <div class="mb-3">
+                        <label for="inputPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" name="password" [(ngModel)]="password">
+                    </div>
+                    <button type="submit" class="btn btn-info" (click)="register()">Register</button>
+                    <div class="">
+                        <a href="/login" class="registration-link"><small>Already have an existing account?</small></a>
+                    </div>
+                </form>
             </div>
         </div>
-        <div class="col"></div>
     </div>
 </div>
