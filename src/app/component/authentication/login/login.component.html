@@ -1,34 +1,36 @@
-<div class="container-fluid">
-    <div class="row mt-5">
-        <div class="col"></div>
-        <div class="col-4">
-            <div class="card shadow">
-                <div class="card-body">
-                    <form>
-                        <div class="mb-3">
-                            <h4 class="text-dark text-muted">Login</h4>
-                        </div>
-                        <div class="mb-3">
-                            <label for="inputEmail" class="form-label">Email address</label>
-                            <input type="email" class="form-control" name="email" [(ngModel)]="email">
-                        </div>
-                        <div class="mb-3">
-                            <label for="inputPassword" class="form-label">Password</label>
-                            <input type="password" class="form-control" name="password" [(ngModel)]="password">
-                        </div>
-                        <button type="submit" class="btn btn-info" (click)="login()">Login</button>
-                        <div class="row">
-                            <div class="col-6">
-                                <a href="/register">Need account? <span class="text-danger">Register</span></a>
+<div class="login-background">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-4 login-card">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <form>
+                            <div class="mb-3">
+                                <div class="row">
+                                    <div class="col">
+                                        <h3 class="text-dark text-muted float-right">Login</h3>
+                                    </div>
+                                    <div class="col"><a href="/register">
+                                        <h3 class="text-dark text-muted float-end">Join Us</h3></a>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="inputEmail" class="form-label">Email address</label>
+                                <input type="email" class="form-control" name="email" [(ngModel)]="email">
+                            </div>
+                            <div class="mb-3">
+                                <label for="inputPassword" class="form-label">Password</label>
+                                <input type="password" class="form-control" name="password" [(ngModel)]="password">
+                            </div>
+                            <button type="submit" class="btn btn-info" (click)="login()">Login</button>
+                            <div class="row">
                                 <a href="" class="text-dark">Forgot password?</a>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col"></div>
     </div>
 </div>

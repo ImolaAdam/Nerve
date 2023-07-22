@@ -1,0 +1,27 @@
+.login-background {
+    background-image: url("/../../../assets/images/login_wallpaper.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
+}
+
+.login-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.card {
+    min-width: 300px;
+    min-height: 300px;
+    max-width: 500px;
+    max-height: 500px;
+}
+
+.btn-info {
+    //background-color: #6ea4a8;
+    background-color: #bdd0d4;
+    border: unset;
+}
