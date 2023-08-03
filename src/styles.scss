@@ -1,24 +1,28 @@
 // Global styles
-body,
-html {
+body, html {
     height: 100%;
 }
 
 a {
     text-decoration: none;
-}
 
-a:hover {
-    color: #595c5f !important;
+    &:hover {
+        color: #595c5f !important;
+    }
 }
 
 .btn-info {
-    //background-color: #6ea4a8;
-    background-color: #bdd0d4;
+    background-color: #85A9AB;
     border: unset;
-}
-
-.btn-info:hover {
-    background-color: #518587;
     color: white;
+
+    &:hover {
+        background-color: #518587;
+        color: white;
+    }
+
+    &:disabled {
+        background-color: #A9C2C4;
+        color: white;
+    }
 }

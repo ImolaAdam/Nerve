@@ -1,4 +1,4 @@
-.registration-background {
+.verification-background {
     background-image: url("/../../../assets/images/login_wallpaper.jpg");
     background-position: center;
     background-repeat: no-repeat;
@@ -6,7 +6,7 @@
     height: 100%;
 }
 
-.registration-card {
+.verification-card {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -18,4 +18,8 @@
     min-height: 300px;
     max-width: 500px;
     max-height: 500px;
+}
+
+.registration-link {
+    color: #9b9d9f;
 }
