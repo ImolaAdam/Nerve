@@ -4,7 +4,7 @@ import { ForgotPasswordComponent } from './component/authentication/forgot-passw
 import { LoginComponent } from './component/authentication/login/login.component';
 import { RegistrationComponent } from './component/authentication/registration/registration.component';
 import { VerifyEmailComponent } from './component/authentication/verify-email/verify-email.component';
-import { DashboardComponent } from './component/dashboard/dashboard.component';
+import { DashboardComponent } from './component/dashboard/components/dashboard.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full'},

@@ -1,0 +1,70 @@
+.container {
+    height: 100%;
+    padding: 1rem;
+    background-color: rgba(101, 101, 101, 0.06);
+    display: grid;
+    // grid-area: main;
+    max-width: unset;
+    overflow: auto;
+    gap: 20px;
+    grid-area: main;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-areas:
+        "c1 c1 c2 c2 c3 c3"
+        "c4 c4 c5 c5 c6 c6"
+        "c4 c4 c5 c5 c6 c6"
+        "c4 c4 c7 c7 c8 c8"
+        "c4 c4 c7 c7 c8 c8"
+        "c9 c9 c9 c10 c10 c10"
+        "c9 c9 c9 c10 c10 c10";
+}
+
+.card:nth-child(1) {
+    grid-area: c1;
+}
+
+.card:nth-child(2) {
+    grid-area: c2;
+}
+
+.card:nth-child(3) {
+    grid-area: c3;
+}
+
+.card:nth-child(4) {
+    grid-area: c4;
+}
+
+.card:nth-child(5) {
+    grid-area: c5;
+}
+
+.card:nth-child(6) {
+    grid-area: c6;
+}
+
+.card:nth-child(7) {
+    grid-area: c7;
+}
+
+.card:nth-child(8) {
+    grid-area: c8;
+}
+
+.card:nth-child(9) {
+    grid-area: c9;
+}
+
+.card:nth-child(10) {
+    grid-area: c10;
+}
+
+.card-body {
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+.card-body::-webkit-scrollbar {
+    display: none;
+}
