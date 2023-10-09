@@ -3,7 +3,6 @@
     padding: 1rem;
     background-color: rgba(101, 101, 101, 0.06);
     display: grid;
-    // grid-area: main;
     max-width: unset;
     overflow: auto;
     gap: 20px;
@@ -67,4 +66,12 @@
 
 .card-body::-webkit-scrollbar {
     display: none;
+}
+
+.centered {
+    text-align: center;
+}
+
+.stat {
+    font-size: 2rem;
 }

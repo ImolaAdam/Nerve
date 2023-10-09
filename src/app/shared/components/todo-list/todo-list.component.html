@@ -1,0 +1,9 @@
+<div class="container">
+  <ul>
+    <li *ngFor="let item of todoList">
+      <div>{{ item.name }}</div>
+      <div><mat-slider min="1" max="100" step="1" value="10"></mat-slider>
+      </div>
+    </li>
+  </ul>
+</div>

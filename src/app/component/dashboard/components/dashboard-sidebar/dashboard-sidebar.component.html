@@ -1,5 +1,21 @@
-<div class="container">
-  <div>
+<div class="container" *ngIf="!!menuOptions">
+  <div class="mt-2 pe-3">
     <p class="current-page-title">Dashboard</p>
+    <hr class="line">
+  </div>
+  <div *ngFor="let menu of menuOptions" class="menu-item mt-ms-3 mt-lg-5">
+    <div class="d-flex align-items-baseline">
+      <span><i [ngClass]="menu.icon"></i></span>
+      <p class="ps-3">{{ menu.name }}</p>
+    </div>
+  </div>
+  <div class="dashboard-footer">
+    <div class="pe-3">
+      <hr class="line">
+    </div>
+    <div class="menu-item d-flex align-items-baseline" (click)="signOut()">
+      <i class="fa-solid fa-right-from-bracket"></i>
+      <p class="ps-3">Log out</p>
+    </div>
   </div>
 </div>

@@ -4,10 +4,11 @@ import { DashboardComponent } from './components/dashboard.component';
 import { DashboardHeaderComponent } from './components/dashboard-header/dashboard-header.component';
 import { DashboardMainComponent } from './components/dashboard-main/dashboard-main.component';
 import { DashboardSidebarComponent } from './components/dashboard-sidebar/dashboard-sidebar.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
-    CommonModule
+    SharedModule,
   ],
   declarations: [
     DashboardComponent,
