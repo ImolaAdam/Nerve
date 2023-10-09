@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { AuthService } from 'src/app/component/authentication/auth.service';
+import * as DashboardActions from '../../dashboard-store/dashboard.actions';
 
 export type MenuOptions = {icon: string, name: string};
 @Component({
@@ -16,13 +18,18 @@ export class DashboardSidebarComponent implements OnInit {
     {icon: 'fa-solid fa-user', name: 'Profile'},
     {icon: 'fa-solid fa-gear', name: 'Settings'}
   ];
-  constructor(private auth: AuthService) { }
+  constructor(private auth: AuthService, private store: Store) { }
 
   ngOnInit() {
   }
 
   signOut() {
     this.auth.signOut();
+  }
+
+  setCurrentMenu(menuName: string): void {
+    this.store.dispatch(DashboardActions.setDashboardMenu({ menuName: menuName }));
+    console.log(menuName);
   }
 
 }

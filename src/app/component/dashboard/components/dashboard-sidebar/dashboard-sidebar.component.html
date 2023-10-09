@@ -4,7 +4,7 @@
     <hr class="line">
   </div>
   <div *ngFor="let menu of menuOptions" class="menu-item mt-ms-3 mt-lg-5">
-    <div class="d-flex align-items-baseline">
+    <div class="d-flex align-items-baseline" (click)="setCurrentMenu(menu.name)">
       <span><i [ngClass]="menu.icon"></i></span>
       <p class="ps-3">{{ menu.name }}</p>
     </div>
