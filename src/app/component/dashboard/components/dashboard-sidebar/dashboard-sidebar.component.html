@@ -1,21 +1,22 @@
-<div class="container" *ngIf="!!menuOptions">
+<div class="container" *ngIf="!!menuOptions && !!curentMenuName">
   <div class="mt-2 pe-3">
-    <p class="current-page-title">Dashboard</p>
+    <p class="current-page-title">{{ curentMenuName }}</p>
     <hr class="line">
   </div>
-  <div *ngFor="let menu of menuOptions" class="menu-item mt-ms-3 mt-lg-5">
-    <div class="d-flex align-items-baseline" (click)="setCurrentMenu(menu.name)">
+  <div *ngFor="let menu of menuOptions" class="flex-view menu-item mt-lg-5"  (click)="setCurrentMenu(menu.name)">
+    <div class="flex-view align-items-baseline"
+      [ngClass]="curentMenuName === menu.name ? 'selected' : 'not-selected'">
       <span><i [ngClass]="menu.icon"></i></span>
-      <p class="ps-3">{{ menu.name }}</p>
+      <div class="ps-3">{{ menu.name }}</div>
     </div>
   </div>
   <div class="dashboard-footer">
     <div class="pe-3">
       <hr class="line">
     </div>
-    <div class="menu-item d-flex align-items-baseline" (click)="signOut()">
+    <div class="flex-view  menu-item not-selected align-items-baseline" (click)="signOut()">
       <i class="fa-solid fa-right-from-bracket"></i>
-      <p class="ps-3">Log out</p>
+      <div class="ps-3">Log out</div>
     </div>
   </div>
 </div>

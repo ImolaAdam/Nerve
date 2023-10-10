@@ -17,11 +17,11 @@ export class DashboardEffects {
                 this.store.pipe(
                     first(),
                     exhaustMap((menuName) => {
-                        console.log(menuName, 'effe')
                         return of(DashboardActions.dashboardMenuSet());
                     })
                 )
             )
         )
     );
+
 }

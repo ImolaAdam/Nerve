@@ -1,0 +1,83 @@
+<div class="container">
+  
+  <div class="card">
+    <div class="card-body centered">
+      <h5 class="card-title">Rank</h5>
+      <p class="card-text stat">Beginner</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body centered">
+      <h5 class="card-title">Studied hours</h5>
+      <p class="card-text stat">56</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body centered">
+      <h5 class="card-title">Coffee drank</h5>
+      <p class="card-text stat">56</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title centered">Daily todo</h5>
+      <p class="card-text">
+        <app-todo-list [todoList]="dailyTodoList"></app-todo-list>
+      </p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title centered">Weekly goals</h5>
+      <p class="card-text">
+        <app-todo-list [todoList]="weeklyTodoList"></app-todo-list>
+      </p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title centered">Monthly goals</h5>
+      <p class="card-text">
+        <app-todo-list [todoList]="monthlyTodoList"></app-todo-list>
+      </p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title centered">Proudest moment of the week</h5>
+      <p class="card-text">Finally started my thesis</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title centered">Yearly goals</h5>
+      <p class="card-text">
+        <app-todo-list [todoList]="yearlyTodoList"></app-todo-list>
+      </p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title centered">Activity</h5>
+      <p class="card-text">56</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title centered">Deadlines</h5>
+      <p class="card-text">
+        <app-todo-list></app-todo-list>
+      </p>
+    </div>
+  </div>
+
+</div>

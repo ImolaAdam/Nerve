@@ -1,83 +1,22 @@
-<div class="container">
+<div class="container" *ngIf="!!currentMenuName" [ngSwitch]="currentMenuName">
 
-  <div class="card">
-    <div class="card-body centered">
-      <h5 class="card-title">Rank</h5>
-      <p class="card-text stat">Beginner</p>
-    </div>
-  </div>
+  <app-dashboard-main-cards *ngSwitchDefault
+    [dailyTodoList]="dailyTodoList"
+    [weeklyTodoList]="weeklyTodoList"
+    [monthlyTodoList]="monthlyTodoList"
+    [yearlyTodoList]="yearlyTodoList">
+  </app-dashboard-main-cards>
 
-  <div class="card">
-    <div class="card-body centered">
-      <h5 class="card-title">Studied hours</h5>
-      <p class="card-text stat">56</p>
-    </div>
-  </div>
+  <app-dashboard-main-profile *ngSwitchCase="'Profile'"></app-dashboard-main-profile>
 
-  <div class="card">
-    <div class="card-body centered">
-      <h5 class="card-title">Coffee drank</h5>
-      <p class="card-text stat">56</p>
-    </div>
-  </div>
+  <app-dashboard-main-calendar *ngSwitchCase="'Calendar'"></app-dashboard-main-calendar>
 
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title centered">Daily todo</h5>
-      <p class="card-text">
-        <app-todo-list [todoList]="dailyTodoList"></app-todo-list>
-      </p>
-    </div>
-  </div>
+  <app-dashboard-main-inbox *ngSwitchCase="'Inbox'"></app-dashboard-main-inbox>
 
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title centered">Weekly goals</h5>
-      <p class="card-text">
-        <app-todo-list [todoList]="weeklyTodoList"></app-todo-list>
-      </p>
-    </div>
-  </div>
+  <app-dashboard-main-friends *ngSwitchCase="'Friends'"></app-dashboard-main-friends>
 
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title centered">Monthly goals</h5>
-      <p class="card-text">
-        <app-todo-list [todoList]="monthlyTodoList"></app-todo-list>
-      </p>
-    </div>
-  </div>
+  <app-dashboard-main-templates *ngSwitchCase="'Templates'"></app-dashboard-main-templates>
 
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title centered">Proudest moment of the week</h5>
-      <p class="card-text">Finally started my thesis</p>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title centered">Yearly goals</h5>
-      <p class="card-text">
-        <app-todo-list [todoList]="yearlyTodoList"></app-todo-list>
-      </p>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title centered">Activity</h5>
-      <p class="card-text">56</p>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title centered">Deadlines</h5>
-      <p class="card-text">
-        <app-todo-list></app-todo-list>
-      </p>
-    </div>
-  </div>
-
+  <app-dashboard-main-settings *ngSwitchCase="'Settings'"></app-dashboard-main-settings>
+  
 </div>
