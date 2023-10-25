@@ -10,8 +10,8 @@ import { DASHBOARD_STATE_NAME, dashboardReducer } from './component/dashboard/da
 import { EffectsModule } from '@ngrx/effects';
 import { DashboardEffects } from './component/dashboard/dashboard-store/dashboard.effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-//import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-
+import { AUTH_STATE_NAME, authReducer } from './component/authentication/auth-store/auth.reducer';
+import { AuthEffects } from './component/authentication/auth-store/auth.effects';
 
 @NgModule({
   declarations: [
@@ -24,10 +24,14 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     FormsModule,
     DashboardModule,
     StoreModule.forRoot({ 
-      [DASHBOARD_STATE_NAME]: dashboardReducer 
+      [AUTH_STATE_NAME]: authReducer,
+      [DASHBOARD_STATE_NAME]: dashboardReducer,
     }),
-    EffectsModule.forRoot([DashboardEffects]),
-    //// Retains last 25 states
+    EffectsModule.forRoot([
+      AuthEffects,
+      DashboardEffects
+    ]),
+    // Retains last 25 states
     StoreDevtoolsModule.instrument({ maxAge: 25 })
   ],
   providers: [],

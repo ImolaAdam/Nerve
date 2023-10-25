@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from 'src/app/component/authentication/auth.service';
+import * as AuthActions from '../auth-store/auth.actions'
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-login',
@@ -10,10 +12,9 @@ import { AuthService } from 'src/app/component/authentication/auth.service';
 export class LoginComponent implements OnInit {
   @ViewChild('loginForm', { static: false }) form?: NgForm;
 
-  constructor(private auth: AuthService) { }
+  constructor(private auth: AuthService, private store: Store) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   login() {
     if (!!this.form) {
@@ -29,7 +30,8 @@ export class LoginComponent implements OnInit {
         return;
       }
 
-      this.auth.login(email, password)
+      //this.auth.login(email, password)
+      this.store.dispatch(AuthActions.firebaseLoginStart({ email, password }));
     }
   }
 }

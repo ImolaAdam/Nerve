@@ -3,7 +3,7 @@
     <p class="current-page-title">{{ curentMenuName }}</p>
     <hr class="line">
   </div>
-  <div *ngFor="let menu of menuOptions" class="flex-view menu-item mt-lg-5"  (click)="setCurrentMenu(menu.name)">
+  <div *ngFor="let menu of menuOptions" class="flex-view menu-item mt-5"  (click)="setCurrentMenu(menu.name)">
     <div class="flex-view align-items-baseline"
       [ngClass]="curentMenuName === menu.name ? 'selected' : 'not-selected'">
       <span><i [ngClass]="menu.icon"></i></span>

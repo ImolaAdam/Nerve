@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard-main-profile',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardMainProfileComponent implements OnInit {
 
+  userName: string = '';
   constructor() { }
 
   ngOnInit() {
   }
+
+  onSubmit() {}
 
 }

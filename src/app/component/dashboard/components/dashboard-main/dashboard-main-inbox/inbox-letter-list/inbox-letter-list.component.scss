@@ -1,0 +1,12 @@
+.letter-row {
+    background-color: white;
+    opacity: 65%;
+    margin-top: 0.5rem;
+    height: 2.5rem;
+    cursor: pointer;
+    border-radius: 0.5rem;
+}
+
+.letter-row:hover {
+    opacity: 100%;
+}

@@ -11,6 +11,7 @@ import { DashboardMainFriendsComponent } from './components/dashboard-main/dashb
 import { DashboardMainInboxComponent } from './components/dashboard-main/dashboard-main-inbox/dashboard-main-inbox.component';
 import { DashboardMainSettingsComponent } from './components/dashboard-main/dashboard-main-settings/dashboard-main-settings.component';
 import { DashboardMainTemplatesComponent } from './components/dashboard-main/dashboard-main-templates/dashboard-main-templates.component';
+import { InboxLetterListComponent } from './components/dashboard-main/dashboard-main-inbox/inbox-letter-list/inbox-letter-list.component';
 
 @NgModule({
   imports: [
@@ -25,6 +26,7 @@ import { DashboardMainTemplatesComponent } from './components/dashboard-main/das
     DashboardMainCalendarComponent,
     DashboardMainFriendsComponent,
     DashboardMainInboxComponent,
+    InboxLetterListComponent,
     DashboardMainSettingsComponent,
     DashboardMainTemplatesComponent,
     DashboardSidebarComponent,

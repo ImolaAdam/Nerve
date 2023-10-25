@@ -5,6 +5,7 @@ import * as DashboardActions from '../../dashboard-store/dashboard.actions';
 import { filter, first, Observable, Subject, takeUntil } from 'rxjs';
 import { selectMenu } from '../../dashboard-store/dashboard.selectors';
 export type MenuOptions = { icon: string, name: string };
+
 @Component({
   selector: 'app-dashboard-sidebar',
   templateUrl: './dashboard-sidebar.component.html',
@@ -44,7 +45,7 @@ export class DashboardSidebarComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    // unsubscribing from every subscription prventing memory leaks
+    // unsubscribing from every subscription preventing memory leaks
     this.destroyed$.next(true);
     this.destroyed$.complete();
     // Setting state to initial state
