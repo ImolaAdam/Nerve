@@ -1,15 +1,29 @@
 <div class="container">
-  <div *ngFor="let letter of displayedLetters" class="row letter-row">
-    <div class="col-3">{{letter.sentBy}}</div>
-    <div class="col-6">{{letter.header}}</div>
-    <div class="col-3">{{letter.sentAt | date:'yyyy/MM/dd HH:mm:ss'}}</div>
+  <div *ngFor="let letter of displayedLetters" class="row letter-row" (click)="onOpenLetter(selectedLetter, letter)">
+    <div class="col-3 d-flex align-items-center">Sent by: {{letter.sentBy}}</div>
+    <div class="col-6 d-flex align-items-center">{{letter.header}}</div>
+    <div class="col-3 d-flex align-items-center">{{letter.sentAt | date:'yyyy/MM/dd HH:mm:ss'}}</div>
   </div>
 
+  <ng-template #selectedLetter let-modal>
+    <div class="modal-header">
+      <div>
+        <h4 class="modal-title">{{ currentLetter.header }}</h4>
+        <p class="small-header"><small>Sent by: {{ currentLetter.sentBy }}</small></p>
+        <p class="small-header"><small>Sent at: {{ currentLetter.sentAt | date:'yyyy/MM/dd HH:mm:ss' }}</small></p>
+      </div>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <div *ngFor="let line of currentLetter.content.split('\n')">{{ line }}</div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+    </div>
+  </ng-template>
+
   <div class="mt-3">
-    <mat-paginator
-      [length]="pageLength"
-      [pageSize]="pageSize"
-      [pageSizeOptions]="pageSizeOptions"
+    <mat-paginator [length]="letterList.length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
       (page)="onPageChange($event)">
     </mat-paginator>
   </div>

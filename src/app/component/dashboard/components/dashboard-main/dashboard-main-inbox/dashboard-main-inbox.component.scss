@@ -6,14 +6,27 @@
     .fa-pen {
         color: #82acad;
     }
+
+    .send {
+        border: #82acad;
+    }
 }
 
-.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active {
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active {
     background-color: #82acad;
     border-color: #82acad;
     color: white;
-    
+
     .fa-pen {
         color: white;
     }
+}
+
+.is-invalid {
+    border-color: #dc3545;
+    /* Red border color */
+    box-shadow: 0 0 5px 1px #dc3545;
 }

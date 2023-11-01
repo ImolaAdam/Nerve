@@ -1,13 +1,36 @@
 <div class="container">
-  <div class="row mt-3">
+  <div class="row mt-3 d-flex align-items-center">
     <div class="col-2">
-      <button class="btn btn-primary compose-btn"><i class="fa-solid fa-pen pe-2"></i>Compose</button>
+      <button class="btn btn-primary compose-btn" (click)="onComposeLetter(composeLetter)"><i
+          class="fa-solid fa-pen pe-2"></i>Compose</button>
     </div>
     <div class="col-10">
       <h3 class="mt-2">Inbox</h3>
     </div>
   </div>
   <div class="row">
-    <app-inbox-letter-list></app-inbox-letter-list>
+    <app-inbox-letter-list [letterList]="letterList"></app-inbox-letter-list>
   </div>
 </div>
+
+<ng-template #composeLetter let-modal>
+  <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+    <div class="modal-header d-flex flex-column">
+      <button type="button" class="btn-close mb-1" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+      <input type="text" class="form-control mb-1" id="to" placeholder="To" name="to" ngModel required #toField="ngModel"
+        [ngClass]="{'is-invalid': toField.invalid && toField.touched}">
+      <input type="text" class="form-control" id="subject" placeholder="Subject" name="subject" ngModel required #subjectField="ngModel"
+        [ngClass]="{'is-invalid': subjectField.invalid && subjectField.touched}">
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <textarea rows="5" class="form-control" id="content" placeholder="Compose your message..." name="content"
+          style="white-space: pre-line;" ngModel></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-primary send" (click)="modal.close('Save click')" [disabled]="!f.dirty && !subjectField.touched && !toField.touched">Send</button>
+    </div>
+  </form>
+  
+</ng-template>

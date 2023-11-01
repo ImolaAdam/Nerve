@@ -8,7 +8,7 @@
     grid-template-columns: 20% 1fr;
     grid-template-rows: 60px 1fr;
     grid-template-areas: "sidebar header" "sidebar main";
-    transition: 0.5s;
+    //overflow: hidden !important;
     background-color:black;
 }
 

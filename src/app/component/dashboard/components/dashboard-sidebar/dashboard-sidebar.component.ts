@@ -18,7 +18,7 @@ export class DashboardSidebarComponent implements OnInit {
     { icon: 'fa-solid fa-calendar', name: 'Calendar' },
     { icon: 'fa-solid fa-user-group', name: 'Friends' },
     { icon: 'fa-solid fa-file', name: 'Templates' },
-    { icon: 'fa-solid fa-user', name: 'Profile' },
+    { icon: 'fa-solid fa-bullseye', name: 'Goals' },
     { icon: 'fa-solid fa-gear', name: 'Settings' }
   ];
   destroyed$ = new Subject<boolean>();

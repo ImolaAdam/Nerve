@@ -12,6 +12,7 @@ import { DashboardEffects } from './component/dashboard/dashboard-store/dashboar
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AUTH_STATE_NAME, authReducer } from './component/authentication/auth-store/auth.reducer';
 import { AuthEffects } from './component/authentication/auth-store/auth.effects';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { AuthEffects } from './component/authentication/auth-store/auth.effects'
       DashboardEffects
     ]),
     // Retains last 25 states
-    StoreDevtoolsModule.instrument({ maxAge: 25 })
+    StoreDevtoolsModule.instrument({ maxAge: 25 }),
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]
