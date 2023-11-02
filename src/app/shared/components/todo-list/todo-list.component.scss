@@ -1,5 +1,17 @@
 ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-  }
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+  background-color: #82acad;
+}
+
+::ng-deep .mat-checkbox-ripple .mat-ripple-element {
+  background-color: #82acad !important;
+}
+
+::ng-deep .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+  background-color: #82acad;
+}

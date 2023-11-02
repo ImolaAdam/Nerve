@@ -1,7 +1,9 @@
 // Global styles
-body, html {
-    height: 100%;
-}
+@import '~bootstrap/scss/bootstrap';
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
 
 a {
     text-decoration: none;
@@ -26,5 +28,3 @@ a {
         color: white;
     }
 }
-/* Importing Bootstrap SCSS file. */
-@import '~bootstrap/scss/bootstrap';

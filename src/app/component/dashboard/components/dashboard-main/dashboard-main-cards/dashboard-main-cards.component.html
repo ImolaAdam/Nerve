@@ -24,43 +24,53 @@
   <div class="card">
     <div class="card-body">
       <h5 class="card-title centered">Daily todo</h5>
-      <p class="card-text">
-        <app-todo-list [todoList]="dailyTodoList"></app-todo-list>
-      </p>
+      <div class="scrollable-content">
+        <p class="card-text">
+          <app-todo-list [todoList]="dailyTodoList"></app-todo-list>
+        </p>
+      </div>
     </div>
   </div>
 
   <div class="card">
     <div class="card-body">
       <h5 class="card-title centered">Weekly goals</h5>
-      <p class="card-text">
-        <app-todo-list [todoList]="weeklyTodoList"></app-todo-list>
-      </p>
+      <div class="scrollable-content">
+        <p class="card-text">
+          <app-todo-list [todoList]="weeklyTodoList"></app-todo-list>
+        </p>
+      </div>
     </div>
   </div>
 
   <div class="card">
     <div class="card-body">
       <h5 class="card-title centered">Monthly goals</h5>
-      <p class="card-text">
-        <app-todo-list [todoList]="monthlyTodoList"></app-todo-list>
-      </p>
+      <div class="scrollable-content">
+        <p class="card-text">
+          <app-todo-list [todoList]="monthlyTodoList"></app-todo-list>
+        </p>
+      </div>
     </div>
   </div>
 
   <div class="card">
     <div class="card-body">
       <h5 class="card-title centered">Proudest moment of the week</h5>
-      <p class="card-text">Finally started my thesis</p>
+      <div class="scrollable-content">
+        <p class="card-text">Finally started my thesis</p>
+      </div>
     </div>
   </div>
 
   <div class="card">
     <div class="card-body">
       <h5 class="card-title centered">Yearly goals</h5>
-      <p class="card-text">
-        <app-todo-list [todoList]="yearlyTodoList"></app-todo-list>
-      </p>
+      <div class="scrollable-content">
+        <p class="card-text">
+          <app-todo-list [todoList]="yearlyTodoList"></app-todo-list>
+        </p>
+      </div>
     </div>
   </div>
 
@@ -74,9 +84,12 @@
   <div class="card">
     <div class="card-body">
       <h5 class="card-title centered">Deadlines</h5>
-      <p class="card-text">
-        <app-todo-list></app-todo-list>
+      <div class="scrollable-content">
+              <p class="card-text">
+        <app-todo-list [todoList]="yearlyTodoList"></app-todo-list>
       </p>
+      </div>
+
     </div>
   </div>
 

@@ -61,10 +61,17 @@
 
 .card-body {
     padding: 1rem;
+    overflow: hidden;
+}
+
+// Only the child will be scrollable (the card title stays in place)
+.scrollable-content {
+    max-height: 80%;
     overflow-y: auto;
 }
 
-.card-body::-webkit-scrollbar {
+// Hiding the scrollbar
+.scrollable-content::-webkit-scrollbar {
     display: none;
 }
 

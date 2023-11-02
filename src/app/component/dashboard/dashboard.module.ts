@@ -5,13 +5,13 @@ import { DashboardMainComponent } from './components/dashboard-main/dashboard-ma
 import { DashboardSidebarComponent } from './components/dashboard-sidebar/dashboard-sidebar.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { DashboardMainCardsComponent } from './components/dashboard-main/dashboard-main-cards/dashboard-main-cards.component';
-import { DashboardMainProfileComponent } from './components/dashboard-main/dashboard-main-profile/dashboard-main-profile.component';
 import { DashboardMainCalendarComponent } from './components/dashboard-main/dashboard-main-calendar/dashboard-main-calendar.component';
 import { DashboardMainFriendsComponent } from './components/dashboard-main/dashboard-main-friends/dashboard-main-friends.component';
 import { DashboardMainInboxComponent } from './components/dashboard-main/dashboard-main-inbox/dashboard-main-inbox.component';
 import { DashboardMainSettingsComponent } from './components/dashboard-main/dashboard-main-settings/dashboard-main-settings.component';
 import { DashboardMainTemplatesComponent } from './components/dashboard-main/dashboard-main-templates/dashboard-main-templates.component';
 import { InboxLetterListComponent } from './components/dashboard-main/dashboard-main-inbox/inbox-letter-list/inbox-letter-list.component';
+import { DashboardMainGoalsComponent } from './components/dashboard-main/dashboard-main-goals/dashboard-main-goals.component';
 
 @NgModule({
   imports: [
@@ -22,7 +22,7 @@ import { InboxLetterListComponent } from './components/dashboard-main/dashboard-
     DashboardHeaderComponent,
     DashboardMainComponent,
     DashboardMainCardsComponent,
-    DashboardMainProfileComponent,
+    DashboardMainGoalsComponent,
     DashboardMainCalendarComponent,
     DashboardMainFriendsComponent,
     DashboardMainInboxComponent,

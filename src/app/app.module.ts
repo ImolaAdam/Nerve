@@ -13,6 +13,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AUTH_STATE_NAME, authReducer } from './component/authentication/auth-store/auth.reducer';
 import { AuthEffects } from './component/authentication/auth-store/auth.effects';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ]),
     // Retains last 25 states
     StoreDevtoolsModule.instrument({ maxAge: 25 }),
-    NgbModule
+    NgbModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

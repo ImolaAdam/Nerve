@@ -5,6 +5,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { FormsModule } from '@angular/forms';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 
 @NgModule({
@@ -12,7 +13,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CommonModule,
     MatSliderModule,
     FormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatCheckboxModule,
   ],
   declarations: [
     TodoListComponent,
@@ -23,7 +25,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatSliderModule,
     FormsModule,
     MatPaginatorModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatCheckboxModule
   ]
 })
 export class SharedModule { }

@@ -1,9 +1,18 @@
 <div class="container">
   <ul>
-    <li *ngFor="let item of todoList">
-      <div>{{ item.name }}</div>
-      <div><mat-slider min="1" max="100" step="1" value="10"></mat-slider>
-      </div>
+    <li *ngFor="let item of todoList" class="mb-1">
+      <mat-checkbox [(ngModel)]="item.isCompleted" (ngModelChange)="onCompleteTask(item)">{{item.name}}
+      </mat-checkbox>
     </li>
   </ul>
 </div>
+
+<!-- 
+  <li *ngFor="let let item of todoList">
+      <mat-checkbox [(ngModel)]="item.isSeen"
+                    [color]="subtask.color"
+                    (ngModelChange)="updateAllComplete()">
+        {{subtask.name}}
+      </mat-checkbox>
+    </li>
+ -->

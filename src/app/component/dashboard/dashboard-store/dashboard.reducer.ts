@@ -10,8 +10,8 @@ export interface DashboardState {
   
   export const initialDashboardState: DashboardState = {
     error: '',
-    //currentMenu: 'Dashboard',
-    currentMenu: 'Friends',
+    currentMenu: 'Dashboard',
+    //currentMenu: 'Friends',
   };
 
   export const dashboardReducer = createReducer(

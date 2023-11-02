@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 
-export type TodoList = { name: string; isActive: boolean; };
+export type TodoList = { name: string; isCompleted: boolean; disappear: boolean};
 
 @Component({
   selector: 'app-todo-list',
@@ -13,6 +13,10 @@ export class TodoListComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+
+  onCompleteTask(task: TodoList):void {
+    console.log(task)
   }
 
 }
