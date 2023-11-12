@@ -26,7 +26,7 @@
       <h5 class="card-title centered">Daily todo</h5>
       <div class="scrollable-content">
         <p class="card-text">
-          <app-todo-list [todoList]="dailyTodoList"></app-todo-list>
+          <app-todo-list [todoList]="dailyTodoList" [listType]="'daily'" (filteredTodoList)="onUpdateToDoList($event.completedTask, $event.listType)"></app-todo-list>
         </p>
       </div>
     </div>
@@ -37,7 +37,7 @@
       <h5 class="card-title centered">Weekly goals</h5>
       <div class="scrollable-content">
         <p class="card-text">
-          <app-todo-list [todoList]="weeklyTodoList"></app-todo-list>
+          <app-todo-list [todoList]="weeklyTodoList" [listType]="'weekly'" (filteredTodoList)="onUpdateToDoList($event.completedTask, $event.listType)"></app-todo-list>
         </p>
       </div>
     </div>
@@ -48,7 +48,7 @@
       <h5 class="card-title centered">Monthly goals</h5>
       <div class="scrollable-content">
         <p class="card-text">
-          <app-todo-list [todoList]="monthlyTodoList"></app-todo-list>
+          <app-todo-list [todoList]="monthlyTodoList" [listType]="'monthly'" (filteredTodoList)="onUpdateToDoList($event.completedTask, $event.listType)"></app-todo-list>
         </p>
       </div>
     </div>
@@ -68,7 +68,7 @@
       <h5 class="card-title centered">Yearly goals</h5>
       <div class="scrollable-content">
         <p class="card-text">
-          <app-todo-list [todoList]="yearlyTodoList"></app-todo-list>
+          <app-todo-list [todoList]="yearlyTodoList" [listType]="'yearly'" (filteredTodoList)="onUpdateToDoList($event.completedTask, $event.listType)"></app-todo-list>
         </p>
       </div>
     </div>

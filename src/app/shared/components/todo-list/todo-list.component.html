@@ -1,18 +1,12 @@
 <div class="container">
   <ul>
     <li *ngFor="let item of todoList" class="mb-1">
-      <mat-checkbox [(ngModel)]="item.isCompleted" (ngModelChange)="onCompleteTask(item)">{{item.name}}
-      </mat-checkbox>
+        <mat-checkbox [(ngModel)]="item.isCompleted" (ngModelChange)="onCompleteTask(item)" [ngClass]="{'completed': item.isCompleted}">{{item.name}}
+        </mat-checkbox>
     </li>
   </ul>
-</div>
 
-<!-- 
-  <li *ngFor="let let item of todoList">
-      <mat-checkbox [(ngModel)]="item.isSeen"
-                    [color]="subtask.color"
-                    (ngModelChange)="updateAllComplete()">
-        {{subtask.name}}
-      </mat-checkbox>
-    </li>
- -->
+  <div *ngIf="!todoList.length">
+    <p>Relax baby and drink some coffee</p>
+  </div>
+</div>

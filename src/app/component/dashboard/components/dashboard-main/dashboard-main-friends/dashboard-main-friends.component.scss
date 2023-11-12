@@ -1,0 +1,44 @@
+.friend-item {
+    display: flex;
+    align-items: center;
+}
+
+.friend-item img {
+    margin-right: 10px; // Spacing between image and text
+    height: 4rem;
+}
+
+:host ::ng-deep .mat-list-base {
+    .mat-subheader {
+        font-size: 20px;
+        color: #212529;
+    }
+
+    .name {
+        font-weight: 600;
+    }
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search {
+    background-color: white;
+    border-radius: 5px;
+    input {
+        border: #82acad;
+        border-radius: 5px;
+        height: 1.8rem;
+    }
+    input:focus{
+        outline: #3e6d6e;
+    }
+    .fa-search {
+        width: 1.5rem;
+        padding-left: 5px;
+        cursor: pointer;
+    }
+}

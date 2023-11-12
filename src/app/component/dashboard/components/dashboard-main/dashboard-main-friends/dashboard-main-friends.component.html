@@ -1,1 +1,47 @@
-<h3 class="mt-3 ps-3">Friend list</h3>
+<mat-list>
+    <div class="header-container">
+        <div mat-subheader>Friend requests</div>
+        <button class="btn btn-primary compose-btn me-2" (click)="onAddNewFriend()"><i
+            class="fa-solid fa-pen pe-2"></i>Add new friend</button>
+    </div>
+    <ng-container *ngIf="friendRequestList.length > 0; else noRequests">
+        <mat-list-item *ngFor="let requestFriend of friendRequestList">
+            <div class="friend-item">
+                <img src="assets/images/duck_with_knife.jpg" alt="Profile Picture">
+                <div>
+                    <span class="name" mat-line>{{ requestFriend.givenName }} {{ requestFriend.familyName }}</span>
+                    <span mat-line>{{ requestFriend.username }}</span>
+                </div>
+            </div>
+        </mat-list-item>
+    </ng-container>
+    <ng-template #noRequests>
+        <mat-list-item>
+            <div>You currently have no friend requests.</div>
+        </mat-list-item>
+    </ng-template>
+    <mat-divider class="mt-3"></mat-divider>
+    <div class="header-container mt-2">
+        <div mat-subheader>Friend list</div>
+        <div class="search me-2">
+            <input type="text" placeholder="Search.." [(ngModel)]="filter" (input)="onFilterFriendList()">
+            <span><i class="fa fa-search"></i></span>
+        </div>
+    </div>
+    <ng-container *ngIf="filteredFriendList.length > 0; else noFriends">
+        <mat-list-item *ngFor="let friend of filteredFriendList">
+            <div class="friend-item">
+                <img src="assets/images/duck_with_knife.jpg" alt="Profile Picture">
+                <div>
+                    <span class="name" mat-line>{{ friend.givenName }} {{ friend.familyName }}</span>
+                    <span mat-line>{{ friend.username }}</span>
+                </div>
+            </div>
+        </mat-list-item>
+    </ng-container>
+    <ng-template #noFriends>
+        <mat-list-item>
+            <div>You currently have no friends.</div>
+        </mat-list-item>
+    </ng-template>
+</mat-list>

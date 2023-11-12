@@ -6,6 +6,8 @@ import { FormsModule } from '@angular/forms';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatListModule} from '@angular/material/list';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 
 @NgModule({
@@ -26,7 +28,9 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     FormsModule,
     MatPaginatorModule,
     BrowserAnimationsModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatListModule,
+    MatGridListModule
   ]
 })
 export class SharedModule { }

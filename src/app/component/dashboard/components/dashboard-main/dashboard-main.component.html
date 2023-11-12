@@ -1,10 +1,6 @@
 <div class="main" *ngIf="!!currentMenuName" [ngSwitch]="currentMenuName">
 
-  <app-dashboard-main-cards *ngSwitchDefault
-    [dailyTodoList]="dailyTodoList"
-    [weeklyTodoList]="weeklyTodoList"
-    [monthlyTodoList]="monthlyTodoList"
-    [yearlyTodoList]="yearlyTodoList">
+  <app-dashboard-main-cards *ngSwitchDefault>
   </app-dashboard-main-cards>
 
   <app-dashboard-main-goals *ngSwitchCase="'Goals'"></app-dashboard-main-goals>
