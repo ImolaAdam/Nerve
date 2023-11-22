@@ -1,0 +1,116 @@
+.example-header-image {
+  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size: cover;
+}
+
+.goal-avatar {
+  background-color: #bed3d4;
+  height: 3rem;
+  width: 3rem;
+}
+
+.mat-card {
+  max-height: 30em;
+  min-height: 20em;
+}
+
+.example-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+mat-card-header {
+  flex-shrink: 0;
+  /* Prevent the header from shrinking */
+}
+
+mat-card-content {
+  flex-grow: 1;
+  /* Allow the content to grow and take up the available space */
+  overflow: auto;
+  /* Enable scrolling for the content */
+  scrollbar-width: thin;
+  /* Adjust the width of the scrollbar (for Firefox) */
+  scrollbar-color: transparent transparent;
+  /* Set scrollbar color to transparent (for Firefox) */
+}
+
+mat-card-content::-webkit-scrollbar {
+  width: 6px;
+  /* Adjust the width of the scrollbar (for WebKit browsers) */
+}
+
+mat-card-content::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  /* Set scrollbar thumb color to transparent (for WebKit browsers) */
+}
+
+mat-card-content:hover::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  /* Set scrollbar thumb color on hover (for WebKit browsers) */
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.goal-avatar {
+  margin-right: 10px;
+}
+
+.title-subtitle {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+::ng-deep .mat-card-header-text {
+  display: none;
+  margin: 0px;
+}
+
+:host ::ng-deep .mat-spinner circle {
+  stroke: #82acad;
+}
+
+.task-list-item {
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.task-list-item:hover {
+  background-color: #e0e0e0;
+  border-radius: 5px;
+}
+
+.item-content {
+  flex-grow: 1;
+  /* Allow the content to take up the available space */
+}
+
+.item-content-input {
+  border: none;
+  background-color: inherit;
+  flex-grow: 1;
+  cursor: pointer;
+  height: 100%;
+}
+
+.item-content-input:focus-visible {
+  outline: unset;
+}
+/*.mat-chip.mat-standard-chip*/
+.delete-chip {
+  background-color: #ffc1c1 ;
+  cursor: pointer;
+}
+.delete-chip:hover {
+  background-color: #ff7575 ;
+}
+.delete-chip:focus {
+  background-color: #ff7575 ;
+}

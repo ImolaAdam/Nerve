@@ -1,3 +1,160 @@
-<p>
-  dashboard-main-goals works!
-</p>
+<div class="container">
+  <div class="mt-4 mb-4">
+    <h3>My goals in 2023</h3>
+  </div>
+
+  <mat-card class="example-card">
+    <mat-card-header class="header-container">
+      <div class="header-content d-flex flex-row">
+        <img mat-card-avatar src="././././assets/images/goal.png" alt="Goal avatar" class="goal-avatar">
+        <div class="title-subtitle">
+          <mat-card-title>Yearly goals</mat-card-title>
+          <mat-card-subtitle>Maximum 3 goals</mat-card-subtitle>
+        </div>
+      </div>
+
+      <mat-progress-spinner class="example-margin" [color]="spinnerColor" [mode]="spinnerMode"
+        [value]="spinnerYearlyValue" style="width: 10em; height: 8em;">
+      </mat-progress-spinner>
+    </mat-card-header>
+
+    <mat-card-content>
+      <mat-list role="list">
+
+        <mat-list-item *ngFor="let yearlyGoal of yearlyTodoList" role="listitem" class="task-list-item">
+          <div *ngIf="!yearlyEditingMode" class="item-content">{{ yearlyGoal.name }}</div>
+          <input *ngIf="yearlyEditingMode" [(ngModel)]="yearlyGoal.name" class="item-content-input" />
+
+          <mat-chip-list>
+            <mat-chip *ngIf="yearlyGoal.isCompleted && !yearlyEditingMode">Completed</mat-chip>
+            <mat-chip *ngIf="yearlyGoal.isCompleted && yearlyEditingMode">Uncomplete</mat-chip>
+            <mat-chip *ngIf="!yearlyGoal.isCompleted && yearlyEditingMode">Complete</mat-chip>
+            <mat-chip class="delete-chip" *ngIf="yearlyEditingMode" (click)="onDeleteGoal('yearly', yearlyGoal)">Delete</mat-chip>
+          </mat-chip-list>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+    <mat-card-actions>
+      <button *ngIf="yearlyEditingMode" mat-button>Add</button>
+      <button *ngIf="!yearlyEditingMode" mat-button (click)="onEditListItem('yearly')">Edit</button>
+      <button *ngIf="yearlyEditingMode" mat-button>Save</button>
+      <button *ngIf="yearlyEditingMode" mat-button (click)="onEditListItem('yearly')">Cancel</button>
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card class="example-card mt-3 mb-3">
+    <mat-card-header class="header-container">
+      <div class="header-content d-flex flex-row">
+        <img mat-card-avatar src="././././assets/images/goal.png" alt="Goal avatar" class="goal-avatar">
+        <div class="title-subtitle">
+          <mat-card-title>Monthly goals</mat-card-title>
+          <mat-card-subtitle>Maximum 4 goals</mat-card-subtitle>
+        </div>
+      </div>
+
+      <mat-progress-spinner class="example-margin" [color]="spinnerColor" [mode]="spinnerMode"
+        [value]="spinnerMonthlyValue" style="width: 10em; height: 8em;">
+      </mat-progress-spinner>
+    </mat-card-header>
+
+    <mat-card-content>
+      <mat-list role="list">
+        <mat-list-item *ngFor="let monthlyGoal of monthlyTodoList" role="listitem" class="task-list-item">
+          <div *ngIf="!monthlyEditingMode" class="item-content">{{ monthlyGoal.name }}</div>
+          <input *ngIf="monthlyEditingMode" [(ngModel)]="monthlyGoal.name" class="item-content-input" />
+
+          <mat-chip-list>
+            <mat-chip *ngIf="monthlyGoal.isCompleted && !monthlyEditingMode">Completed</mat-chip>
+            <mat-chip *ngIf="monthlyGoal.isCompleted && monthlyEditingMode">Uncomplete</mat-chip>
+            <mat-chip *ngIf="!monthlyGoal.isCompleted && monthlyEditingMode">Complete</mat-chip>
+            <mat-chip class="delete-chip" *ngIf="monthlyEditingMode" (click)="onDeleteGoal('monthly', monthlyGoal)">Delete</mat-chip>
+          </mat-chip-list>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+    <mat-card-actions>
+      <button *ngIf="monthlyEditingMode" mat-button>Add</button>
+      <button *ngIf="!monthlyEditingMode" mat-button (click)="onEditListItem('monthly')">Edit</button>
+      <button *ngIf="monthlyEditingMode" mat-button>Save</button>
+      <button *ngIf="monthlyEditingMode" mat-button (click)="onEditListItem('monthly')">Cancel</button>
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card class="example-card mt-3 mb-3">
+    <mat-card-header class="header-container">
+      <div class="header-content d-flex flex-row">
+        <img mat-card-avatar src="././././assets/images/goal.png" alt="Goal avatar" class="goal-avatar">
+        <div class="title-subtitle">
+          <mat-card-title>Weekly goals</mat-card-title>
+          <mat-card-subtitle>Maximum 2 goals</mat-card-subtitle>
+        </div>
+      </div>
+
+      <mat-progress-spinner class="example-margin" [color]="spinnerColor" [mode]="spinnerMode"
+        [value]="spinnerWeeklyValue" style="width: 10em; height: 8em;">
+      </mat-progress-spinner>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list role="list">
+        <mat-list-item *ngFor="let weeklyGoal of weeklyTodoList" role="listitem" class="task-list-item">
+          <div *ngIf="!weeklyEditingMode" class="item-content">{{ weeklyGoal.name }}</div>
+          <input *ngIf="weeklyEditingMode" [(ngModel)]="weeklyGoal.name" class="item-content-input" />
+
+          <mat-chip-list>
+            <mat-chip *ngIf="weeklyGoal.isCompleted && !weeklyEditingMode">Completed</mat-chip>
+            <mat-chip *ngIf="weeklyGoal.isCompleted && weeklyEditingMode">Uncomplete</mat-chip>
+            <mat-chip *ngIf="!weeklyGoal.isCompleted && weeklyEditingMode">Complete</mat-chip>
+            <mat-chip class="delete-chip" *ngIf="weeklyEditingMode" (click)="onDeleteGoal('weekly', weeklyGoal)">Delete</mat-chip>
+          </mat-chip-list>
+        </mat-list-item>
+      </mat-list>
+
+    </mat-card-content>
+    <mat-card-actions>
+      <button *ngIf="weeklyEditingMode" mat-button>Add</button>
+      <button *ngIf="!weeklyEditingMode" mat-button (click)="onEditListItem('weekly')">Edit</button>
+      <button *ngIf="weeklyEditingMode" mat-button>Save</button>
+      <button *ngIf="weeklyEditingMode" mat-button (click)="onEditListItem('weekly')">Cancel</button>
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card class="example-card mt-3 mb-3">
+    <mat-card-header class="header-container">
+      <div class="header-content d-flex flex-row">
+        <img mat-card-avatar src="././././assets/images/goal.png" alt="Goal avatar" class="goal-avatar">
+        <div class="title-subtitle">
+          <mat-card-title>Daily todo</mat-card-title>
+          <mat-card-subtitle>Maximum 15 tasks per day</mat-card-subtitle>
+        </div>
+      </div>
+
+      <mat-progress-spinner class="example-margin" [color]="spinnerColor" [mode]="spinnerMode"
+        [value]="spinnerDailyValue" style="width: 10em; height: 8em;">
+      </mat-progress-spinner>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list role="list">
+        <mat-list-item *ngFor="let dailyGoal of dailyTodoList" role="listitem" class="task-list-item">
+          <div *ngIf="!dailyEditingMode" class="item-content">{{ dailyGoal.name }}</div>
+          <input *ngIf="dailyEditingMode" [(ngModel)]="dailyGoal.name" class="item-content-input" />
+
+          <mat-chip-list>
+            <mat-chip *ngIf="dailyGoal.isCompleted && !dailyEditingMode">Completed</mat-chip>
+            <mat-chip *ngIf="dailyGoal.isCompleted && dailyEditingMode">Uncomplete</mat-chip>
+            <mat-chip *ngIf="!dailyGoal.isCompleted && dailyEditingMode">Complete</mat-chip>
+            <mat-chip class="delete-chip" *ngIf="dailyEditingMode" (click)="onDeleteGoal('daily', dailyGoal)">Delete</mat-chip>
+          </mat-chip-list>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+    <mat-card-actions>
+      <button *ngIf="dailyEditingMode" class="btn btn-primary">Add</button>
+      <button *ngIf="!dailyEditingMode" mat-button (click)="onEditListItem('daily')">Edit</button>
+      <button *ngIf="dailyEditingMode" mat-button>Save</button>
+      <button *ngIf="dailyEditingMode" mat-button (click)="onEditListItem('daily')">Cancel</button>
+
+    </mat-card-actions>
+  </mat-card>
+
+
+</div>

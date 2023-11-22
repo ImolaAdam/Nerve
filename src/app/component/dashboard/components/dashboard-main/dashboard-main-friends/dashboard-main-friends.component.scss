@@ -17,6 +17,31 @@
     .name {
         font-weight: 600;
     }
+
+    .mat-icon-button {
+        .reject {
+            color: #9f5b5a !important;
+        }
+
+    }
+
+    .mat-focus-indicator {
+        .reject {
+            color: #9f5b5a !important;
+        }
+    }
+
+    .mat-button-wrapper {
+        color: #3e6d6e;
+
+        ec.rejt {
+            color: #9f5b5a !important;
+        }
+
+        .reject:focus {
+            color: #9f5b5a !important;
+        }
+    }
 }
 
 .header-container {
@@ -28,17 +53,30 @@
 .search {
     background-color: white;
     border-radius: 5px;
+
     input {
         border: #82acad;
         border-radius: 5px;
         height: 1.8rem;
     }
-    input:focus{
+
+    input:focus {
         outline: #3e6d6e;
     }
+
     .fa-search {
         width: 1.5rem;
         padding-left: 5px;
         cursor: pointer;
     }
+}
+
+// Paginator styles
+:host ::ng-deep .mat-paginator-container {
+    background-color: #bed3d4;
+}
+
+.acceptance-buttons {
+    right: 40% !important;
+    position: absolute;
 }

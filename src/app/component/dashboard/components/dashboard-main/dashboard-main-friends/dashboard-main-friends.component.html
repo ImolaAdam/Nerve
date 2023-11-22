@@ -2,7 +2,7 @@
     <div class="header-container">
         <div mat-subheader>Friend requests</div>
         <button class="btn btn-primary compose-btn me-2" (click)="onAddNewFriend()"><i
-            class="fa-solid fa-pen pe-2"></i>Add new friend</button>
+                class="fa-solid fa-pen pe-2"></i>Add new friend</button>
     </div>
     <ng-container *ngIf="friendRequestList.length > 0; else noRequests">
         <mat-list-item *ngFor="let requestFriend of friendRequestList">
@@ -11,6 +11,16 @@
                 <div>
                     <span class="name" mat-line>{{ requestFriend.givenName }} {{ requestFriend.familyName }}</span>
                     <span mat-line>{{ requestFriend.username }}</span>
+                </div>
+                <div class="acceptance-buttons">
+                    <button mat-icon-button matTooltip="Accept friend request" [matTooltipShowDelay]="500"
+                        [matTooltipPosition]="'above'" [matTooltipHideDelay]="1000">
+                        <mat-icon>done</mat-icon>
+                    </button>
+                    <button mat-icon-button matTooltip="Reject friend request" [matTooltipShowDelay]="500"
+                        [matTooltipHideDelay]="1000" class="reject">
+                        <mat-icon class="reject">clear</mat-icon>
+                    </button>
                 </div>
             </div>
         </mat-list-item>
@@ -36,8 +46,20 @@
                     <span class="name" mat-line>{{ friend.givenName }} {{ friend.familyName }}</span>
                     <span mat-line>{{ friend.username }}</span>
                 </div>
+                <div class="acceptance-buttons">
+                    <button mat-icon-button matTooltip="Delete friend" [matTooltipShowDelay]="500"
+                        [matTooltipHideDelay]="1000" class="reject">
+                        <mat-icon class="reject">clear</mat-icon>
+                    </button>
+                </div>
             </div>
+
         </mat-list-item>
+        <div class="mt-3">
+            <mat-paginator [length]="friendList.length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                (page)="onPageChange($event)">
+            </mat-paginator>
+        </div>
     </ng-container>
     <ng-template #noFriends>
         <mat-list-item>

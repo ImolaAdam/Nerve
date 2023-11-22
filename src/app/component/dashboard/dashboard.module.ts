@@ -12,6 +12,7 @@ import { DashboardMainSettingsComponent } from './components/dashboard-main/dash
 import { DashboardMainTemplatesComponent } from './components/dashboard-main/dashboard-main-templates/dashboard-main-templates.component';
 import { InboxLetterListComponent } from './components/dashboard-main/dashboard-main-inbox/inbox-letter-list/inbox-letter-list.component';
 import { DashboardMainGoalsComponent } from './components/dashboard-main/dashboard-main-goals/dashboard-main-goals.component';
+import { FriendsAddNewFriendComponent } from './components/dashboard-main/dashboard-main-friends/friends-add-new-friend/friends-add-new-friend.component';
 
 @NgModule({
   imports: [
@@ -25,12 +26,12 @@ import { DashboardMainGoalsComponent } from './components/dashboard-main/dashboa
     DashboardMainGoalsComponent,
     DashboardMainCalendarComponent,
     DashboardMainFriendsComponent,
+    FriendsAddNewFriendComponent,
     DashboardMainInboxComponent,
     InboxLetterListComponent,
     DashboardMainSettingsComponent,
     DashboardMainTemplatesComponent,
-    DashboardSidebarComponent,
-    
+    DashboardSidebarComponent,    
   ],
   exports: [
     DashboardComponent,

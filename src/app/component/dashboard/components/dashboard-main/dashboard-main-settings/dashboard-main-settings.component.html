@@ -1,3 +1,68 @@
-<p>
-  dashboard-main-settings works!
-</p>
+<div class="container">
+
+  <form class="mb-3" #profileSettings="ngForm" (ngSubmit)="onProfileUpdate(profileSettings)">
+    <div>
+      <h3 class="mt-4 mb-4">Profile settings</h3>
+
+      <div class="form-floating mb-3">
+        <input type="email" class="form-control" id="email" value="test@example.com" disabled>
+        <label for="email">Email address</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="role" value="Beginner" disabled>
+        <label for="role">Role</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="username" value="smolly">
+        <label for="username">Username</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="familyName" value="Ádám">
+        <label for="familyName">Family name</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="givenName" value="Imola">
+        <label for="givenName">Given name</label>
+      </div>
+
+      <div class="input-group mb-4">
+        <div class="col-12">
+          <div class="input-group form-floating">
+            <input class="form-control" id="birthday" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="model"
+              ngbDatepicker #d="ngbDatepicker" />
+            <label for="birthday">Birthday</label>
+            <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" type="submit">Update profile</button>
+
+    </div>
+  </form>
+
+  <mat-divider></mat-divider>
+
+  <form class="mb-3" #passwordUpdate="ngForm" (ngSubmit)="onpasswordUpdate(passwordUpdate)">
+    <div class="mb-4 mt-4">
+      <h4>Change password</h4>
+  
+      <div class="form-floating mb-3">
+        <input type="password" class="form-control" id="newPassword" placeholder="New password">
+        <label for="newPassword">New password</label>
+      </div>
+  
+      <div class="form-floating mb-3">
+        <input type="password" class="form-control" id="newPasswordAgain" placeholder="New password again">
+        <label for="newPasswordAgain">New password again</label>
+      </div>
+  
+    </div>
+    <button class="btn btn-primary" type="submit">Change password</button>
+  </form>
+
+</div>

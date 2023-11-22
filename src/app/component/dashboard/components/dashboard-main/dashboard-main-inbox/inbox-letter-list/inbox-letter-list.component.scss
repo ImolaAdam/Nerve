@@ -14,3 +14,8 @@
 .small-header {
     margin: unset;
 }
+
+// Paginator styles
+:host ::ng-deep .mat-paginator-container {
+    background-color: #bed3d4;
+}

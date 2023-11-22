@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FriendDto } from 'src/app/shared/models/FriendDto';
+import { FriendsAddNewFriendComponent } from './friends-add-new-friend/friends-add-new-friend.component';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-dashboard-main-friends',
@@ -24,18 +27,25 @@ export class DashboardMainFriendsComponent implements OnInit {
   friendRequestList: FriendDto[] = [];
   filter: string = '';
   filteredFriendList: FriendDto[] = [];
-  constructor() { }
+  length = 50;
+  pageSize = 10;
+  pageSizeOptions = [10, 15, 25];
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  constructor(private modalService: NgbModal) { }
 
   ngOnInit() {
     if (this.friendList.length !== 0) {
       this.friendRequestList = this.friendList.filter(f => f.isAccepted == false);
       this.friendList = this.friendList.filter(f => f.isAccepted == true);
-      this.filteredFriendList = this.friendList;
+      this.filteredFriendList = this.friendList.slice(0, this.pageSize);
     }
   }
 
   onAddNewFriend(): void {
     console.log('add')
+    const modalRef = this.modalService.open(FriendsAddNewFriendComponent);
+    modalRef.componentInstance.name = 'World';
   }
 
   // Filtering the frind list based on the search input
@@ -54,5 +64,22 @@ export class DashboardMainFriendsComponent implements OnInit {
       }
     }, 1000);
   }
+
+  // Function to handle page change
+  onPageChange(event: PageEvent) {
+    this.filter = '';
+    this.paginator.pageIndex = event.pageIndex;
+    this.paginator.pageSize = event.pageSize;
+
+    // Calculate the start index based on the current page and page size
+    const startIndex = event.pageIndex * event.pageSize;
+
+    // Calculate the end index
+    const endIndex = startIndex + event.pageSize;
+
+    // Update the list of letters to display
+    this.filteredFriendList = this.friendList.slice(startIndex, endIndex);
+  }
+
 
 }

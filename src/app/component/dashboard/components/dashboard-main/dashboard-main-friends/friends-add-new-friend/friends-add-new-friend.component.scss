@@ -1,0 +1,17 @@
+.search {
+    background-color: white;
+    border-radius: 5px;
+    input {
+        border: #82acad !important;
+        border-radius: 5px;
+        height: 1.8rem;
+    }
+    input:focus{
+        outline: #3e6d6e !important;
+    }
+    .fa-search {
+        width: 1.5rem;
+        padding-left: 5px;
+        cursor: pointer;
+    }
+}
