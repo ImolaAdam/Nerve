@@ -14,6 +14,7 @@ import { AUTH_STATE_NAME, authReducer } from './component/authentication/auth-st
 import { AuthEffects } from './component/authentication/auth-store/auth.effects';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppRoutingModule,
     AuthModule,
     FormsModule,
+    SharedModule,
     DashboardModule,
     StoreModule.forRoot({ 
       [AUTH_STATE_NAME]: authReducer,
@@ -36,7 +38,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     // Retains last 25 states
     StoreDevtoolsModule.instrument({ maxAge: 25 }),
     NgbModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

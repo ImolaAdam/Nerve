@@ -1,0 +1,57 @@
+.card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.mat-card {
+    max-height: 40rem;
+    min-height: 30rem;
+
+    .mat-card-content {
+        height: 25rem;
+    }
+}
+
+.pdf {
+    flex-grow: 1;
+}
+
+.pdf-container {
+    height: 100%;
+    cursor: pointer;
+}
+
+:host ::ng-deep mat-list {
+    display: flex !important;
+    height: 100%;
+}
+
+:host ::ng-deep mat-list-item {
+    display: flex !important;
+    height: 100% !important;
+    width: inherit;
+
+    .mat-list-item-content {
+        width: inherit !important;
+    }
+}
+
+.download-icon {
+    background-color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    font-size: 4rem;
+}
+
+.pdf-container:hover .download-icon {
+    opacity: 1;
+}
+
+:host ::ng-deep pdf-viewer canvas:hover {
+    opacity: 0.6;
+}

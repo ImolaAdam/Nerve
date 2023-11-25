@@ -1,8 +1,77 @@
 <div class="container">
   <h4 class="mb-4 mt-4">Templates and planners</h4>
-  <div>
-    <div *ngFor="let image of IMAGES">
-      <img [src]="image.src" [attr.alt]="image.caption" [attr.title]="image.caption" width="100" height="100">
-  </div>
-  </div>
+
+  <mat-card class="card mb-3">
+    <mat-card-header>
+      <mat-card-title>Daily planners</mat-card-title>
+      <mat-card-subtitle>You can find more planners on: <a href="https://www.canva.com/planners/templates"
+          target="_blank" rel="noopener noreferrer">Canva</a></mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <mat-list role="list">
+        <mat-list-item *ngFor="let dailyPlanner of dailyPlanners" role="listitem"
+          class="task-list-item mb-3 d-flex pdf">
+          <div class="pdf-container">
+            <pdf-viewer [src]="dailyPlanner.src" [render-text]="false" [original-size]="false" [show-all]="false"
+              [page]="1" [fit-to-page]="false"></pdf-viewer>
+            <!-- Download icon initially hidden -->
+            <div class="download-icon" (click)="downloadPDF(dailyPlanner.src)">
+              <i class="fa-solid fa-file-arrow-down"></i>
+            </div>
+          </div>
+        </mat-list-item>
+
+      </mat-list>
+    </mat-card-content>
+
+  </mat-card>
+
+  <mat-card class="card mb-3">
+    <mat-card-header>
+      <mat-card-title>Weekly planners</mat-card-title>
+      <mat-card-subtitle>You can find more planners on: <a href="https://www.canva.com/planners/templates"
+          target="_blank" rel="noopener noreferrer">Canva</a></mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list role="list">
+        <mat-list-item *ngFor="let weeklyPlanner of weeklyPlanners" role="listitem"
+          class="task-list-item mb-3 d-flex pdf">
+          <div class="pdf-container">
+            <pdf-viewer [src]="weeklyPlanner.src" [render-text]="false" [original-size]="false" [show-all]="false"
+              [page]="1" [fit-to-page]="false"></pdf-viewer>
+            <!-- Download icon initially hidden -->
+            <div class="download-icon" (click)="downloadPDF(weeklyPlanner.src)">
+              <i class="fa-solid fa-file-arrow-down"></i>
+            </div>
+          </div>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+
+  </mat-card>
+
+  <mat-card class="card mb-3">
+    <mat-card-header>
+      <mat-card-title>Monthly planners</mat-card-title>
+      <mat-card-subtitle>You can find more planners on: <a href="https://www.canva.com/planners/templates"
+          target="_blank" rel="noopener noreferrer">Canva</a></mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list role="list">
+        <mat-list-item *ngFor="let monthlyPlanner of monthlyPlanners" role="listitem"
+          class="task-list-item mb-3 d-flex pdf">
+          <div class="pdf-container">
+            <pdf-viewer [src]="monthlyPlanner.src" [render-text]="false" [original-size]="false" [show-all]="false"
+              [page]="1" [fit-to-page]="false"></pdf-viewer>
+            <!-- Download icon initially hidden -->
+            <div class="download-icon" (click)="downloadPDF(monthlyPlanner.src)">
+              <i class="fa-solid fa-file-arrow-down"></i>
+            </div>
+          </div>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+
 </div>

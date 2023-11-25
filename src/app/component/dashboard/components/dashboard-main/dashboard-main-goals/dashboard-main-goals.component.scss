@@ -20,12 +20,12 @@
   height: 100%;
 }
 
-mat-card-header {
+:host ::ng-deep mat-card-header {
   flex-shrink: 0;
   /* Prevent the header from shrinking */
 }
 
-mat-card-content {
+:host ::ng-deep mat-card-content {
   flex-grow: 1;
   /* Allow the content to grow and take up the available space */
   overflow: auto;
@@ -36,17 +36,17 @@ mat-card-content {
   /* Set scrollbar color to transparent (for Firefox) */
 }
 
-mat-card-content::-webkit-scrollbar {
+:host ::ng-deep mat-card-content::-webkit-scrollbar {
   width: 6px;
   /* Adjust the width of the scrollbar (for WebKit browsers) */
 }
 
-mat-card-content::-webkit-scrollbar-thumb {
+:host ::ng-deep mat-card-content::-webkit-scrollbar-thumb {
   background-color: transparent;
   /* Set scrollbar thumb color to transparent (for WebKit browsers) */
 }
 
-mat-card-content:hover::-webkit-scrollbar-thumb {
+:host ::ng-deep mat-card-content:hover::-webkit-scrollbar-thumb {
   background-color: #ccc;
   /* Set scrollbar thumb color on hover (for WebKit browsers) */
 }
@@ -67,7 +67,7 @@ mat-card-content:hover::-webkit-scrollbar-thumb {
   align-items: flex-start;
 }
 
-::ng-deep .mat-card-header-text {
+:host ::ng-deep .mat-card-header-text {
   display: none;
   margin: 0px;
 }

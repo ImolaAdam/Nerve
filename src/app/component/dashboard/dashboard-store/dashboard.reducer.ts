@@ -10,7 +10,7 @@ export interface DashboardState {
   
   export const initialDashboardState: DashboardState = {
     error: '',
-    currentMenu: 'Goals',
+    currentMenu: 'Templates',
     //currentMenu: 'Friends',
   };
 

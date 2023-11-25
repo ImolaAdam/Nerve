@@ -20,6 +20,7 @@ import { GoalListComponent } from './components/goal-list/goal-list.component';
 import {MatCardModule} from '@angular/material/card';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatChipsModule} from '@angular/material/chips';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @NgModule({
   imports: [
@@ -30,7 +31,8 @@ import {MatChipsModule} from '@angular/material/chips';
     MatCheckboxModule,
     MatListModule,
     MatCardModule,
-    MatChipsModule
+    MatChipsModule,
+    PdfViewerModule
   ],
   declarations: [
     TodoListComponent,
@@ -58,6 +60,7 @@ import {MatChipsModule} from '@angular/material/chips';
     MatCardModule,
     MatProgressSpinnerModule,
     MatChipsModule,
+    PdfViewerModule
   ]
 })
 export class SharedModule { }
