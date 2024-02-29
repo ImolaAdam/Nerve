@@ -6,7 +6,7 @@
     height: 100%;
 }
 
-.login-card {
+.center {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -23,3 +23,31 @@
 .login-page-link {
     color: #9b9d9f;
 }
+
+/*
+:host ::ng-deep .mat-card-header-text {
+    display: flex;
+
+    .mat-card-title {
+        font-size: 28px;
+        margin-top: unset;
+        margin-bottom: 1rem;
+    }
+    .mat-card-title:first-child {
+        position: absolute;
+        left: 1rem;
+    }
+    .mat-card-title:last-child {
+        position: absolute;
+        right: 1rem;
+    }
+}
+
+:host ::ng-deep .mat-card-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: inherit;
+}
+*/
