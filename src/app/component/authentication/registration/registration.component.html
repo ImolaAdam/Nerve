@@ -2,21 +2,48 @@
     <div class="registration-card">
         <div class="card shadow">
             <div class="card-body">
-                <form #registerForm="ngForm">
+                <form #registerForm="ngForm" (ngSubmit)="register()">
                     <div class="mb-3">
                         <h3 class="text-dark text-muted">Registration</h3>
                     </div>
-                    <div class="mb-3">
-                        <label for="inputEmail" class="form-label">Email address</label>
-                        <input type="email" class="form-control" name="email" [(ngModel)]="email" required>
+                    <div class="d-flex flex-column">
+                        <mat-form-field class="mb-3">
+                            <input
+                            type="email"
+                            matInput
+                            placeholder="Email address"
+                            ngModel
+                            name="email"
+                            email
+                            required
+                            #emailInput="ngModel">
+                            <mat-error *ngIf="!emailInput.hasError('required')">Email is invalid</mat-error>
+                            <mat-error *ngIf="emailInput.hasError('required')">Field is required</mat-error>
+                        </mat-form-field>
+                        <mat-form-field hintLabel="Should be at least 8 characters long">
+                            <input
+                            type="password"
+                            matInput
+                            placeholder="Password"
+                            ngModel
+                            name="password"
+                            required
+                            #pwInput="ngModel">
+                            <mat-hint align="end">{{ pwInput.value?.length }} / 8</mat-hint>
+                        </mat-form-field>
                     </div>
-                    <div class="mb-3">
-                        <label for="inputPassword" class="form-label">Password</label>
-                        <input type="password" class="form-control" name="password" [(ngModel)]="password" required>
-                    </div>
-                    <button type="submit" class="btn btn-info" (click)="register()" [disabled]="registerForm.invalid">Register</button>
-                    <div class="">
-                        <a href="/login" class="registration-link"><small>Already have an existing account?</small></a>
+                    <mat-form-field class="w-100">
+                        <input matInput [matDatepicker]="picker" placeholder="Birthday" ngModel name="birthday"
+                            required>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-hint>MM/DD/YYYY</mat-hint>
+                    </mat-form-field>
+                    <div class="mt-3">
+                        <button type="submit" class="btn btn-info" [disabled]="registerForm.invalid">Register</button>
+                        <a href="/login" class="registration-link float-end">
+                            <small>Already have an existing account?</small>
+                        </a>
                     </div>
                 </form>
             </div>

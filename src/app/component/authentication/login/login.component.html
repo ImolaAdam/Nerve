@@ -9,15 +9,32 @@
                             <h3 class="float-end">Join Us</h3>
                         </a>
                     </div>
-                    <div class="mb-3">
-                        <label for="inputEmail" class="form-label">Email address</label>
-                        <input type="email" id="email" class="form-control" name="email" placeholder="Email address"
-                            required ngModel>
-                    </div>
-                    <div class="mb-3">
-                        <label for="inputPassword" class="form-label">Password</label>
-                        <input type="password" id="password" class="form-control" placeholder="Password" required
-                            ngModel name="password">
+                    <div class="mb-3 d-flex flex-column">
+                        <mat-form-field class="mb-3">
+                            <input
+                            type="email"
+                            matInput
+                            placeholder="Email address"
+                            ngModel
+                            name="email"
+                            email
+                            required
+                            #emailInput="ngModel">
+                            <mat-error *ngIf="!emailInput.hasError('required')">Email is invalid</mat-error>
+                            <mat-error *ngIf="emailInput.hasError('required')">Field is required</mat-error>
+                        </mat-form-field>
+                        <mat-form-field class="mb-3" hintLabel="Should be at least 8 characters long">
+                            <input
+                            type="password"
+                            matInput
+                            placeholder="Password"
+                            ngModel
+                            name="password"
+                            required
+                            minlength="8"
+                            #pwInput="ngModel">
+                            <mat-hint align="end">{{ pwInput.value?.length }} / 8</mat-hint>
+                        </mat-form-field>
                     </div>
                     <div>
                         <button type="submit" class="btn btn-info" [disabled]="loginForm.invalid">Login</button>
@@ -42,10 +59,10 @@
                 <form #loginForm="ngForm" (ngSubmit)="login()">
     
                     <mat-form-field>
-                        <input type="email" matInput placeholder="Email address">
+                        <input type="email" matInput placeholder="Email address" ngModel name="email">
                     </mat-form-field>
                     <mat-form-field>
-                        <input type="password" matInput placeholder="Password">
+                        <input type="password" matInput placeholder="Password" ngModel name="password">
                     </mat-form-field>
                     <div>
                         <button type="submit" class="btn btn-info" [disabled]="loginForm.invalid">Login</button>
