@@ -1,5 +1,30 @@
-<div class="container">
+<mat-sidenav-container>
+  <mat-sidenav #sidenav role="navigation">
+    <app-dashboard-sidebar></app-dashboard-sidebar>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <div>
+        <button mat-icon-button class="d-lg-none" (click)="sidenav.toggle()">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
+      <div class="d-flex justify-content-between w-100">
+        <div>Nerve | LOGO</div>
+        <div>
+          <span>User</span>
+        </div>
+      </div>
+    </mat-toolbar>
+    <main class="main">
+      <app-dashboard-main style="overflow: hidden;"></app-dashboard-main>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>
 
+<!--
+  <div class="container">
+  
     <header class="header">
       <app-dashboard-header></app-dashboard-header>
     </header>
@@ -11,5 +36,7 @@
     <main class="main">
       <app-dashboard-main style="overflow: hidden;"></app-dashboard-main>
     </main>
-    
+  
   </div>
+
+-->

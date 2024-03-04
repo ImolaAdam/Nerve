@@ -1,9 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AuthService } from 'src/app/component/authentication/auth.service';
-import { selectMenu } from '../dashboard-store/dashboard.selectors';
-import { filter, first, Observable, Subject, takeUntil } from 'rxjs';
-
 
 @Component({
   selector: 'app-dashboard',
@@ -12,7 +9,7 @@ import { filter, first, Observable, Subject, takeUntil } from 'rxjs';
 })
 export class DashboardComponent implements OnInit {
   //destroyed$ = new Subject<boolean>();
-
+  
   constructor(private auth: AuthService, private store: Store,) { }
 
   ngOnInit(): void {
@@ -30,6 +27,7 @@ export class DashboardComponent implements OnInit {
   signOut() {
     this.auth.signOut();
   }
+
 
   /*
   ngOnDestroy(): void {

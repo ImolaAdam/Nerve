@@ -14,6 +14,8 @@ import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatSliderModule } from "@angular/material/slider";
 import { MatTooltipModule } from "@angular/material/tooltip";
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 
 @NgModule({
@@ -32,7 +34,9 @@ import { MatTooltipModule } from "@angular/material/tooltip";
         MatCardModule,
         MatProgressSpinnerModule,
         MatChipsModule,
-        MatListModule
+        MatListModule,
+        MatSidenavModule,
+        MatToolbarModule
     ],
     exports: [
         MatSliderModule,
@@ -49,7 +53,9 @@ import { MatTooltipModule } from "@angular/material/tooltip";
         MatCardModule,
         MatProgressSpinnerModule,
         MatChipsModule,
-        MatListModule
+        MatListModule,
+        MatSidenavModule,
+        MatToolbarModule
     ]
 })
 export class MaterialModule { }
