@@ -23,3 +23,13 @@
     </div>
   </div>
 -->
+<mat-nav-list>
+  <mat-list-item *ngFor="let menu of menuOptions" (click)="setCurrentMenu(menu.name)" [ngClass]="curentMenuName === menu.name ? 'selected' : 'not-selected'">
+    <mat-icon>{{ menu.icon }}</mat-icon>
+    <span class="ps-2">{{ menu.name }}</span>
+  </mat-list-item>
+  <mat-list-item (click)="signOut()">
+    <mat-icon>eject</mat-icon>
+    <span class="ps-2">Logout</span>
+  </mat-list-item>
+</mat-nav-list>

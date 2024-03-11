@@ -1,6 +1,6 @@
 <mat-sidenav-container>
   <mat-sidenav #sidenav role="navigation">
-    <app-dashboard-sidebar></app-dashboard-sidebar>
+    <app-dashboard-sidebar (onCloseSidebar)="sidenav.toggle()"></app-dashboard-sidebar>
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">

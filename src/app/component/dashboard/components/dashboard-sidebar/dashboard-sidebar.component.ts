@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AuthService } from 'src/app/component/authentication/auth.service';
 import * as DashboardActions from '../../dashboard-store/dashboard.actions';
-import { filter, first, Observable, Subject, takeUntil } from 'rxjs';
+import { filter, Subject, takeUntil } from 'rxjs';
 import { selectMenu } from '../../dashboard-store/dashboard.selectors';
 export type MenuOptions = { icon: string, name: string };
 
@@ -13,16 +13,17 @@ export type MenuOptions = { icon: string, name: string };
 })
 export class DashboardSidebarComponent implements OnInit {
   menuOptions: MenuOptions[] = [
-    { icon: 'fa-solid fa-table', name: 'Dashboard' },
-    { icon: 'fa-solid fa-envelope', name: 'Inbox' },
-    { icon: 'fa-solid fa-calendar', name: 'Calendar' },
-    { icon: 'fa-solid fa-user-group', name: 'Friends' },
-    { icon: 'fa-solid fa-file', name: 'Templates' },
-    { icon: 'fa-solid fa-bullseye', name: 'Goals' },
-    { icon: 'fa-solid fa-gear', name: 'Settings' }
+    { icon: 'dashboard', name: 'Dashboard' },
+    { icon: 'email', name: 'Inbox' },
+    { icon: 'date_range', name: 'Calendar' },
+    { icon: 'file_copy', name: 'Templates' },
+    { icon: 'people', name: 'Friends' },
+    { icon: 'adjust', name: 'Goals' },
+    { icon: 'settings', name: 'Settings' }
   ];
   destroyed$ = new Subject<boolean>();
   curentMenuName: string = 'Dashboard';
+  @Output() onCloseSidebar = new EventEmitter<void>();
 
   constructor(private auth: AuthService, private store: Store) { }
 
@@ -42,6 +43,7 @@ export class DashboardSidebarComponent implements OnInit {
 
   setCurrentMenu(menuName: string): void {
     this.store.dispatch(DashboardActions.setDashboardMenu({ menuName: menuName }));
+    this.onCloseSidebar.emit();
   }
 
   ngOnDestroy(): void {

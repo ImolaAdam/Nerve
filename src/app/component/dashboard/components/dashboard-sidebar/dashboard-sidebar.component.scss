@@ -1,4 +1,4 @@
-.current-page-title {
+/*.current-page-title {
     font-size: 20px;
     margin-bottom: unset;
 }
@@ -34,6 +34,14 @@
     width: calc(20% - 0.75rem);
 }
 
+.flex-view {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    flex-wrap: wrap;
+    width: -webkit-fill-available;
+}*/
+
 .selected {
     background-color: #bed3d4;
     border-top-left-radius: 20px;
@@ -44,12 +52,4 @@
 
 .not-selected {
     padding-left: 0.5rem;
-}
-
-.flex-view {
-    display: flex;
-    flex-direction: row;
-    align-content: center;
-    flex-wrap: wrap;
-    width: -webkit-fill-available;
 }
