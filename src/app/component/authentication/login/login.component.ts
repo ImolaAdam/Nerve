@@ -12,26 +12,33 @@ import { Store } from '@ngrx/store';
 export class LoginComponent implements OnInit {
   @ViewChild('loginForm', { static: false }) form?: NgForm;
 
-  constructor(private auth: AuthService, private store: Store) { }
+  constructor(
+    private authService: AuthService,
+    private store: Store
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
-  login() {
-    if (!!this.form) {
-      const { email, password } = this.form.value;
-      console.log(this.form.value)
-      if (email == '') {
-        alert('Please enter email');
-        return;
-      }
-
-      if (password == '') {
-        alert('Please enter password');
-        return;
-      }
-
-      //this.auth.login(email, password)
-      this.store.dispatch(AuthActions.firebaseLoginStart({ email, password }));
-    }
+  login(form: NgForm) {
+    this.authService.login({
+      email: form.value.email,
+      password: form.value.password
+    });
+    /*  if (!!this.form) {
+        const { email, password } = this.form.value;
+        console.log(this.form.value)
+        if (email == '') {
+          alert('Please enter email');
+          return;
+        }
+  
+        if (password == '') {
+          alert('Please enter password');
+          return;
+        }
+  
+        //this.auth.login(email, password)
+        this.store.dispatch(AuthActions.firebaseLoginStart({ email, password }));
+      }*/
   }
 }

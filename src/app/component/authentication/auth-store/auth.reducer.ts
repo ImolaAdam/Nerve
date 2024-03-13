@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { UserAuthDto } from '../model/user-model';
+import { User } from '../../../shared/models/user.model';
 import * as AuthActions from './auth.actions'
 
 export const AUTH_STATE_NAME = 'auth';
@@ -7,7 +7,7 @@ export const AUTH_STATE_NAME = 'auth';
 export interface AuthState {
     errorMessage: string | null;
     token: string | null;
-    user: UserAuthDto | null;
+    user: User | null;
 }
 
 export const initialAuthState: AuthState = {

@@ -4,17 +4,7 @@
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">
-      <div>
-        <button mat-icon-button class="d-lg-none" (click)="sidenav.toggle()">
-          <mat-icon>menu</mat-icon>
-        </button>
-      </div>
-      <div class="d-flex justify-content-between w-100">
-        <div>Nerve | LOGO</div>
-        <div>
-          <span>User</span>
-        </div>
-      </div>
+      <app-dashboard-header (onCloseSidebar)="sidenav.toggle()"></app-dashboard-header>
     </mat-toolbar>
     <main class="main">
       <app-dashboard-main style="overflow: hidden;"></app-dashboard-main>

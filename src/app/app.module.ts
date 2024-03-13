@@ -18,7 +18,7 @@ import { SharedModule } from './shared/shared.module';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { FlatpickrModule } from 'angularx-flatpickr';
-import { MaterialModule } from './shared/material.module';
+import { AuthService } from './component/authentication/auth.service';
 
 @NgModule({
   declarations: [
@@ -49,7 +49,9 @@ import { MaterialModule } from './shared/material.module';
       useFactory: adapterFactory,
     }),
   ],
-  providers: [],
+  providers: [
+    AuthService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

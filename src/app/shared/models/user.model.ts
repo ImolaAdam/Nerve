@@ -1,9 +1,7 @@
-export interface UserAuthDto { 
+export interface User { 
     authUserId: string | null;
     email: string | null;
     userName: string | null;
-    familyName?: string | null;
-    givenName?: string | null;
     birtday: Date,
     role: string
 }

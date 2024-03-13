@@ -1,8 +1,8 @@
 import { createAction, props } from '@ngrx/store';
-import { UserAuthDto } from '../model/user-model';
+import { User } from '../../../shared/models/user.model';
 
 export const firebaseLoginStart = createAction('[Auth] Firebase Login Start', props<{ email: string, password: string}>());
-export const loggedInWithFirebase = createAction('[Auth] Logged In With Firebase', props<{ user: UserAuthDto }>());
+export const loggedInWithFirebase = createAction('[Auth] Logged In With Firebase', props<{ user: User }>());
 export const firebaseLoginError = createAction('[Auth] Firebase Login Error', props<{ errorMessage: string }>());
 
 export const logout = createAction('[Auth] Logout');

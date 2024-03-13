@@ -1,7 +1,7 @@
 <mat-list>
     <div class="header-container">
         <div mat-subheader>Friend requests</div>
-        <button class="btn btn-primary compose-btn me-2" (click)="onAddNewFriend()"><i
+        <button  mat-raised-button color="primary" class="compose-btn me-2" (click)="onAddNewFriend()"><i
                 class="fa-solid fa-pen pe-2"></i>Add new friend</button>
     </div>
     <ng-container *ngIf="friendRequestList.length > 0; else noRequests">

@@ -1,11 +1,9 @@
-<div class="container h-100">
-  <div class="d-flex justify-content-between h-100 align-items-center">
-    <div class="">
-      <p>Nerve</p>
-    </div>
-  
-    <div class="">
-      <p>Imola Adam</p>
-    </div>
+<div class="d-flex justify-content-between align-items-center">
+  <div class="d-flex align-items-center">
+    <button mat-icon-button (click)="onSidenavToggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <div>Nerve | LOGO</div>
   </div>
+  <div>{{ userName }}</div>
 </div>
