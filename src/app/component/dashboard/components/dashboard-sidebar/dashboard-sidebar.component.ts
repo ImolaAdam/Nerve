@@ -38,7 +38,7 @@ export class DashboardSidebarComponent implements OnInit {
   }
 
   signOut() {
-   // this.auth.signOut();
+   this.auth.logout();
   }
 
   setCurrentMenu(menuName: string): void {

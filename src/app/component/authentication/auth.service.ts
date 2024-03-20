@@ -7,9 +7,7 @@ import { User } from 'src/app/shared/models/user.model';
 import { AuthData } from 'src/app/shared/models/auth-data.model';
 import { Subject } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class AuthService {
   private user: User | AuthData | null = null;
   authChange = new Subject<boolean>();
@@ -28,7 +26,7 @@ export class AuthService {
       role: 'Beginner',
       userName: 'asd'
     };
-    this.authChange.next(true); //notify others, logged in
+    this.authSuccess();
   }
 
   login(authData: AuthData) {
@@ -36,12 +34,14 @@ export class AuthService {
       email: authData.email,
       password: authData.password
     };
-    this.authChange.next(true); //notify others, logged in
+    this.authSuccess();
+    console.log(this.user)
   }
 
   logout() {
     this.user = null;
     this.authChange.next(false); //notify others, logged in
+    this.router.navigate(['/login']);
   }
 
   getUser() {
@@ -52,6 +52,11 @@ export class AuthService {
 
   isUserAuthenticated() {
     return this.user != null;
+  }
+
+  private authSuccess() {
+    this.authChange.next(true); //notify others, logged in
+    this.router.navigate(['/dashboard']);
   }
   /*
     async login(email: string, password: string): Promise<User> {
