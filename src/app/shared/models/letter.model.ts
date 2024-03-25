@@ -1,4 +1,4 @@
-export interface LetterDto {
+export interface Letter {
     id: string
     sentAt: Date
     sentBy: string

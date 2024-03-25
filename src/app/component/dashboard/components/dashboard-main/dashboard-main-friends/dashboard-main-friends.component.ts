@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FriendDto } from 'src/app/shared/models/FriendDto';
+import { Friend } from 'src/app/shared/models/friend.model';
 import { FriendsAddNewFriendComponent } from './friends-add-new-friend/friends-add-new-friend.component';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
@@ -10,23 +10,14 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
   styleUrls: ['./dashboard-main-friends.component.scss'],
 })
 export class DashboardMainFriendsComponent implements OnInit {
-  friendList: FriendDto[] = [
-    { id: '1', familyName: 'Juhasz', givenName: 'Angela', username: 'orosz_krem', from: new Date(2000, 2, 10), birthday: new Date(2000, 2, 10), isAccepted: true },
-    { id: '1', familyName: 'Rostás', givenName: 'Babilon', username: 'orosz_krem', from: new Date(2020, 2, 5), birthday: new Date(2000, 2, 10), isAccepted: true },
-    { id: '1', familyName: 'Gábor', givenName: 'Abidas', username: 'orosz_krem', from: new Date(2020, 10, 15), birthday: new Date(2000, 2, 10), isAccepted: true },
-    { id: '1', familyName: 'Kolompár', givenName: 'Vuitton', username: 'orosz_krem', from: new Date(2020, 8, 25), birthday: new Date(2000, 2, 10), isAccepted: true },
-    { id: '1', familyName: 'Kolompár', givenName: 'Chanel', username: 'orosz_krem', from: new Date(2020, 9, 28), birthday: new Date(2000, 2, 10), isAccepted: true },
-    { id: '1', familyName: 'Kolompár', givenName: 'Elyza Kyra', username: 'orosz_krem', from: new Date(2020, 2, 5), birthday: new Date(2000, 2, 10), isAccepted: true },
-    { id: '1', familyName: 'Rostás', givenName: 'Rákolló', username: 'orosz_krem', from: new Date(2020, 2, 5), birthday: new Date(2000, 2, 10), isAccepted: true },
-    { id: '1', familyName: 'Rostás', givenName: 'Klementin', username: 'orosz_krem', from: new Date(2020, 2, 5), birthday: new Date(2000, 2, 10), isAccepted: true },
-    { id: '1', familyName: 'Rostás', givenName: 'Klementina', username: 'orosz_krem', from: new Date(2020, 2, 5), birthday: new Date(2000, 2, 10), isAccepted: true },
-    { id: '1', familyName: 'Rostás', givenName: 'Májkül', username: 'orosz_krem', from: new Date(2020, 2, 5), birthday: new Date(2000, 2, 10), isAccepted: false },
-    { id: '1', familyName: 'Lakatos', givenName: 'Bob', username: 'orosz_krem', from: new Date(2020, 2, 5), birthday: new Date(2000, 2, 10), isAccepted: false },
-    { id: '1', familyName: 'Lakatos', givenName: 'Migrén', username: 'orosz_krem', from: new Date(2020, 2, 5), birthday: new Date(2000, 2, 10), isAccepted: false },
-  ];
-  friendRequestList: FriendDto[] = [];
+  friendList: Friend[] = [
+    { id: '1', friendOf: 'orosz_krem', from: new Date(2000, 2, 10), friendTo: 'orosz_krem', isAccepted: true },
+    { id: '1', friendOf: 'orosz_krem', from: new Date(2020, 2, 5), friendTo: 'orosz_krem', isAccepted: true },
+    { id: '1', friendOf: 'orosz_krem', from: new Date(2020, 10, 15), friendTo: 'orosz_krem', isAccepted: true },
+    { id: '1', friendOf: 'orosz_krem', from: new Date(2020, 8, 25), friendTo: 'orosz_krem', isAccepted: true },];
+  friendRequestList: Friend[] = [];
   filter: string = '';
-  filteredFriendList: FriendDto[] = [];
+  filteredFriendList: Friend[] = [];
   length = 50;
   pageSize = 10;
   pageSizeOptions = [10, 15, 25];
@@ -53,7 +44,7 @@ export class DashboardMainFriendsComponent implements OnInit {
   onFilterFriendList() {
     setTimeout(() => {
       console.log(this.filter);
-      if (this.filter && this.friendList.length > 0) {
+      /*if (this.filter && this.friendList.length > 0) {
         const lowerCasedFilter = this.filter.toLocaleLowerCase();
         this.filteredFriendList = this.friendList.filter(f => {
           const fullName = `${f.givenName} ${f.familyName}`.toLocaleLowerCase();
@@ -61,7 +52,7 @@ export class DashboardMainFriendsComponent implements OnInit {
         });
       } else {
         this.filteredFriendList = this.friendList;
-      }
+      }*/
     }, 1000);
   }
 

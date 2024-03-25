@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { LetterDto } from 'src/app/shared/models/LetterDto';
+import { Letter } from 'src/app/shared/models/letter.model';
 
 @Component({
   selector: 'app-inbox-letter-list',
@@ -9,12 +9,12 @@ import { LetterDto } from 'src/app/shared/models/LetterDto';
   styleUrls: ['./inbox-letter-list.component.scss']
 })
 export class InboxLetterListComponent implements OnInit {
-  @Input() letterList: LetterDto[] = [];
+  @Input() letterList: Letter[] = [];
   closeResult = '';
-  currentLetter!: LetterDto;
+  currentLetter!: Letter;
   length = 50;
   pageSize = 10;
-  displayedLetters: LetterDto[] = [];
+  displayedLetters: Letter[] = [];
   pageSizeOptions = [10, 15, 25];
 
   // ! non-null assertion operator informs Angular that it will be initialized at runtime
@@ -30,7 +30,7 @@ export class InboxLetterListComponent implements OnInit {
   }
 
   // Opening the letter in a modal
-  onOpenLetter(selectedLetter: TemplateRef<any>, letter: LetterDto) {
+  onOpenLetter(selectedLetter: TemplateRef<any>, letter: Letter) {
     this.currentLetter = letter;
     this.modalService.open(selectedLetter, { centered: true, scrollable: true, size: 'lg' }).result.then(
       (result) => {

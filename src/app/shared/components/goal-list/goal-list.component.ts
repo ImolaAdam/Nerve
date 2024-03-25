@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { GoalDto } from '../../models/GoalDto';
 import { TodoList } from '../todo-list/todo-list.component';
 
 @Component({

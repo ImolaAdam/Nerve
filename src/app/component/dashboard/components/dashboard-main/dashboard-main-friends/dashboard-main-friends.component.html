@@ -9,8 +9,8 @@
             <div class="friend-item">
                 <img src="assets/images/duck_with_knife.jpg" alt="Profile Picture">
                 <div>
-                    <span class="name" mat-line>{{ requestFriend.givenName }} {{ requestFriend.familyName }}</span>
-                    <span mat-line>{{ requestFriend.username }}</span>
+                    <span class="name" mat-line>{{ requestFriend.friendOf }} {{ requestFriend.friendOf }}</span>
+                    <span mat-line>{{ requestFriend.friendOf }}</span>
                 </div>
                 <div class="acceptance-buttons">
                     <button mat-icon-button matTooltip="Accept friend request" [matTooltipShowDelay]="500"
@@ -43,8 +43,8 @@
             <div class="friend-item">
                 <img src="assets/images/duck_with_knife.jpg" alt="Profile Picture">
                 <div>
-                    <span class="name" mat-line>{{ friend.givenName }} {{ friend.familyName }}</span>
-                    <span mat-line>{{ friend.username }}</span>
+                    <span class="name" mat-line>{{ friend.friendOf }} {{ friend.friendOf }}</span>
+                    <span mat-line>{{ friend.friendOf }}</span>
                 </div>
                 <div class="acceptance-buttons">
                     <button mat-icon-button matTooltip="Delete friend" [matTooltipShowDelay]="500"

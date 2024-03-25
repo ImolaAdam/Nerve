@@ -1,7 +1,9 @@
-export interface GoalDto {
+import { GoalType } from "../enums/goal-type.enum"
+
+export interface Goal {
     id: string
     userId: string
-    goalType: string //Todo enum (yearly -> max 3, weekly, monthly, daily)
+    goalType: GoalType
     startDate: Date
     endDate: Date
     description: string

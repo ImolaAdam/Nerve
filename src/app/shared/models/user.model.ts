@@ -1,7 +1,9 @@
+import { UserRank } from "../enums/user-rank.enum";
+
 export interface User { 
-    authUserId: string | null;
-    email: string | null;
-    userName: string | null;
+    authUserId: string;
+    email: string;
+    userName: string;
     birtday: Date,
-    role: string
+    role: UserRank
 }

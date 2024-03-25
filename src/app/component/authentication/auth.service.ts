@@ -6,6 +6,7 @@ import * as AuthActions from './auth-store/auth.actions'
 import { User } from 'src/app/shared/models/user.model';
 import { AuthData } from 'src/app/shared/models/auth-data.model';
 import { Subject } from 'rxjs';
+import { UserRank } from 'src/app/shared/enums/user-rank.enum';
 
 @Injectable()
 export class AuthService {
@@ -23,7 +24,7 @@ export class AuthService {
       email: user.email,
       authUserId: Math.round(Math.random() * 1000).toString(),
       birtday: new Date(),
-      role: 'Beginner',
+      role: UserRank.Beginner,
       userName: 'asd'
     };
     this.authSuccess();

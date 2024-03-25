@@ -1,7 +1,7 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { LetterDto } from 'src/app/shared/models/LetterDto';
+import { Letter } from 'src/app/shared/models/letter.model';
 
 @Component({
   selector: 'app-dashboard-main-inbox',
@@ -11,7 +11,7 @@ import { LetterDto } from 'src/app/shared/models/LetterDto';
 export class DashboardMainInboxComponent implements OnInit {
   closeResult = '';
 
-  letterList: LetterDto[] = [
+  letterList: Letter[] = [
     { id: 'fd', isSeen: false, sentAt: new Date(), sentBy: 'Molly1', header: 'Hii baby guurl what is up', content: 'ihguhgudfhuighdfuighfduhg gfdbjghhfdg gfdjh' },
     { id: 'fd', isSeen: false, sentAt: new Date(), sentBy: 'Smolly2', header: 'Hii baby guugfdrl what is up', content: 'ihguhgudfhuighdfuighfduhg gfdbjghhfdg gfdjh' },
     { id: 'fd', isSeen: false, sentAt: new Date(), sentBy: 'Molly3', header: 'Hii baby guurl what is up', content: 'ihguhgudfhuighdfuighfduhg gfdbjghhfdg gfdjh' },
@@ -44,7 +44,7 @@ export class DashboardMainInboxComponent implements OnInit {
 
   // Submitting the newly composed letter and adding it to the list
   onSubmit(f: NgForm) {
-    let newLetter: LetterDto = {
+    let newLetter: Letter = {
       id: '13',
       isSeen: false,
       header: f.form.value.subject,
