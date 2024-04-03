@@ -1,8 +1,10 @@
 <div class="container">
-  <div *ngFor="let letter of displayedLetters" class="row letter-row" (click)="onOpenLetter(selectedLetter, letter)">
+  <div *ngFor="let letter of displayedLetters" class="row letter-row d-flex" (click)="onOpenLetter(selectedLetter, letter)" [ngClass]="{'unseen': !letter.isSeen}">
     <div class="col-3 d-flex align-items-center">Sent by: {{letter.sentBy}}</div>
-    <div class="col-6 d-flex align-items-center">{{letter.header}}</div>
+    <div class="col-5 d-flex align-items-center">{{letter.header}}</div>
     <div class="col-3 d-flex align-items-center">{{letter.sentAt | date:'yyyy/MM/dd HH:mm:ss'}}</div>
+    <div class="col-1 d-flex align-items-center"><i class="material-icons" (click)="onDeleteLetter(letter.id)">delete</i>
+    </div>
   </div>
 
   <ng-template #selectedLetter let-modal>
@@ -22,9 +24,13 @@
     </div>
   </ng-template>
 
-  <div class="mt-3">
+  <div *ngIf="displayedLetters.length" class="mt-3">
     <mat-paginator [length]="letterList.length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
       (page)="onPageChange($event)">
     </mat-paginator>
+  </div>
+
+  <div *ngIf="!displayedLetters.length">
+    <p>Sorry, you have no emails. q.q</p>
   </div>
 </div>

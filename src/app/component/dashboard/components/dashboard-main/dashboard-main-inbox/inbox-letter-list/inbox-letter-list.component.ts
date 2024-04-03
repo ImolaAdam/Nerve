@@ -1,6 +1,8 @@
-import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subscription } from 'rxjs';
+import { EmailService } from 'src/app/component/dashboard/services/email.service';
 import { Letter } from 'src/app/shared/models/letter.model';
 
 @Component({
@@ -8,8 +10,10 @@ import { Letter } from 'src/app/shared/models/letter.model';
   templateUrl: './inbox-letter-list.component.html',
   styleUrls: ['./inbox-letter-list.component.scss']
 })
-export class InboxLetterListComponent implements OnInit {
+export class InboxLetterListComponent implements OnInit, OnDestroy {
   @Input() letterList: Letter[] = [];
+  private emailSubscription: Subscription | undefined;
+
   closeResult = '';
   currentLetter!: Letter;
   length = 50;
@@ -20,18 +24,47 @@ export class InboxLetterListComponent implements OnInit {
   // ! non-null assertion operator informs Angular that it will be initialized at runtime
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private modalService: NgbModal) { }
+  constructor(
+    private modalService: NgbModal,
+    private emailService: EmailService,
+  ) { }
 
   ngOnInit() {
+    this.letterList = this.emailService.getAvailableEmails();
+
     // Showing the first 10 letters from the letter list (paginator's pageSize is 10)
     if (this.letterList) {
       this.displayedLetters = this.letterList.slice(0, this.pageSize);
     }
+
+    // Subscribe to availableEmailsChanged subject to update the list
+    this.emailSubscription = this.emailService.availableEmailsChanged.subscribe(() => {
+      this.updateEmailList();
+    });
+  }
+
+  updateEmailList() {
+    this.letterList = this.emailService.getAvailableEmails();
+    // Update any other logic related to the email list here
+    this.displayedLetters = this.letterList.slice(0, this.pageSize);
+  }
+
+  onDeleteLetter(letterId: string) {
+    this.emailService.deleteEmail(letterId);
+    this.updateEmailList();
   }
 
   // Opening the letter in a modal
   onOpenLetter(selectedLetter: TemplateRef<any>, letter: Letter) {
     this.currentLetter = letter;
+
+    // Set letter to seen
+    this.displayedLetters.forEach(l => {
+      if (l.id == letter.id) {
+        l.isSeen = true;
+      }
+    })
+
     this.modalService.open(selectedLetter, { centered: true, scrollable: true, size: 'lg' }).result.then(
       (result) => {
         this.closeResult = `Closed with: ${result}`;
@@ -66,6 +99,13 @@ export class InboxLetterListComponent implements OnInit {
 
     // Update the list of letters to display
     this.displayedLetters = this.letterList.slice(startIndex, endIndex);
+  }
+
+  ngOnDestroy(): void {
+    // Unsubscribe from the subscription to prevent memory leaks
+    if (this.emailSubscription) {
+      this.emailSubscription.unsubscribe();
+    }
   }
 
 }
