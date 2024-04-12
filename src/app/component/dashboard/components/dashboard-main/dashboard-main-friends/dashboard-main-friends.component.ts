@@ -1,20 +1,20 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Friend } from 'src/app/shared/models/friend.model';
 import { FriendsAddNewFriendComponent } from './friends-add-new-friend/friends-add-new-friend.component';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { FriendService } from '../../../services/friend.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard-main-friends',
   templateUrl: './dashboard-main-friends.component.html',
   styleUrls: ['./dashboard-main-friends.component.scss'],
 })
-export class DashboardMainFriendsComponent implements OnInit {
-  friendList: Friend[] = [
-    { id: '1', friendOf: 'orosz_krem', from: new Date(2000, 2, 10), friendTo: 'orosz_krem', isAccepted: true },
-    { id: '1', friendOf: 'orosz_krem', from: new Date(2020, 2, 5), friendTo: 'orosz_krem', isAccepted: true },
-    { id: '1', friendOf: 'orosz_krem', from: new Date(2020, 10, 15), friendTo: 'orosz_krem', isAccepted: true },
-    { id: '1', friendOf: 'orosz_krem', from: new Date(2020, 8, 25), friendTo: 'orosz_krem', isAccepted: true },];
+export class DashboardMainFriendsComponent implements OnInit, OnDestroy {
+  private friendServiceSub: Subscription | undefined;
+
+  friendList: Friend[] = [];
   friendRequestList: Friend[] = [];
   filter: string = '';
   filteredFriendList: Friend[] = [];
@@ -23,20 +23,57 @@ export class DashboardMainFriendsComponent implements OnInit {
   pageSizeOptions = [10, 15, 25];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private modalService: NgbModal) { }
+  constructor(
+    private modalService: NgbModal,
+    private friendService: FriendService
+  ) { }
 
   ngOnInit() {
+    this.friendList = this.friendService.getFriendList();
+
     if (this.friendList.length !== 0) {
       this.friendRequestList = this.friendList.filter(f => f.isAccepted == false);
       this.friendList = this.friendList.filter(f => f.isAccepted == true);
       this.filteredFriendList = this.friendList.slice(0, this.pageSize);
     }
+
+    this.friendServiceSub = this.friendService.friendListChanged.subscribe(() => {
+      this.updateFriendList();
+    });
   }
 
   onAddNewFriend(): void {
     console.log('add')
     const modalRef = this.modalService.open(FriendsAddNewFriendComponent);
     modalRef.componentInstance.name = 'World';
+  }
+
+  onDeleteFriend(id: string): void {
+    this.friendService.deleteFriend(id);
+    this.updateFriendList();
+  }
+
+  onDeleteFriendRequest(id: string): void {
+    this.friendService.deleteFriendRequest(id);
+    this.updateFriendList();
+  }
+
+  // Todo: implement functionality
+  onSendFriendRequest(newFriend: Friend): void {
+    this.friendService.sendFriendRequest(newFriend);
+    this.updateFriendList();
+  }
+
+  onAcceptFriendRequest(id: string) {
+    this.friendService.acceptFriendRequest(id);
+    this.updateFriendList();
+  }
+
+  updateFriendList() {
+    this.friendList = this.friendService.getFriendList();
+    this.friendRequestList = this.friendList.filter(f => f.isAccepted == false);
+    this.friendList = this.friendList.filter(f => f.isAccepted == true);
+    this.filteredFriendList = this.friendList.slice(0, this.pageSize);
   }
 
   // Filtering the frind list based on the search input
@@ -72,5 +109,8 @@ export class DashboardMainFriendsComponent implements OnInit {
     this.filteredFriendList = this.friendList.slice(startIndex, endIndex);
   }
 
+  ngOnDestroy(): void {
+    this.friendServiceSub?.unsubscribe();
+  }
 
 }

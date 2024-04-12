@@ -20,6 +20,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { FlatpickrModule } from 'angularx-flatpickr';
 import { AuthService } from './component/authentication/auth.service';
 import { EmailService } from './component/dashboard/services/email.service';
+import { FriendService } from './component/dashboard/services/friend.service';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { EmailService } from './component/dashboard/services/email.service';
   ],
   providers: [
     AuthService,
-    EmailService
+    EmailService,
+    FriendService
   ],
   bootstrap: [AppComponent]
 })

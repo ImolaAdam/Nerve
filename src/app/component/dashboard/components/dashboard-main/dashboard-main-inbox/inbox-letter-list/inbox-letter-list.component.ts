@@ -102,10 +102,7 @@ export class InboxLetterListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // Unsubscribe from the subscription to prevent memory leaks
-    if (this.emailSubscription) {
-      this.emailSubscription.unsubscribe();
-    }
+    this.emailSubscription?.unsubscribe();
   }
 
 }

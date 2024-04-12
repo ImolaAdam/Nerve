@@ -1,6 +1,8 @@
+import { Injectable } from "@angular/core";
 import { Subject } from "rxjs";
 import { Letter } from "src/app/shared/models/letter.model";
 
+@Injectable()
 export class EmailService {
     availableEmailsChanged = new Subject<void>();
     availableEmails: Letter[] = [

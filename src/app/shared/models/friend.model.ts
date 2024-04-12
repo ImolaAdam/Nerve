@@ -1,9 +1,9 @@
 export interface Friend {
     id: string
-    from: Date
     friendOf: string
     friendTo: string
     isAccepted: boolean
+    from?: Date
 }
 
 //friendOf and to -> email
