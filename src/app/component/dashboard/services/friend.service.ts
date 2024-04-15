@@ -7,7 +7,7 @@ export class FriendService {
     friendListChanged = new Subject<void>();
     friendList: Friend[] = [
         { id: '1', friendOf: 'orosz_krem', from: new Date(2000, 2, 10), friendTo: 'orosz_krem', isAccepted: true },
-        { id: '12', friendOf: 'orosz_krem', from: new Date(2020, 2, 5), friendTo: 'orosz_krem', isAccepted: false },
+        { id: '12', friendOf: 'test', from: new Date(2020, 2, 5), friendTo: 'orosz_krem', isAccepted: false },
         { id: '13', friendOf: 'orosz_krem', from: new Date(2020, 10, 15), friendTo: 'orosz_krem', isAccepted: true },
         { id: '14', friendOf: 'dsj', from: new Date(2020, 8, 25), friendTo: 'orosz_krem', isAccepted: true },
         { id: '15', friendOf: 'oroszgf_krem', from: new Date(2000, 2, 10), friendTo: 'orosz_krem', isAccepted: false },
@@ -50,7 +50,9 @@ export class FriendService {
     acceptFriendRequest(id: string) {
         this.friendList.forEach(f => {
             if (f.id == id) {
+                console.log(id)
                 f.isAccepted = true;
+                this.friendListChanged.next();
             }
         });
     }

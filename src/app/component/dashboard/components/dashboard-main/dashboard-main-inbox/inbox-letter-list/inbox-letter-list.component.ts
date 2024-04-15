@@ -1,7 +1,8 @@
 import { Component, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription, map } from 'rxjs';
 import { EmailService } from 'src/app/component/dashboard/services/email.service';
 import { Letter } from 'src/app/shared/models/letter.model';
 
@@ -11,7 +12,7 @@ import { Letter } from 'src/app/shared/models/letter.model';
   styleUrls: ['./inbox-letter-list.component.scss']
 })
 export class InboxLetterListComponent implements OnInit, OnDestroy {
-  @Input() letterList: Letter[] = [];
+  letterList!: Observable<any>;
   private emailSubscription: Subscription | undefined;
 
   closeResult = '';
@@ -27,14 +28,27 @@ export class InboxLetterListComponent implements OnInit, OnDestroy {
   constructor(
     private modalService: NgbModal,
     private emailService: EmailService,
+    private db: AngularFirestore
   ) { }
 
   ngOnInit() {
-    this.letterList = this.emailService.getAvailableEmails();
+    //this.letterList = this.emailService.getAvailableEmails();
+    this.letterList = this.db
+    .collection('letters')
+      .valueChanges()
+      .pipe(
+        map((letters: any[]) => {
+          return letters.map(letter => {
+            // Assuming letter.sentAt is the Timestamp field
+            letter.sentAt = letter.sentAt.toDate(); // Convert Firestore Timestamp to JavaScript Date object
+            return letter;
+          });
+        })
+      );
 
     // Showing the first 10 letters from the letter list (paginator's pageSize is 10)
     if (this.letterList) {
-      this.displayedLetters = this.letterList.slice(0, this.pageSize);
+      //this.displayedLetters = this.letterList.slice(0, this.pageSize);
     }
 
     // Subscribe to availableEmailsChanged subject to update the list
@@ -44,9 +58,9 @@ export class InboxLetterListComponent implements OnInit, OnDestroy {
   }
 
   updateEmailList() {
-    this.letterList = this.emailService.getAvailableEmails();
+    /*this.letterList = this.emailService.getAvailableEmails();
     // Update any other logic related to the email list here
-    this.displayedLetters = this.letterList.slice(0, this.pageSize);
+    this.displayedLetters = this.letterList.slice(0, this.pageSize);*/
   }
 
   onDeleteLetter(letterId: string) {
@@ -98,7 +112,7 @@ export class InboxLetterListComponent implements OnInit, OnDestroy {
     const endIndex = startIndex + event.pageSize;
 
     // Update the list of letters to display
-    this.displayedLetters = this.letterList.slice(startIndex, endIndex);
+    //this.displayedLetters = this.letterList.slice(startIndex, endIndex);
   }
 
   ngOnDestroy(): void {

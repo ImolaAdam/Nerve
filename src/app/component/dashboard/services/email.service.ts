@@ -5,27 +5,28 @@ import { Letter } from "src/app/shared/models/letter.model";
 @Injectable()
 export class EmailService {
     availableEmailsChanged = new Subject<void>();
+    
     availableEmails: Letter[] = [
-        { content: 'hghgshvfkhjdsfv', header: 'huuhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'zhtht', header: 'hujztduhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'hghgsjztjzthvfkhjdsfv', header: 'hjzuuhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'hghgshvfkhjdsfv', header: 'hu64uhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'hghgs64hvfkhjdsfv', header: 'husrhruhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'hghgshv654fkhjdsfv', header: 'huuhthu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'hghgs6544645hvfkhjdsfv', header: 'hsertuuhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'hghgsh654vfkhjdsfv', header: 'huertduhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'hghgsh654vfkhjdsfv', header: 'huhtuhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'hghgszz45hvfkhjdsfv', header: 'hu65uhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'hghgshvfkhjdsfv', header: 'huuhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'zhtht', header: 'hujztduhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'hghgsjztjzthvfkhjdsfv', header: 'hjzuuhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'hghgshvfkhjdsfv', header: 'hu64uhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'hghgs64hvfkhjdsfv', header: 'husrhruhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'hghgshv654fkhjdsfv', header: 'huuhthu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'hghgs6544645hvfkhjdsfv', header: 'hsertuuhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'hghgsh654vfkhjdsfv', header: 'huertduhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'hghgsh654vfkhjdsfv', header: 'huhtuhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'hghgszz45hvfkhjdsfv', header: 'hu65uhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
+        { content: 'hghgshvfkhjdsfv', sentTo: 'molly', header: 'huuhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
+        { content: 'zhtht', sentTo: 'molly', header: 'hujztduhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
+        { content: 'hghgsjztjzthvfkhjdsfv', sentTo: 'molly', header: 'hjzuuhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
+        { content: 'hghgshvfkhjdsfv', sentTo: 'molly', header: 'hu64uhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
+        { content: 'hghgs64hvfkhjdsfv', sentTo: 'molly', header: 'husrhruhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
+        { content: 'hghgshv654fkhjdsfv', sentTo: 'molly', header: 'huuhthu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
+        { content: 'hghgs6544645hvfkhjdsfv', sentTo: 'molly', header: 'hsertuuhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
+        { content: 'hghgsh654vfkhjdsfv', sentTo: 'molly', header: 'huertduhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
+        { content: 'hghgsh654vfkhjdsfv', sentTo: 'molly', header: 'huhtuhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
+        { content: 'hghgszz45hvfkhjdsfv', sentTo: 'molly', header: 'hu65uhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
+        { content: 'hghgshvfkhjdsfv', sentTo: 'molly', header: 'huuhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
+        { content: 'zhtht', sentTo: 'molly', header: 'hujztduhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
+        { content: 'hghgsjztjzthvfkhjdsfv', sentTo: 'molly', header: 'hjzuuhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
+        { content: 'hghgshvfkhjdsfv', sentTo: 'molly', header: 'hu64uhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
+        { content: 'hghgs64hvfkhjdsfv', sentTo: 'molly', header: 'husrhruhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
+        { content: 'hghgshv654fkhjdsfv', sentTo: 'molly', header: 'huuhthu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
+        { content: 'hghgs6544645hvfkhjdsfv', sentTo: 'molly', header: 'hsertuuhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
+        { content: 'hghgsh654vfkhjdsfv', sentTo: 'molly', header: 'huertduhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
+        { content: 'hghgsh654vfkhjdsfv', sentTo: 'molly', header: 'huhtuhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
+        { content: 'hghgszz45hvfkhjdsfv', sentTo: 'molly', header: 'hu65uhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
     ];
 
     getAvailableEmails() {

@@ -21,6 +21,9 @@ import { FlatpickrModule } from 'angularx-flatpickr';
 import { AuthService } from './component/authentication/auth.service';
 import { EmailService } from './component/dashboard/services/email.service';
 import { FriendService } from './component/dashboard/services/friend.service';
+import { AngularFireModule } from '@angular/fire/compat';
+import { environment } from 'src/environments/environment';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore/'; 
 
 @NgModule({
   declarations: [
@@ -50,6 +53,8 @@ import { FriendService } from './component/dashboard/services/friend.service';
       provide: DateAdapter,
       useFactory: adapterFactory,
     }),
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule
   ],
   providers: [
     AuthService,

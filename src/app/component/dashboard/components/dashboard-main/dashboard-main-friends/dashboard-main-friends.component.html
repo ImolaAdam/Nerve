@@ -13,11 +13,11 @@
                     <span mat-line>{{ requestFriend.friendOf }}</span>
                 </div>
                 <div class="acceptance-buttons">
-                    <button mat-icon-button matTooltip="Accept friend request" [matTooltipShowDelay]="500"
+                    <button mat-icon-button matTooltip="Accept friend request" (click)="onAcceptFriendRequest(requestFriend.id)" [matTooltipShowDelay]="500"
                         [matTooltipPosition]="'above'" [matTooltipHideDelay]="1000">
                         <mat-icon>done</mat-icon>
                     </button>
-                    <button mat-icon-button matTooltip="Reject friend request" [matTooltipShowDelay]="500"
+                    <button mat-icon-button matTooltip="Reject friend request" (click)="onDeleteFriendRequest(requestFriend.id)" [matTooltipShowDelay]="500"
                         [matTooltipHideDelay]="1000" class="reject">
                         <mat-icon class="reject">clear</mat-icon>
                     </button>

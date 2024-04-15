@@ -35,6 +35,7 @@ export class DashboardMainInboxComponent implements OnInit {
   onSubmit(f: NgForm) {
     let newLetter: Letter = {
       id: 'test',
+      sentTo: 'help',
       isSeen: false,
       header: f.form.value.subject,
       content: f.form.value.content,
