@@ -1,8 +1,8 @@
-<div class="container">
+<div class="container" *ngIf="!!letterList">
   <div *ngFor="let letter of letterList | async" class="row letter-row d-flex" (click)="onOpenLetter(selectedLetter, letter)" [ngClass]="{'unseen': !letter.isSeen}">
-    <div class="col-3 d-flex align-items-center">Sent by: {{letter.sentBy}}</div>
-    <div class="col-5 d-flex align-items-center">{{letter.header}}</div>
-    <div class="col-3 d-flex align-items-center">{{letter.sentAt | date:'yyyy/MM/dd HH:mm:ss'}}</div>
+    <div class="col-3 d-flex align-items-center">Sent by: {{ letter.sentBy }}</div>
+    <div class="col-5 d-flex align-items-center">{{ letter.header }}</div>
+    <div class="col-3 d-flex align-items-center">{{ letter.sentAt | date:'yyyy/MM/dd HH:mm:ss' }}</div>
     <div class="col-1 d-flex align-items-center"><i class="material-icons" (click)="onDeleteLetter(letter.id)">delete</i>
     </div>
   </div>

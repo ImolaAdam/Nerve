@@ -2,9 +2,11 @@ import { Component, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@an
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Timestamp } from 'firebase/firestore';
 import { Observable, Subscription, map } from 'rxjs';
 import { EmailService } from 'src/app/component/dashboard/services/email.service';
 import { Letter } from 'src/app/shared/models/letter.model';
+
 
 @Component({
   selector: 'app-inbox-letter-list',
@@ -12,7 +14,7 @@ import { Letter } from 'src/app/shared/models/letter.model';
   styleUrls: ['./inbox-letter-list.component.scss']
 })
 export class InboxLetterListComponent implements OnInit, OnDestroy {
-  letterList!: Observable<any>;
+  letterList!: Observable<Letter[]>;
   private emailSubscription: Subscription | undefined;
 
   closeResult = '';
@@ -33,18 +35,22 @@ export class InboxLetterListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     //this.letterList = this.emailService.getAvailableEmails();
-    this.letterList = this.db
-    .collection('letters')
-      .valueChanges()
-      .pipe(
-        map((letters: any[]) => {
-          return letters.map(letter => {
-            // Assuming letter.sentAt is the Timestamp field
-            letter.sentAt = letter.sentAt.toDate(); // Convert Firestore Timestamp to JavaScript Date object
-            return letter;
-          });
-        })
-      );
+    this.letterList = this.db.collection('letters')
+      .snapshotChanges()
+      .pipe(map(docData => {
+        return docData.map(doc => {
+          const data = doc.payload.doc.data() as any; // Cast to Letter interface
+          const id = doc.payload.doc.id // Use document ID as id
+          data.id = id;
+          data.sentAt = data.sentAt.toDate();
+          // console.log(data.sentAt.getUTCDate())
+          // console.log(data.sentAt.toDate())
+
+          return {
+            ...data
+          }
+        });
+      }));
 
     // Showing the first 10 letters from the letter list (paginator's pageSize is 10)
     if (this.letterList) {

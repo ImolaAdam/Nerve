@@ -1,3 +1,6 @@
+import { Timestamp } from "firebase/firestore"
+
+// Todo: letterFromFirebase
 export interface Letter {
     id: string
     sentTo: string
