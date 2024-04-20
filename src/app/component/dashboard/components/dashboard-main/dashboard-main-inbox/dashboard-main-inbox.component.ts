@@ -1,8 +1,8 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Letter } from 'src/app/shared/models/letter.model';
 import { EmailService } from '../../../services/email.service';
+import { NewEmail } from 'src/app/shared/models/new-email.model';
 
 @Component({
   selector: 'app-dashboard-main-inbox',
@@ -33,9 +33,8 @@ export class DashboardMainInboxComponent implements OnInit {
 
   // Submitting the newly composed letter and adding it to the list
   onSubmit(f: NgForm) {
-    let newLetter: Letter = {
-      id: 'test',
-      sentTo: 'help',
+    let newLetter: NewEmail = {
+      sentTo: f.form.value.sentTo,
       isSeen: false,
       header: f.form.value.subject,
       content: f.form.value.content,

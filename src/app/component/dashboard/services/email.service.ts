@@ -1,50 +1,82 @@
 import { Injectable } from "@angular/core";
-import { Subject } from "rxjs";
+import { AngularFirestore } from "@angular/fire/compat/firestore";
+import { Subject, map } from "rxjs";
 import { Letter } from "src/app/shared/models/letter.model";
+import { NewEmail } from "src/app/shared/models/new-email.model";
 
 @Injectable()
 export class EmailService {
-    availableEmailsChanged = new Subject<void>();
-    
-    availableEmails: Letter[] = [
-        { content: 'hghgshvfkhjdsfv', sentTo: 'molly', header: 'huuhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'zhtht', sentTo: 'molly', header: 'hujztduhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'hghgsjztjzthvfkhjdsfv', sentTo: 'molly', header: 'hjzuuhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'hghgshvfkhjdsfv', sentTo: 'molly', header: 'hu64uhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'hghgs64hvfkhjdsfv', sentTo: 'molly', header: 'husrhruhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'hghgshv654fkhjdsfv', sentTo: 'molly', header: 'huuhthu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'hghgs6544645hvfkhjdsfv', sentTo: 'molly', header: 'hsertuuhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'hghgsh654vfkhjdsfv', sentTo: 'molly', header: 'huertduhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'hghgsh654vfkhjdsfv', sentTo: 'molly', header: 'huhtuhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'hghgszz45hvfkhjdsfv', sentTo: 'molly', header: 'hu65uhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'hghgshvfkhjdsfv', sentTo: 'molly', header: 'huuhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'zhtht', sentTo: 'molly', header: 'hujztduhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'hghgsjztjzthvfkhjdsfv', sentTo: 'molly', header: 'hjzuuhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'hghgshvfkhjdsfv', sentTo: 'molly', header: 'hu64uhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'hghgs64hvfkhjdsfv', sentTo: 'molly', header: 'husrhruhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'hghgshv654fkhjdsfv', sentTo: 'molly', header: 'huuhthu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'hghgs6544645hvfkhjdsfv', sentTo: 'molly', header: 'hsertuuhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'hghgsh654vfkhjdsfv', sentTo: 'molly', header: 'huertduhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'hghgsh654vfkhjdsfv', sentTo: 'molly', header: 'huhtuhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-        { content: 'hghgszz45hvfkhjdsfv', sentTo: 'molly', header: 'hu65uhu', id: 'ds', isSeen: true, sentAt: new Date(2020, 1, 2), sentBy: 'xy' },
-    ];
+    availableEmailsChanged = new Subject<Letter[]>();
+    private availableEmails: Letter[] = [];
+
+    constructor(
+        private db: AngularFirestore
+    ) { }
 
     getAvailableEmails() {
+        this.db.collection('letters')
+            .snapshotChanges()
+            .pipe(map(docData => {
+                return docData.map(doc => {
+                    const data = doc.payload.doc.data() as any; // Cast to Letter interface
+                    const id = doc.payload.doc.id;
+                    data.id = id;
+                    data.sentAt = data.sentAt.toDate();
+
+                    return {
+                        ...data
+                    };
+                });
+            }))
+            .subscribe((letters: Letter[]) => {
+                this.availableEmails = letters;
+                this.availableEmailsChanged.next([...this.availableEmails]);
+            }
+        );
+
         // returning a copy, not reference type
         // Sort the letterList by date
-        return this.availableEmails.sort((a, b) => b.sentAt.getTime() - a.sentAt.getTime());
+        //return this.availableEmails.sort((a, b) => b.sentAt.getTime() - a.sentAt.getTime());
     }
 
-    sendNewEmail(newEmail: Letter) {
-        this.availableEmails.push(newEmail);
-        this.availableEmailsChanged.next();
-
+    sendNewEmail(newEmail: NewEmail) {
+        if (newEmail) {
+            this.db.collection('letters').add(newEmail);
+        }
     }
 
+    /**
+     * 
+     * @param letterId = in firestore the document's automatically generated id
+     */
     deleteEmail(letterId: string) {
-        const filteredList = this.availableEmails.filter(l => l.id != letterId);
-        this.availableEmails = filteredList;
-        this.availableEmailsChanged.next();
+        // Get the reference to the document
+        const docRef = this.db.collection('letters').doc(letterId);
+
+        // Delete the document
+        docRef.delete()
+            .then(() => {
+                console.log("Document successfully deleted!");
+            })
+            .catch((error) => {
+                // Todo: push error to store & window popup
+                console.error("Error removing document: ", error);
+            }
+        );
+    }
+
+    setEmailToSeen(id: string) {
+        const docRef = this.db.collection('letters').doc(id);
+
+        docRef.update({ isSeen: true })
+            .then(() => {
+                console.log("Document successfully updated!");
+            })
+            .catch((error) => {
+                // Todo: push error to store & window popup
+                console.error("Error updating document: ", error);
+            }
+        );
     }
 
 }

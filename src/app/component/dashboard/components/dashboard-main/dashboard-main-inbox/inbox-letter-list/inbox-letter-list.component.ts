@@ -1,12 +1,9 @@
-import { Component, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Timestamp } from 'firebase/firestore';
-import { Observable, Subscription, map } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { EmailService } from 'src/app/component/dashboard/services/email.service';
 import { Letter } from 'src/app/shared/models/letter.model';
-
 
 @Component({
   selector: 'app-inbox-letter-list',
@@ -14,7 +11,7 @@ import { Letter } from 'src/app/shared/models/letter.model';
   styleUrls: ['./inbox-letter-list.component.scss']
 })
 export class InboxLetterListComponent implements OnInit, OnDestroy {
-  letterList!: Observable<Letter[]>;
+  letterList!: Letter[];
   private emailSubscription: Subscription | undefined;
 
   closeResult = '';
@@ -29,61 +26,40 @@ export class InboxLetterListComponent implements OnInit, OnDestroy {
 
   constructor(
     private modalService: NgbModal,
-    private emailService: EmailService,
-    private db: AngularFirestore
+    private emailService: EmailService
   ) { }
 
   ngOnInit() {
-    //this.letterList = this.emailService.getAvailableEmails();
-    this.letterList = this.db.collection('letters')
-      .snapshotChanges()
-      .pipe(map(docData => {
-        return docData.map(doc => {
-          const data = doc.payload.doc.data() as any; // Cast to Letter interface
-          const id = doc.payload.doc.id // Use document ID as id
-          data.id = id;
-          data.sentAt = data.sentAt.toDate();
-          // console.log(data.sentAt.getUTCDate())
-          // console.log(data.sentAt.toDate())
-
-          return {
-            ...data
-          }
-        });
-      }));
+    this.emailSubscription = this.emailService.availableEmailsChanged
+      .subscribe((letters) => {
+        this.letterList = letters.sort((a, b) => b.sentAt.getTime() - a.sentAt.getTime());
+        this.displayedLetters = this.letterList.slice(0, this.pageSize);
+      });
+    this.emailService.getAvailableEmails();
 
     // Showing the first 10 letters from the letter list (paginator's pageSize is 10)
-    if (this.letterList) {
+    //if (this.letterList) {
       //this.displayedLetters = this.letterList.slice(0, this.pageSize);
-    }
+    //}
 
     // Subscribe to availableEmailsChanged subject to update the list
-    this.emailSubscription = this.emailService.availableEmailsChanged.subscribe(() => {
+    /*this.emailSubscription = this.emailService.availableEmailsChanged.subscribe(() => {
       this.updateEmailList();
-    });
+    });*/
   }
 
-  updateEmailList() {
-    /*this.letterList = this.emailService.getAvailableEmails();
-    // Update any other logic related to the email list here
-    this.displayedLetters = this.letterList.slice(0, this.pageSize);*/
-  }
 
   onDeleteLetter(letterId: string) {
     this.emailService.deleteEmail(letterId);
-    this.updateEmailList();
   }
 
   // Opening the letter in a modal
-  onOpenLetter(selectedLetter: TemplateRef<any>, letter: Letter) {
+  onOpenLetter(selectedLetter: TemplateRef<Letter>, letter: Letter) {
     this.currentLetter = letter;
 
-    // Set letter to seen
-    this.displayedLetters.forEach(l => {
-      if (l.id == letter.id) {
-        l.isSeen = true;
-      }
-    })
+    if(!letter.isSeen) {
+      this.emailService.setEmailToSeen(letter.id);
+    }
 
     this.modalService.open(selectedLetter, { centered: true, scrollable: true, size: 'lg' }).result.then(
       (result) => {
@@ -118,11 +94,12 @@ export class InboxLetterListComponent implements OnInit, OnDestroy {
     const endIndex = startIndex + event.pageSize;
 
     // Update the list of letters to display
-    //this.displayedLetters = this.letterList.slice(startIndex, endIndex);
+    this.displayedLetters = this.letterList.slice(startIndex, endIndex);
   }
 
   ngOnDestroy(): void {
     this.emailSubscription?.unsubscribe();
+    console.log('onD')
   }
 
 }
