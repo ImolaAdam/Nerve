@@ -10,7 +10,7 @@ import { UserRank } from 'src/app/shared/enums/user-rank.enum';
 
 @Injectable()
 export class AuthService {
-  private user: User | AuthData | null = null;
+  private isAuthenticated = false;
   authChange = new Subject<boolean>();
 
   constructor(
@@ -20,27 +20,30 @@ export class AuthService {
   ) { }
 
   registerUser(user: User) {
-    this.user = {
-      email: user.email,
-      authUserId: Math.round(Math.random() * 1000).toString(),
-      birtday: new Date(),
-      role: UserRank.Beginner,
-      userName: 'asd'
-    };
-    this.authSuccess();
+    this.fireAuth.createUserWithEmailAndPassword(user.email, user.password)
+      .then(res => {
+        this.authSuccess();
+      })
+      .catch(error => {
+        console.log(error);
+      }
+    );
   }
 
   login(authData: AuthData) {
-    this.user = {
-      email: authData.email,
-      password: authData.password
-    };
-    this.authSuccess();
-    console.log(this.user)
+    this.fireAuth.signInWithEmailAndPassword(authData.email, authData.password)
+      .then(res => {
+        this.authSuccess();
+        console.log('suc')
+      })
+      .catch(error => {
+        console.log(error);
+      }
+      );
   }
 
   logout() {
-    this.user = null;
+    this.isAuthenticated = false;
     this.authChange.next(false); //notify others, logged in
     this.router.navigate(['/login']);
   }
@@ -48,14 +51,15 @@ export class AuthService {
   getUser() {
     // this would have a reference and could change from the outside
     //return this.user;
-    return { ...this.user }; // returning new object
+    //return { ...this.user }; // returning new object
   }
 
   isUserAuthenticated() {
-    return this.user != null;
+    return this.isAuthenticated;
   }
 
   private authSuccess() {
+    this.isAuthenticated = true;
     this.authChange.next(true); //notify others, logged in
     this.router.navigate(['/dashboard']);
   }
