@@ -1,13 +1,13 @@
 import { createReducer, on } from '@ngrx/store';
-import { User } from '../../../shared/models/user.model';
 import * as AuthActions from './auth.actions'
+import { UserDto } from 'src/app/shared/dto/userDto';
 
 export const AUTH_STATE_NAME = 'auth';
 
 export interface AuthState {
     errorMessage: string | null;
     token: string | null;
-    user: User | null;
+    user: UserDto | null;
 }
 
 export const initialAuthState: AuthState = {
@@ -18,7 +18,7 @@ export const initialAuthState: AuthState = {
 
 export const authReducer = createReducer(
     initialAuthState,
-    on(AuthActions.loggedInWithFirebase,
+    /*on(AuthActions.loggedInWithFirebase,
         AuthActions.forgotPassword,
         AuthActions.registerWithFirebaseStart,
         (state) => {
@@ -39,5 +39,18 @@ export const authReducer = createReducer(
             ...state,
             errorMessage: errorMessage
         }
+    }),*/
+
+    on(AuthActions.login, (state, { user }) => {
+        return {
+            ...state,
+            user
+        }
     }),
+    on(AuthActions.logout, (state) => {
+        return {
+            ...state,
+            user: null
+        }
+    })
 );

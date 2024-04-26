@@ -11,7 +11,6 @@ import { EffectsModule } from '@ngrx/effects';
 import { DashboardEffects } from './component/dashboard/dashboard-store/dashboard.effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AUTH_STATE_NAME, authReducer } from './component/authentication/auth-store/auth.reducer';
-import { AuthEffects } from './component/authentication/auth-store/auth.effects';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
@@ -25,6 +24,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from 'src/environments/environment';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore/'; 
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { APP_STATE_NAME, appReducer } from './store/app.reducer';
 
 @NgModule({
   declarations: [
@@ -38,11 +38,11 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
     SharedModule,
     DashboardModule,
     StoreModule.forRoot({ 
+      [APP_STATE_NAME]: appReducer,
       [AUTH_STATE_NAME]: authReducer,
       [DASHBOARD_STATE_NAME]: dashboardReducer,
     }),
     EffectsModule.forRoot([
-      AuthEffects,
       DashboardEffects
     ]),
     // Retains last 25 states

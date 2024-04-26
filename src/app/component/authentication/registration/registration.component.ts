@@ -25,9 +25,7 @@ export class RegistrationComponent {
       userName: form.value.userName
     };
 
-    console.log(newUser)
-
     this.authService.registerUser(newUser);
-
   }
+
 }
