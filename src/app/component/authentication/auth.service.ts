@@ -8,24 +8,42 @@ import { AuthData } from 'src/app/shared/models/auth-data.model';
 import { Subject, Subscription } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { UserDto } from 'src/app/shared/dto/userDto';
+import { EmailService } from '../dashboard/services/email.service';
 
 @Injectable()
 export class AuthService implements OnDestroy {
   private isAuthenticated = false;
   authChange = new Subject<boolean>();
   userSubscription!: Subscription;
+  authSubscription!: Subscription;
 
   constructor(
     private fireAuth: AngularFireAuth,
     private router: Router,
     private store: Store,
-    private db: AngularFirestore
+    private db: AngularFirestore,
+    private emailService: EmailService
   ) { }
+
+  initAuthListener() {
+    this.authSubscription = this.fireAuth.authState.subscribe(user => {
+      if (user) {
+        this.isAuthenticated = true;
+        // Todo: store user
+        this.authChange.next(true); //notify others, logged in
+        this.router.navigate(['/dashboard']);
+      } else {
+        this.emailService.cancelSubscriptions();
+        this.isAuthenticated = false;
+        this.authChange.next(false);
+        this.router.navigate(['/login']);
+      }
+    });
+  }
 
   registerUser(user: User) {
     this.fireAuth.createUserWithEmailAndPassword(user.email, user.password)
       .then(res => {
-        this.authSuccess();
         this.db.collection('users').add(user);
       })
       .catch(error => {
@@ -38,7 +56,6 @@ export class AuthService implements OnDestroy {
     let user: User | null = null;
     this.fireAuth.signInWithEmailAndPassword(authData.email, authData.password)
       .then(res => {
-        this.authSuccess();
         this.getUser(authData.email);
       })
       .catch(error => {
@@ -50,12 +67,10 @@ export class AuthService implements OnDestroy {
 
   logout() {
     this.fireAuth.signOut();
-    this.isAuthenticated = false;
-    this.authChange.next(false);
-    this.router.navigate(['/login']);
   }
 
   getUser(email: string) {
+    // Email is unique, 1:1
     const userCollection = this.db.collection('users', ref => ref.where('email', '==', email));
 
     // Query for the user document with the specified email
@@ -75,7 +90,7 @@ export class AuthService implements OnDestroy {
                 userName: (doc.data() as any).userName
               }
               user.userId = doc.id;
-              console.log(user);
+
               this.store.dispatch(AuthActions.login({ user }));
             });
           }
@@ -88,15 +103,8 @@ export class AuthService implements OnDestroy {
     return this.isAuthenticated;
   }
 
-  private authSuccess() {
-    this.isAuthenticated = true;
-    this.authChange.next(true); //notify others, logged in
-    this.router.navigate(['/dashboard']);
-  }
-
   ngOnDestroy() {
-    if (this.userSubscription) {
-      this.userSubscription.unsubscribe();
-    }
+    this.userSubscription?.unsubscribe();
+    this.authSubscription?.unsubscribe();
   }
 }

@@ -1,7 +1,10 @@
 import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
+import { selectAuthUser } from 'src/app/component/authentication/auth-store/auth.selectors';
+import { selectInboxLetterList, selectLetterPage, selectSentLetterList } from 'src/app/component/dashboard/dashboard-store/dashboard.selectors';
 import { EmailService } from 'src/app/component/dashboard/services/email.service';
 import { Letter } from 'src/app/shared/models/letter.model';
 
@@ -13,7 +16,12 @@ import { Letter } from 'src/app/shared/models/letter.model';
 export class InboxLetterListComponent implements OnInit, OnDestroy {
   letterList!: Letter[];
   private emailSubscription: Subscription | undefined;
+  private authUserSubscription: Subscription | undefined;
 
+  private subscriptions: Subscription[] = [];
+
+  pageName = 'Inbox';
+  userEmail: string = '';
   closeResult = '';
   currentLetter!: Letter;
   length = 50;
@@ -26,26 +34,54 @@ export class InboxLetterListComponent implements OnInit, OnDestroy {
 
   constructor(
     private modalService: NgbModal,
-    private emailService: EmailService
+    private emailService: EmailService,
+    private store: Store
   ) { }
 
   ngOnInit() {
-    this.emailSubscription = this.emailService.availableEmailsChanged
+    /*this.emailSubscription = this.emailService.availableEmailsChanged
       .subscribe((letters) => {
-        this.letterList = letters.sort((a, b) => b.sentAt.getTime() - a.sentAt.getTime());
-        this.displayedLetters = this.letterList.slice(0, this.pageSize);
+        if(letters) {
+          this.letterList = letters.sort((a, b) => b.sentAt.getTime() - a.sentAt.getTime());
+          this.displayedLetters = this.letterList.slice(0, this.pageSize);
+        }
+      });*/
+
+    this.subscriptions.push(
+      this.store.select(selectInboxLetterList).subscribe((letterList) => {
+        if (letterList) {
+          this.letterList = [...letterList]; // Create a copy of letterList
+          this.letterList = this.letterList.sort((a, b) => b.sentAt.getTime() - a.sentAt.getTime());
+          this.displayedLetters = this.letterList.slice(0, this.pageSize);
+        }
+      })
+    );
+
+    this.subscriptions.push(
+      this.store.select(selectSentLetterList).subscribe((letterList) => {
+        if (letterList) {
+          this.letterList = [...letterList]; // Create a copy of letterList
+          this.letterList = this.letterList.sort((a, b) => b.sentAt.getTime() - a.sentAt.getTime());
+          this.displayedLetters = this.letterList.slice(0, this.pageSize);
+        }
+      })
+    );
+
+    this.authUserSubscription = this.store.select(selectAuthUser)
+      .subscribe((user) => {
+        if (user) {
+          this.userEmail = user.email;
+          this.emailService.getAvailableEmails(this.userEmail, this.pageName);
+          console.log(user.email)
+        }
       });
-    this.emailService.getAvailableEmails();
 
-    // Showing the first 10 letters from the letter list (paginator's pageSize is 10)
-    //if (this.letterList) {
-      //this.displayedLetters = this.letterList.slice(0, this.pageSize);
-    //}
-
-    // Subscribe to availableEmailsChanged subject to update the list
-    /*this.emailSubscription = this.emailService.availableEmailsChanged.subscribe(() => {
-      this.updateEmailList();
-    });*/
+    this.subscriptions.push(
+      this.store.select(selectLetterPage).subscribe((pageName) => {
+        this.pageName = pageName;
+        this.emailService.getAvailableEmails(this.userEmail, this.pageName);
+      })
+    );
   }
 
 
@@ -57,7 +93,7 @@ export class InboxLetterListComponent implements OnInit, OnDestroy {
   onOpenLetter(selectedLetter: TemplateRef<Letter>, letter: Letter) {
     this.currentLetter = letter;
 
-    if(!letter.isSeen) {
+    if (!letter.isSeen) {
       this.emailService.setEmailToSeen(letter.id);
     }
 
@@ -99,6 +135,13 @@ export class InboxLetterListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.emailSubscription?.unsubscribe();
+    this.authUserSubscription?.unsubscribe();
+
+    if (this.subscriptions) {
+      this.subscriptions.forEach((sub) => {
+        sub.unsubscribe();
+      })
+    }
     console.log('onD')
   }
 

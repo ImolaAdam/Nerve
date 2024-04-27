@@ -3,7 +3,7 @@
     <div class="col-3 d-flex align-items-center">Sent by: {{ letter.sentBy }}</div>
     <div class="col-5 d-flex align-items-center">{{ letter.header }}</div>
     <div class="col-3 d-flex align-items-center">{{ letter.sentAt | date:'yyyy/MM/dd HH:mm:ss' }}</div>
-    <div class="col-1 d-flex align-items-center" (click)="$event.stopPropagation()" ><i class="material-icons" (click)="onDeleteLetter(letter.id)">delete</i>
+    <div *ngIf="pageName == 'Inbox'" class="col-1 d-flex align-items-center" (click)="$event.stopPropagation()" ><i class="material-icons" (click)="onDeleteLetter(letter.id)">delete</i>
     </div>
   </div>
 
