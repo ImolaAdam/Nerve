@@ -92,8 +92,10 @@ export class InboxLetterListComponent implements OnInit, OnDestroy {
   // Opening the letter in a modal
   onOpenLetter(selectedLetter: TemplateRef<Letter>, letter: Letter) {
     this.currentLetter = letter;
+    console.log((!letter.isSeen))
+    console.log((this.pageName != 'Sent'))
 
-    if (!letter.isSeen) {
+    if ((!letter.isSeen) && (this.pageName != 'Sent')) {
       this.emailService.setEmailToSeen(letter.id);
     }
 
