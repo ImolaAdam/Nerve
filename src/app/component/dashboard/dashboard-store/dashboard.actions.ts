@@ -1,13 +1,26 @@
 import { createAction, props } from '@ngrx/store';
+import { Goal } from 'src/app/shared/models/goal.model';
 import { Letter } from 'src/app/shared/models/letter.model';
 
+// Dashboard
 export const setDashboardMenu = createAction('[Dashboard] Set Dashboard Menu', props<{ menuName: string }>());
 export const dashboardMenuSet = createAction('[Dashboard] Dashboard Menu Is Set');
 export const clearDashboardState = createAction('[Dashboard] Clear State');
 
+// Emails
 export const setLetterPage = createAction('[Dashboard] Set Letter Page', props<{ pageName: string }>());
 export const setInboxLetterList = createAction('[Dashboard] Set Inbox Letter List', props<{ letterList: Letter[] }>());
 export const setSentLetterList = createAction('[Dashboard] Set Sent Letter List', props<{ letterList: Letter[] }>());
-
 export const inboxLetterListSet = createAction('[Dashboard] Inbox Letter List Is Set');
 export const sentLetterListSet = createAction('[Dashboard] Sent Letter List Is Set');
+
+// Goals
+export const setDailyGoals = createAction('[Dashboard] Set Daily Goals', props<{ dailyGoals: Goal[] }>());
+export const setWeeklyGoals = createAction('[Dashboard] Set Weekly Goals', props<{ weeklyGoals: Goal[] }>());
+export const setMonthlyGoals = createAction('[Dashboard] Set Monthly Goals', props<{ monthlyGoals: Goal[] }>());
+export const setYearlyGoals = createAction('[Dashboard] Set Yearly Goals', props<{ yearlyGoals: Goal[] }>());
+
+export const dailyGoalsSet = createAction('[Dashboard] Daily Goals Are Set');
+export const weeklyGoalsSet = createAction('[Dashboard] Weekly Goals Are Set');
+export const monthlyGoalsSet = createAction('[Dashboard] Monthly Goals Are Set');
+export const yearlyGoalsSet = createAction('[Dashboard] Yearly Goals Are Set');

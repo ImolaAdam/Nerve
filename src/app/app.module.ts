@@ -25,6 +25,7 @@ import { environment } from 'src/environments/environment';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore/'; 
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { APP_STATE_NAME, appReducer } from './store/app.reducer';
+import { GoalService } from './component/dashboard/services/goal.service';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { APP_STATE_NAME, appReducer } from './store/app.reducer';
   providers: [
     AuthService,
     EmailService,
-    FriendService
+    FriendService,
+    GoalService
   ],
   bootstrap: [AppComponent]
 })

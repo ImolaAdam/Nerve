@@ -5,5 +5,7 @@
     </button>
     <div>Nerve | LOGO</div>
   </div>
-  <div>{{ userName }}</div>
+  <div class="username" *ngIf="!!userName">
+    <p>{{ userName }}</p>
+  </div>
 </div>

@@ -1,6 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import * as DashboardActions from './dashboard.actions'
 import { Letter } from 'src/app/shared/models/letter.model';
+import { Goal } from 'src/app/shared/models/goal.model';
 
 export const DASHBOARD_STATE_NAME = 'dashboard';
 
@@ -12,6 +13,12 @@ export interface DashboardState {
     inbox: Letter[],
     sent: Letter[]
   };
+  goals: {
+    dailyGoals: Goal[],
+    weeklyGoals: Goal[],
+    monthlyGoals: Goal[],
+    yearlyGoals: Goal[]
+  };
 }
 
 export const initialDashboardState: DashboardState = {
@@ -21,6 +28,12 @@ export const initialDashboardState: DashboardState = {
     pageName: 'Inbox',
     inbox: [],
     sent: []
+  },
+  goals: {
+    dailyGoals: [],
+    weeklyGoals: [],
+    monthlyGoals: [],
+    yearlyGoals: []
   }
 };
 
@@ -59,7 +72,47 @@ export const dashboardReducer = createReducer(
       }
     }
   }),
-  on(DashboardActions.inboxLetterListSet, DashboardActions.sentLetterListSet, (state) => {
+  on(DashboardActions.setDailyGoals, (state, { dailyGoals }) => {
+    return {
+      ...state,
+      goals: {
+        ...state.goals,
+        dailyGoals
+      }
+    }
+  }),
+  on(DashboardActions.setWeeklyGoals, (state, { weeklyGoals }) => {
+    return {
+      ...state,
+      goals: {
+        ...state.goals,
+        weeklyGoals
+      }
+    }
+  }),
+  on(DashboardActions.setMonthlyGoals, (state, { monthlyGoals }) => {
+    return {
+      ...state,
+      goals: {
+        ...state.goals,
+        monthlyGoals
+      }
+    }
+  }),
+  on(DashboardActions.setYearlyGoals, (state, { yearlyGoals }) => {
+    return {
+      ...state,
+      goals: {
+        ...state.goals,
+        yearlyGoals
+      }
+    }
+  }),
+  on(
+    DashboardActions.inboxLetterListSet, DashboardActions.sentLetterListSet,
+    DashboardActions.dailyGoalsSet, DashboardActions.weeklyGoalsSet,
+    DashboardActions.monthlyGoalsSet, DashboardActions.yearlyGoalsSet,
+    (state) => {
     return {
       ...state
     }

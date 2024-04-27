@@ -13,6 +13,12 @@
         </div>
       </div>
 
+      <div *ngIf="yearlyEditingMode" class="example-button-container">
+        <button mat-mini-fab color="primary" matTooltip="Add new goal">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+
       <mat-progress-spinner class="example-margin" [color]="spinnerColor" [mode]="spinnerMode"
         [value]="spinnerYearlyValue" style="width: 10em; height: 8em;">
       </mat-progress-spinner>
@@ -22,8 +28,7 @@
       <mat-list role="list">
 
         <mat-list-item *ngFor="let yearlyGoal of yearlyTodoList" role="listitem" class="task-list-item">
-          <div *ngIf="!yearlyEditingMode" class="item-content">{{ yearlyGoal.name }}</div>
-          <input *ngIf="yearlyEditingMode" [(ngModel)]="yearlyGoal.name" class="item-content-input" />
+          <div class="item-content">{{ yearlyGoal.description }}</div>
 
           <mat-chip-list>
             <mat-chip *ngIf="yearlyGoal.isCompleted && !yearlyEditingMode">Completed</mat-chip>
@@ -35,9 +40,8 @@
       </mat-list>
     </mat-card-content>
     <mat-card-actions>
-      <button *ngIf="yearlyEditingMode" mat-button>Add</button>
       <button *ngIf="!yearlyEditingMode" mat-button (click)="onEditListItem('yearly')">Edit</button>
-      <button *ngIf="yearlyEditingMode" mat-button>Save</button>
+      <button *ngIf="yearlyEditingMode" mat-button (click)="onSaveGoal(yearlyTodoList)">Save</button>
       <button *ngIf="yearlyEditingMode" mat-button (click)="onEditListItem('yearly')">Cancel</button>
     </mat-card-actions>
   </mat-card>
@@ -52,6 +56,12 @@
         </div>
       </div>
 
+      <div *ngIf="monthlyEditingMode" class="example-button-container">
+        <button mat-mini-fab color="primary" matTooltip="Add new goal">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+
       <mat-progress-spinner class="example-margin" [color]="spinnerColor" [mode]="spinnerMode"
         [value]="spinnerMonthlyValue" style="width: 10em; height: 8em;">
       </mat-progress-spinner>
@@ -60,8 +70,8 @@
     <mat-card-content>
       <mat-list role="list">
         <mat-list-item *ngFor="let monthlyGoal of monthlyTodoList" role="listitem" class="task-list-item">
-          <div *ngIf="!monthlyEditingMode" class="item-content">{{ monthlyGoal.name }}</div>
-          <input *ngIf="monthlyEditingMode" [(ngModel)]="monthlyGoal.name" class="item-content-input" />
+          <div *ngIf="!monthlyEditingMode" class="item-content">{{ monthlyGoal.description }}</div>
+          <input *ngIf="monthlyEditingMode" [(ngModel)]="monthlyGoal.description" class="item-content-input" />
 
           <mat-chip-list>
             <mat-chip *ngIf="monthlyGoal.isCompleted && !monthlyEditingMode">Completed</mat-chip>
@@ -89,6 +99,12 @@
           <mat-card-subtitle>Maximum 2 goals</mat-card-subtitle>
         </div>
       </div>
+      
+      <div *ngIf="weeklyEditingMode" class="example-button-container">
+        <button mat-mini-fab color="primary" matTooltip="Add new goal">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
 
       <mat-progress-spinner class="example-margin" [color]="spinnerColor" [mode]="spinnerMode"
         [value]="spinnerWeeklyValue" style="width: 10em; height: 8em;">
@@ -97,8 +113,8 @@
     <mat-card-content>
       <mat-list role="list">
         <mat-list-item *ngFor="let weeklyGoal of weeklyTodoList" role="listitem" class="task-list-item">
-          <div *ngIf="!weeklyEditingMode" class="item-content">{{ weeklyGoal.name }}</div>
-          <input *ngIf="weeklyEditingMode" [(ngModel)]="weeklyGoal.name" class="item-content-input" />
+          <div *ngIf="!weeklyEditingMode" class="item-content">{{ weeklyGoal.description }}</div>
+          <input *ngIf="weeklyEditingMode" [(ngModel)]="weeklyGoal.description" class="item-content-input" />
 
           <mat-chip-list>
             <mat-chip *ngIf="weeklyGoal.isCompleted && !weeklyEditingMode">Completed</mat-chip>
@@ -128,6 +144,12 @@
         </div>
       </div>
 
+      <div *ngIf="dailyEditingMode" class="example-button-container">
+        <button mat-mini-fab color="primary" matTooltip="Add new goal">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+
       <mat-progress-spinner class="example-margin" [color]="spinnerColor" [mode]="spinnerMode"
         [value]="spinnerDailyValue" style="width: 10em; height: 8em;">
       </mat-progress-spinner>
@@ -135,8 +157,8 @@
     <mat-card-content>
       <mat-list role="list">
         <mat-list-item *ngFor="let dailyGoal of dailyTodoList" role="listitem" class="task-list-item">
-          <div *ngIf="!dailyEditingMode" class="item-content">{{ dailyGoal.name }}</div>
-          <input *ngIf="dailyEditingMode" [(ngModel)]="dailyGoal.name" class="item-content-input" />
+          <div *ngIf="!dailyEditingMode" class="item-content">{{ dailyGoal.description }}</div>
+          <input *ngIf="dailyEditingMode" [(ngModel)]="dailyGoal.description" class="item-content-input" />
 
           <mat-chip-list>
             <mat-chip *ngIf="dailyGoal.isCompleted && !dailyEditingMode">Completed</mat-chip>

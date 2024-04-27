@@ -1,5 +1,7 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
+import { selectAuthUser } from 'src/app/component/authentication/auth-store/auth.selectors';
 import { AuthService } from 'src/app/component/authentication/auth.service';
 
 @Component({
@@ -11,17 +13,21 @@ export class DashboardHeaderComponent implements OnInit, OnDestroy {
   @Output() onCloseSidebar = new EventEmitter<void>();
   userName = '';
   isAuth = false;
-  authSubs: Subscription | null = null;
+  subscriptions: Subscription[] = [];
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private store: Store
   ) { }
 
   ngOnInit() {
-    this.authSubs = this.authService.authChange.subscribe(authStatus => {
-      this.isAuth = authStatus;
-      this.userName = 'molly';
-    });
+    this.subscriptions.push(
+      this.store.select(selectAuthUser).subscribe( (user) => {
+        if(user) {
+          this.userName = user.userName;
+        }
+      })
+    );
   }
 
   onSidenavToggle() {
@@ -29,7 +35,11 @@ export class DashboardHeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.authSubs?.unsubscribe();
+    if(this.subscriptions) {
+      this.subscriptions.forEach(s => {
+        s.unsubscribe();
+      })
+    }
   }
 
 }
