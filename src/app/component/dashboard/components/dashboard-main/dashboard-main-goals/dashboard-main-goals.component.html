@@ -3,8 +3,9 @@
     <h3>My goals in 2023</h3>
   </div>
 
+
   <mat-card class="example-card">
-    <mat-card-header class="header-container">
+    <mat-card-header class="header-container mb-2">
       <div class="header-content d-flex flex-row">
         <img mat-card-avatar src="././././assets/images/goal.png" alt="Goal avatar" class="goal-avatar">
         <div class="title-subtitle">
@@ -14,7 +15,7 @@
       </div>
 
       <div *ngIf="yearlyEditingMode" class="example-button-container">
-        <button mat-mini-fab color="primary" matTooltip="Add new goal">
+        <button (click)="onAddItem()" mat-mini-fab color="primary" matTooltip="Add new goal">
           <mat-icon>add</mat-icon>
         </button>
       </div>
@@ -34,9 +35,27 @@
             <mat-chip *ngIf="yearlyGoal.isCompleted && !yearlyEditingMode">Completed</mat-chip>
             <mat-chip *ngIf="yearlyGoal.isCompleted && yearlyEditingMode">Uncomplete</mat-chip>
             <mat-chip *ngIf="!yearlyGoal.isCompleted && yearlyEditingMode">Complete</mat-chip>
-            <mat-chip class="delete-chip" *ngIf="yearlyEditingMode" (click)="onDeleteGoal('yearly', yearlyGoal)">Delete</mat-chip>
+            <mat-chip class="delete-chip" *ngIf="yearlyEditingMode"
+              (click)="onDeleteGoal('yearly', yearlyGoal)">Delete</mat-chip>
           </mat-chip-list>
         </mat-list-item>
+
+        <div [formGroup]="form">
+          <div formArrayName="items">
+            <div *ngFor="let goal of newYearlyGoals.controls; let i = index" [formGroupName]="i" class="d-flex">
+              <input matInput placeholder="Description" formControlName="description" type="text" class="description">
+              <mat-form-field class="new-goal">
+                <input matInput [matDatepicker]="picker" placeholder="Start date" formControlName="startDate"
+                  required>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-hint>MM/DD/YYYY</mat-hint>
+              </mat-form-field>
+              <mat-chip (click)="onDeleteFormItem(i)" class="mt-2">Delete</mat-chip>
+            </div>
+          </div>
+        </div>
+
       </mat-list>
     </mat-card-content>
     <mat-card-actions>
@@ -77,7 +96,8 @@
             <mat-chip *ngIf="monthlyGoal.isCompleted && !monthlyEditingMode">Completed</mat-chip>
             <mat-chip *ngIf="monthlyGoal.isCompleted && monthlyEditingMode">Uncomplete</mat-chip>
             <mat-chip *ngIf="!monthlyGoal.isCompleted && monthlyEditingMode">Complete</mat-chip>
-            <mat-chip class="delete-chip" *ngIf="monthlyEditingMode" (click)="onDeleteGoal('monthly', monthlyGoal)">Delete</mat-chip>
+            <mat-chip class="delete-chip" *ngIf="monthlyEditingMode"
+              (click)="onDeleteGoal('monthly', monthlyGoal)">Delete</mat-chip>
           </mat-chip-list>
         </mat-list-item>
       </mat-list>
@@ -99,7 +119,7 @@
           <mat-card-subtitle>Maximum 2 goals</mat-card-subtitle>
         </div>
       </div>
-      
+
       <div *ngIf="weeklyEditingMode" class="example-button-container">
         <button mat-mini-fab color="primary" matTooltip="Add new goal">
           <mat-icon>add</mat-icon>
@@ -120,7 +140,8 @@
             <mat-chip *ngIf="weeklyGoal.isCompleted && !weeklyEditingMode">Completed</mat-chip>
             <mat-chip *ngIf="weeklyGoal.isCompleted && weeklyEditingMode">Uncomplete</mat-chip>
             <mat-chip *ngIf="!weeklyGoal.isCompleted && weeklyEditingMode">Complete</mat-chip>
-            <mat-chip class="delete-chip" *ngIf="weeklyEditingMode" (click)="onDeleteGoal('weekly', weeklyGoal)">Delete</mat-chip>
+            <mat-chip class="delete-chip" *ngIf="weeklyEditingMode"
+              (click)="onDeleteGoal('weekly', weeklyGoal)">Delete</mat-chip>
           </mat-chip-list>
         </mat-list-item>
       </mat-list>
@@ -164,7 +185,8 @@
             <mat-chip *ngIf="dailyGoal.isCompleted && !dailyEditingMode">Completed</mat-chip>
             <mat-chip *ngIf="dailyGoal.isCompleted && dailyEditingMode">Uncomplete</mat-chip>
             <mat-chip *ngIf="!dailyGoal.isCompleted && dailyEditingMode">Complete</mat-chip>
-            <mat-chip class="delete-chip" *ngIf="dailyEditingMode" (click)="onDeleteGoal('daily', dailyGoal)">Delete</mat-chip>
+            <mat-chip class="delete-chip" *ngIf="dailyEditingMode"
+              (click)="onDeleteGoal('daily', dailyGoal)">Delete</mat-chip>
           </mat-chip-list>
         </mat-list-item>
       </mat-list>

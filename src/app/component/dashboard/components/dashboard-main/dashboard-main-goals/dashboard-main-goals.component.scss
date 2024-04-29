@@ -22,18 +22,13 @@
 
 :host ::ng-deep mat-card-header {
   flex-shrink: 0;
-  /* Prevent the header from shrinking */
 }
 
 :host ::ng-deep mat-card-content {
   flex-grow: 1;
-  /* Allow the content to grow and take up the available space */
   overflow: auto;
-  /* Enable scrolling for the content */
   scrollbar-width: thin;
-  /* Adjust the width of the scrollbar (for Firefox) */
   scrollbar-color: transparent transparent;
-  /* Set scrollbar color to transparent (for Firefox) */
 }
 
 :host ::ng-deep mat-card-content::-webkit-scrollbar {
@@ -92,18 +87,6 @@
   /* Allow the content to take up the available space */
 }
 
-.item-content-input {
-  border: none;
-  background-color: inherit;
-  flex-grow: 1;
-  cursor: pointer;
-  height: 100%;
-}
-
-.item-content-input:focus-visible {
-  outline: unset;
-}
-
 /*.mat-chip.mat-standard-chip*/
 .delete-chip {
   background-color: #ffc1c1;
@@ -116,4 +99,12 @@
 
 .delete-chip:focus {
   background-color: #ff7575;
+}
+
+.new-goal {
+  width: 10rem;
+}
+
+.description {
+  width: 25rem;
 }

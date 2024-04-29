@@ -14,11 +14,14 @@ import { InboxLetterListComponent } from './components/dashboard-main/dashboard-
 import { DashboardMainGoalsComponent } from './components/dashboard-main/dashboard-main-goals/dashboard-main-goals.component';
 import { FriendsAddNewFriendComponent } from './components/dashboard-main/dashboard-main-friends/friends-add-new-friend/friends-add-new-friend.component';
 import { MaterialModule } from 'src/app/shared/material.module';
+import { ReactiveFormsModule } from '@angular/forms';
+
 
 @NgModule({
   imports: [
     SharedModule,
     MaterialModule,
+    ReactiveFormsModule
   ],
   declarations: [
     DashboardComponent,
@@ -40,6 +43,7 @@ import { MaterialModule } from 'src/app/shared/material.module';
     DashboardHeaderComponent,
     DashboardMainComponent,
     DashboardSidebarComponent,
+    ReactiveFormsModule
   ]
 })
 export class DashboardModule { }

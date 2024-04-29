@@ -4,33 +4,32 @@ import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { selectAuthUser } from 'src/app/component/authentication/auth-store/auth.selectors';
-import { TodoList } from 'src/app/shared/components/todo-list/todo-list.component';
 import { GoalService } from '../../../services/goal.service';
 import { selectDailyGoals, selectYearlyGoals } from '../../../dashboard-store/dashboard.selectors';
 import { Goal } from 'src/app/shared/models/goal.model';
+import { FormArray, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard-main-goals',
   templateUrl: './dashboard-main-goals.component.html',
-  styleUrls: ['./dashboard-main-goals.component.scss']
+  styleUrls: ['./dashboard-main-goals.component.scss'],
 })
 export class DashboardMainGoalsComponent implements OnInit, OnDestroy {
   dailyTodoList: Goal[] = [];
-
   weeklyTodoList: Goal[] = [];
-
   monthlyTodoList: Goal[] = [];
-
   yearlyTodoList: Goal[] = [];
+
+  form = this.fb.group({
+    items: this.fb.array([])
+  });
 
   subscriptions: Subscription[] = [];
   private authUserId: string = '';
   spinnerColor: ThemePalette = 'primary';
   spinnerMode: ProgressSpinnerMode = 'determinate';
-  originalGoalList: Goal[] = [];
 
   editedDescription: string = '';
-
 
   spinnerYearlyValue: number = 0;
   spinnerMonthlyValue: number = 0;
@@ -44,7 +43,8 @@ export class DashboardMainGoalsComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store,
-    private goalService: GoalService
+    private goalService: GoalService,
+    private fb: FormBuilder
   ) { }
 
   ngOnInit() {
@@ -80,6 +80,10 @@ export class DashboardMainGoalsComponent implements OnInit, OnDestroy {
     this.spinnerDailyValue = this.calculateSpinnerValue(this.dailyTodoList);
   }
 
+  get newYearlyGoals() {
+    return this.form.get('items') as FormArray;
+  }
+
   private calculateSpinnerValue(list: Goal[]): number {
     const completedTasks: number = list.filter(l => l.isCompleted === true).length;
     const percent: number = (completedTasks / (list.length)) * 100;
@@ -106,6 +110,23 @@ export class DashboardMainGoalsComponent implements OnInit, OnDestroy {
 
   onSaveGoal(goal: Goal[]) {
     console.log(goal)
+  }
+
+  onDeleteFormItem(index: number) {
+    this.newYearlyGoals.removeAt(index);
+  }
+
+  onAddItem() {
+    this.newYearlyGoals.push(
+      this.fb.group({
+        userId: this.authUserId,
+        goalType: 'Yearly',
+        startDate: Date,
+        endDate: null,
+        description: '',
+        isCompleted: false
+      })
+    )
   }
 
   onDeleteGoal(title: string, goal: Goal) {
