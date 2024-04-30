@@ -8,6 +8,7 @@ import { GoalService } from '../../../services/goal.service';
 import { selectDailyGoals, selectYearlyGoals } from '../../../dashboard-store/dashboard.selectors';
 import { Goal } from 'src/app/shared/models/goal.model';
 import { FormArray, FormBuilder } from '@angular/forms';
+import { NewGoal } from 'src/app/shared/models/new-goal.model';
 
 @Component({
   selector: 'app-dashboard-main-goals',
@@ -26,6 +27,7 @@ export class DashboardMainGoalsComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
   private authUserId: string = '';
+  
   spinnerColor: ThemePalette = 'primary';
   spinnerMode: ProgressSpinnerMode = 'determinate';
 
@@ -45,14 +47,17 @@ export class DashboardMainGoalsComponent implements OnInit, OnDestroy {
     private store: Store,
     private goalService: GoalService,
     private fb: FormBuilder
-  ) { }
+  ) {
+    this.form = this.fb.group({
+      items: this.fb.array([])
+    });
+  }
 
   ngOnInit() {
     this.subscriptions.push(
       this.store.select(selectAuthUser).subscribe((user) => {
-        if(user) {
+        if (user) {
           this.authUserId = user.userId;
-          console.log(this.authUserId)
           this.goalService.getGoals(this.authUserId);
         }
       })
@@ -60,24 +65,24 @@ export class DashboardMainGoalsComponent implements OnInit, OnDestroy {
 
     this.subscriptions.push(
       this.store.select(selectDailyGoals).subscribe((goals => {
-        if(goals) {
+        if (goals) {
           this.dailyTodoList = goals;
+          this.spinnerDailyValue = this.calculateSpinnerValue(this.dailyTodoList);
         }
       }))
     );
 
     this.subscriptions.push(
       this.store.select(selectYearlyGoals).subscribe((goals => {
-        if(goals) {
-          this.yearlyTodoList = goals.map(goal => ({ ...goal }));
+        if (goals) {
+          this.yearlyTodoList = goals;
+          this.spinnerYearlyValue = this.calculateSpinnerValue(this.yearlyTodoList);
         }
       }))
     );
 
-    this.spinnerYearlyValue = this.calculateSpinnerValue(this.yearlyTodoList);
     this.spinnerMonthlyValue = this.calculateSpinnerValue(this.monthlyTodoList);
     this.spinnerWeeklyValue = this.calculateSpinnerValue(this.weeklyTodoList);
-    this.spinnerDailyValue = this.calculateSpinnerValue(this.dailyTodoList);
   }
 
   get newYearlyGoals() {
@@ -108,8 +113,13 @@ export class DashboardMainGoalsComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSaveGoal(goal: Goal[]) {
-    console.log(goal)
+  onSaveGoal(goals: FormArray) {
+    goals.value.forEach((goal: NewGoal) => {
+      if (goal.description && goal.startDate) {
+        this.goalService.addNewGoal(goal);
+      }
+    });
+    this.newYearlyGoals.clear();
   }
 
   onDeleteFormItem(index: number) {
@@ -117,24 +127,24 @@ export class DashboardMainGoalsComponent implements OnInit, OnDestroy {
   }
 
   onAddItem() {
-    this.newYearlyGoals.push(
-      this.fb.group({
-        userId: this.authUserId,
-        goalType: 'Yearly',
-        startDate: Date,
-        endDate: null,
-        description: '',
-        isCompleted: false
-      })
-    )
+    const newGoalFormGroup = this.fb.group({
+      userId: [this.authUserId],
+      goalType: ['Yearly'],
+      startDate: [new Date()],
+      endDate: [null],
+      description: [''],
+      isCompleted: [false]
+    });
+  
+    this.newYearlyGoals.push(newGoalFormGroup);
   }
-
+  
   onDeleteGoal(title: string, goal: Goal) {
     console.log('delete')
   }
 
   ngOnDestroy(): void {
-    if(this.subscriptions) {
+    if (this.subscriptions) {
       this.subscriptions.forEach((sub) => {
         sub.unsubscribe();
       });

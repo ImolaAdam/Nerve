@@ -4,6 +4,7 @@ import { Store } from "@ngrx/store";
 import { Subscription, map } from "rxjs";
 import { Goal } from "src/app/shared/models/goal.model";
 import * as DashboardActions from "../dashboard-store/dashboard.actions";
+import { NewGoal } from "src/app/shared/models/new-goal.model";
 
 @Injectable()
 export class GoalService {
@@ -51,6 +52,10 @@ export class GoalService {
         this.store.dispatch(DashboardActions.setWeeklyGoals({ weeklyGoals }));
         this.store.dispatch(DashboardActions.setMonthlyGoals({ monthlyGoals }));
         this.store.dispatch(DashboardActions.setYearlyGoals({ yearlyGoals }));
+    }
+
+    addNewGoal(newGoal: NewGoal) {
+        this.db.collection('goals').add(newGoal);
     }
 
 }

@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="yearlyTodoList">
   <div class="mt-4 mb-4">
     <h3>My goals in 2023</h3>
   </div>
@@ -33,6 +33,7 @@
 
           <mat-chip-list>
             <mat-chip *ngIf="yearlyGoal.isCompleted && !yearlyEditingMode">Completed</mat-chip>
+            <mat-chip *ngIf="!yearlyGoal.isCompleted && !yearlyEditingMode">Uncompleted</mat-chip>
             <mat-chip *ngIf="yearlyGoal.isCompleted && yearlyEditingMode">Uncomplete</mat-chip>
             <mat-chip *ngIf="!yearlyGoal.isCompleted && yearlyEditingMode">Complete</mat-chip>
             <mat-chip class="delete-chip" *ngIf="yearlyEditingMode"
@@ -45,8 +46,7 @@
             <div *ngFor="let goal of newYearlyGoals.controls; let i = index" [formGroupName]="i" class="d-flex">
               <input matInput placeholder="Description" formControlName="description" type="text" class="description">
               <mat-form-field class="new-goal">
-                <input matInput [matDatepicker]="picker" placeholder="Start date" formControlName="startDate"
-                  required>
+                <input matInput [matDatepicker]="picker" placeholder="Start date" formControlName="startDate" required>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
                 <mat-hint>MM/DD/YYYY</mat-hint>
@@ -60,7 +60,7 @@
     </mat-card-content>
     <mat-card-actions>
       <button *ngIf="!yearlyEditingMode" mat-button (click)="onEditListItem('yearly')">Edit</button>
-      <button *ngIf="yearlyEditingMode" mat-button (click)="onSaveGoal(yearlyTodoList)">Save</button>
+      <button *ngIf="yearlyEditingMode" mat-button (click)="onSaveGoal(newYearlyGoals)">Save</button>
       <button *ngIf="yearlyEditingMode" mat-button (click)="onEditListItem('yearly')">Cancel</button>
     </mat-card-actions>
   </mat-card>
