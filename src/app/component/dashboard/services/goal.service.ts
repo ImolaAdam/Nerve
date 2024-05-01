@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, OnDestroy } from "@angular/core";
 import { AngularFirestore } from "@angular/fire/compat/firestore";
 import { Store } from "@ngrx/store";
 import { Subscription, map } from "rxjs";
@@ -7,7 +7,7 @@ import * as DashboardActions from "../dashboard-store/dashboard.actions";
 import { NewGoal } from "src/app/shared/models/new-goal.model";
 
 @Injectable()
-export class GoalService {
+export class GoalService implements OnDestroy {
     private fbSubs: Subscription[] = [];
 
     constructor(
@@ -56,6 +56,44 @@ export class GoalService {
 
     addNewGoal(newGoal: NewGoal) {
         this.db.collection('goals').add(newGoal);
+    }
+
+    onDeleteGoal(goalId: string) {
+        // Get the reference to the document
+        const docRef = this.db.collection('goals').doc(goalId);
+
+        // Delete the document
+        docRef.delete()
+            .then(() => {
+                console.log("Document successfully deleted!");
+            })
+            .catch((error) => {
+                // Todo: push error to store & window popup
+                console.error("Error removing document: ", error);
+            }
+            );
+    }
+
+    onUpdateGoal(goalId: string, value: boolean) {
+        const docRef = this.db.collection('goals').doc(goalId);
+
+        docRef.update({ isCompleted: value })
+            .then(() => {
+                console.log("Document successfully updated!");
+            })
+            .catch((error) => {
+                // Todo: push error to store & window popup
+                console.error("Error updating document: ", error);
+            }
+            );
+    }
+
+    ngOnDestroy(): void {
+        if (this.fbSubs) {
+            this.fbSubs.forEach((s) => {
+                s.unsubscribe();
+            })
+        }
     }
 
 }

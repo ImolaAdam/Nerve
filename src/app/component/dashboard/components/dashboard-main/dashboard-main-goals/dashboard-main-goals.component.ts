@@ -139,8 +139,14 @@ export class DashboardMainGoalsComponent implements OnInit, OnDestroy {
     this.newYearlyGoals.push(newGoalFormGroup);
   }
   
-  onDeleteGoal(title: string, goal: Goal) {
-    console.log('delete')
+  onDeleteGoal(id: string) {
+    this.goalService.onDeleteGoal(id);
+  }
+
+  onUpdateGoal(goalId: string, value: boolean) {
+    if(goalId) {
+      this.goalService.onUpdateGoal(goalId, value);
+    }
   }
 
   ngOnDestroy(): void {

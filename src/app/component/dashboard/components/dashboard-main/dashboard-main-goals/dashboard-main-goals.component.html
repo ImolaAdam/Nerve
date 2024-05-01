@@ -34,10 +34,12 @@
           <mat-chip-list>
             <mat-chip *ngIf="yearlyGoal.isCompleted && !yearlyEditingMode">Completed</mat-chip>
             <mat-chip *ngIf="!yearlyGoal.isCompleted && !yearlyEditingMode">Uncompleted</mat-chip>
-            <mat-chip *ngIf="yearlyGoal.isCompleted && yearlyEditingMode">Uncomplete</mat-chip>
-            <mat-chip *ngIf="!yearlyGoal.isCompleted && yearlyEditingMode">Complete</mat-chip>
+            <mat-chip *ngIf="yearlyGoal.isCompleted && yearlyEditingMode"
+              (click)="onUpdateGoal(yearlyGoal.id, false)">Uncomplete</mat-chip>
+            <mat-chip *ngIf="!yearlyGoal.isCompleted && yearlyEditingMode"
+              (click)="onUpdateGoal(yearlyGoal.id, true)">Complete</mat-chip>
             <mat-chip class="delete-chip" *ngIf="yearlyEditingMode"
-              (click)="onDeleteGoal('yearly', yearlyGoal)">Delete</mat-chip>
+              (click)="onDeleteGoal(yearlyGoal.id)">Delete</mat-chip>
           </mat-chip-list>
         </mat-list-item>
 
@@ -97,7 +99,7 @@
             <mat-chip *ngIf="monthlyGoal.isCompleted && monthlyEditingMode">Uncomplete</mat-chip>
             <mat-chip *ngIf="!monthlyGoal.isCompleted && monthlyEditingMode">Complete</mat-chip>
             <mat-chip class="delete-chip" *ngIf="monthlyEditingMode"
-              (click)="onDeleteGoal('monthly', monthlyGoal)">Delete</mat-chip>
+              (click)="onDeleteGoal(monthlyGoal.id)">Delete</mat-chip>
           </mat-chip-list>
         </mat-list-item>
       </mat-list>
@@ -141,7 +143,7 @@
             <mat-chip *ngIf="weeklyGoal.isCompleted && weeklyEditingMode">Uncomplete</mat-chip>
             <mat-chip *ngIf="!weeklyGoal.isCompleted && weeklyEditingMode">Complete</mat-chip>
             <mat-chip class="delete-chip" *ngIf="weeklyEditingMode"
-              (click)="onDeleteGoal('weekly', weeklyGoal)">Delete</mat-chip>
+              (click)="onDeleteGoal(weeklyGoal.id)">Delete</mat-chip>
           </mat-chip-list>
         </mat-list-item>
       </mat-list>
@@ -186,7 +188,7 @@
             <mat-chip *ngIf="dailyGoal.isCompleted && dailyEditingMode">Uncomplete</mat-chip>
             <mat-chip *ngIf="!dailyGoal.isCompleted && dailyEditingMode">Complete</mat-chip>
             <mat-chip class="delete-chip" *ngIf="dailyEditingMode"
-              (click)="onDeleteGoal('daily', dailyGoal)">Delete</mat-chip>
+              (click)="onDeleteGoal(dailyGoal.id)">Delete</mat-chip>
           </mat-chip-list>
         </mat-list-item>
       </mat-list>
