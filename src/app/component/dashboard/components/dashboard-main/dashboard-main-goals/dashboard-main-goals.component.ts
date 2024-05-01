@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { selectAuthUser } from 'src/app/component/authentication/auth-store/auth.selectors';
 import { GoalService } from '../../../services/goal.service';
-import { selectDailyGoals, selectYearlyGoals } from '../../../dashboard-store/dashboard.selectors';
+import { selectDailyGoals, selectMonthlyGoals, selectWeeklyGoals, selectYearlyGoals } from '../../../dashboard-store/dashboard.selectors';
 import { Goal } from 'src/app/shared/models/goal.model';
 import { FormArray, FormBuilder } from '@angular/forms';
 import { NewGoal } from 'src/app/shared/models/new-goal.model';
@@ -21,13 +21,25 @@ export class DashboardMainGoalsComponent implements OnInit, OnDestroy {
   monthlyTodoList: Goal[] = [];
   yearlyTodoList: Goal[] = [];
 
-  form = this.fb.group({
+  yearlyForm = this.fb.group({
+    items: this.fb.array([])
+  });
+
+  monthlyForm = this.fb.group({
+    items: this.fb.array([])
+  });
+
+  weeklyForm = this.fb.group({
+    items: this.fb.array([])
+  });
+
+  dailyForm = this.fb.group({
     items: this.fb.array([])
   });
 
   subscriptions: Subscription[] = [];
   private authUserId: string = '';
-  
+
   spinnerColor: ThemePalette = 'primary';
   spinnerMode: ProgressSpinnerMode = 'determinate';
 
@@ -48,7 +60,19 @@ export class DashboardMainGoalsComponent implements OnInit, OnDestroy {
     private goalService: GoalService,
     private fb: FormBuilder
   ) {
-    this.form = this.fb.group({
+    this.yearlyForm = this.fb.group({
+      items: this.fb.array([])
+    });
+
+    this.monthlyForm = this.fb.group({
+      items: this.fb.array([])
+    });
+
+    this.weeklyForm = this.fb.group({
+      items: this.fb.array([])
+    });
+
+    this.dailyForm = this.fb.group({
       items: this.fb.array([])
     });
   }
@@ -81,12 +105,36 @@ export class DashboardMainGoalsComponent implements OnInit, OnDestroy {
       }))
     );
 
-    this.spinnerMonthlyValue = this.calculateSpinnerValue(this.monthlyTodoList);
-    this.spinnerWeeklyValue = this.calculateSpinnerValue(this.weeklyTodoList);
+    this.subscriptions.push(
+      this.store.select(selectWeeklyGoals).subscribe((goals => {
+        if (goals) {
+          this.weeklyTodoList = goals;
+          this.spinnerWeeklyValue = this.calculateSpinnerValue(this.weeklyTodoList);
+        }
+      }))
+    );
+
+    this.subscriptions.push(
+      this.store.select(selectMonthlyGoals).subscribe((goals => {
+        if (goals) {
+          this.monthlyTodoList = goals;
+          this.spinnerMonthlyValue = this.calculateSpinnerValue(this.monthlyTodoList);
+        }
+      }))
+    );
   }
 
   get newYearlyGoals() {
-    return this.form.get('items') as FormArray;
+    return this.yearlyForm.get('items') as FormArray;
+  }
+  get newMonthlyGoals() {
+    return this.monthlyForm.get('items') as FormArray;
+  }
+  get newWeeklyGoals() {
+    return this.weeklyForm.get('items') as FormArray;
+  }
+  get newDailyGoals() {
+    return this.dailyForm.get('items') as FormArray;
   }
 
   private calculateSpinnerValue(list: Goal[]): number {
@@ -113,38 +161,80 @@ export class DashboardMainGoalsComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSaveGoal(goals: FormArray) {
+  onSaveGoal(goals: FormArray, goalType: string) {
     goals.value.forEach((goal: NewGoal) => {
       if (goal.description && goal.startDate) {
         this.goalService.addNewGoal(goal);
       }
     });
-    this.newYearlyGoals.clear();
+
+    console.log(goals.value[0].description)
+
+    switch (goalType) {
+      case 'Yearly':
+        this.newYearlyGoals.clear();
+        break;
+      case 'Monthly':
+        this.newMonthlyGoals.clear();
+        break;
+      case 'Weekly':
+        this.newWeeklyGoals.clear();
+        break;
+      case 'Daily':
+        this.newDailyGoals.clear();
+        break;
+    }
   }
 
-  onDeleteFormItem(index: number) {
-    this.newYearlyGoals.removeAt(index);
+  onDeleteFormItem(formyType: string, index: number) {
+    switch (formyType) {
+      case 'Yearly':
+        this.newYearlyGoals.removeAt(index);
+        break;
+      case 'Monthly':
+        this.newMonthlyGoals.removeAt(index);
+        break;
+      case 'Weekly':
+        this.newWeeklyGoals.removeAt(index);
+        break;
+      case 'Daily':
+        this.newDailyGoals.removeAt(index);
+        break;
+    }
   }
 
-  onAddItem() {
+  onAddItem(goalType: string) {
     const newGoalFormGroup = this.fb.group({
       userId: [this.authUserId],
-      goalType: ['Yearly'],
+      goalType: [goalType],
       startDate: [new Date()],
       endDate: [null],
       description: [''],
       isCompleted: [false]
     });
-  
-    this.newYearlyGoals.push(newGoalFormGroup);
+
+    switch (goalType) {
+      case 'Yearly':
+        this.newYearlyGoals.push(newGoalFormGroup);
+        break;
+      case 'Monthly':
+        this.newMonthlyGoals.push(newGoalFormGroup);
+        break;
+      case 'Weekly':
+        this.newWeeklyGoals.push(newGoalFormGroup);
+        break;
+      case 'Daily':
+        this.newDailyGoals.push(newGoalFormGroup);
+        break;
+    }
   }
-  
+
   onDeleteGoal(id: string) {
     this.goalService.onDeleteGoal(id);
   }
 
   onUpdateGoal(goalId: string, value: boolean) {
-    if(goalId) {
+    if (goalId) {
       this.goalService.onUpdateGoal(goalId, value);
     }
   }

@@ -55,7 +55,9 @@ export class GoalService implements OnDestroy {
     }
 
     addNewGoal(newGoal: NewGoal) {
-        this.db.collection('goals').add(newGoal);
+        if(newGoal.userId) {
+            this.db.collection('goals').add(newGoal);
+        }
     }
 
     onDeleteGoal(goalId: string) {

@@ -3,7 +3,6 @@
     <h3>My goals in 2023</h3>
   </div>
 
-
   <mat-card class="example-card">
     <mat-card-header class="header-container mb-2">
       <div class="header-content d-flex flex-row">
@@ -15,7 +14,7 @@
       </div>
 
       <div *ngIf="yearlyEditingMode" class="example-button-container">
-        <button (click)="onAddItem()" mat-mini-fab color="primary" matTooltip="Add new goal">
+        <button (click)="onAddItem('Yearly')" mat-mini-fab color="primary" matTooltip="Add new goal">
           <mat-icon>add</mat-icon>
         </button>
       </div>
@@ -27,6 +26,10 @@
 
     <mat-card-content>
       <mat-list role="list">
+
+        <mat-list-item *ngIf="!yearlyTodoList.length && !yearlyEditingMode">
+          <div>You currently have no yearly goals. Click on edit to add a new goal :)</div>
+        </mat-list-item>
 
         <mat-list-item *ngFor="let yearlyGoal of yearlyTodoList" role="listitem" class="task-list-item">
           <div class="item-content">{{ yearlyGoal.description }}</div>
@@ -43,7 +46,7 @@
           </mat-chip-list>
         </mat-list-item>
 
-        <div [formGroup]="form">
+        <div [formGroup]="yearlyForm">
           <div formArrayName="items">
             <div *ngFor="let goal of newYearlyGoals.controls; let i = index" [formGroupName]="i" class="d-flex">
               <input matInput placeholder="Description" formControlName="description" type="text" class="description">
@@ -53,7 +56,7 @@
                 <mat-datepicker #picker></mat-datepicker>
                 <mat-hint>MM/DD/YYYY</mat-hint>
               </mat-form-field>
-              <mat-chip (click)="onDeleteFormItem(i)" class="mt-2">Delete</mat-chip>
+              <mat-chip (click)="onDeleteFormItem('Yearly', i)" class="mt-2">Delete</mat-chip>
             </div>
           </div>
         </div>
@@ -62,7 +65,7 @@
     </mat-card-content>
     <mat-card-actions>
       <button *ngIf="!yearlyEditingMode" mat-button (click)="onEditListItem('yearly')">Edit</button>
-      <button *ngIf="yearlyEditingMode" mat-button (click)="onSaveGoal(newYearlyGoals)">Save</button>
+      <button *ngIf="yearlyEditingMode" mat-button (click)="onSaveGoal(newYearlyGoals, 'Yearly')">Save</button>
       <button *ngIf="yearlyEditingMode" mat-button (click)="onEditListItem('yearly')">Cancel</button>
     </mat-card-actions>
   </mat-card>
@@ -78,7 +81,7 @@
       </div>
 
       <div *ngIf="monthlyEditingMode" class="example-button-container">
-        <button mat-mini-fab color="primary" matTooltip="Add new goal">
+        <button (click)="onAddItem('Monthly')" mat-mini-fab color="primary" matTooltip="Add new goal">
           <mat-icon>add</mat-icon>
         </button>
       </div>
@@ -91,23 +94,42 @@
     <mat-card-content>
       <mat-list role="list">
         <mat-list-item *ngFor="let monthlyGoal of monthlyTodoList" role="listitem" class="task-list-item">
-          <div *ngIf="!monthlyEditingMode" class="item-content">{{ monthlyGoal.description }}</div>
-          <input *ngIf="monthlyEditingMode" [(ngModel)]="monthlyGoal.description" class="item-content-input" />
+          <div class="item-content">{{ monthlyGoal.description }}</div>
 
           <mat-chip-list>
             <mat-chip *ngIf="monthlyGoal.isCompleted && !monthlyEditingMode">Completed</mat-chip>
-            <mat-chip *ngIf="monthlyGoal.isCompleted && monthlyEditingMode">Uncomplete</mat-chip>
-            <mat-chip *ngIf="!monthlyGoal.isCompleted && monthlyEditingMode">Complete</mat-chip>
+            <mat-chip *ngIf="monthlyGoal.isCompleted && monthlyEditingMode"
+              (click)="onUpdateGoal(monthlyGoal.id, false)">Uncomplete</mat-chip>
+            <mat-chip *ngIf="!monthlyGoal.isCompleted && monthlyEditingMode"
+              (click)="onUpdateGoal(monthlyGoal.id, true)">Complete</mat-chip>
             <mat-chip class="delete-chip" *ngIf="monthlyEditingMode"
               (click)="onDeleteGoal(monthlyGoal.id)">Delete</mat-chip>
           </mat-chip-list>
         </mat-list-item>
+
+        <div [formGroup]="monthlyForm">
+          <div formArrayName="items">
+            <div *ngFor="let goal of newMonthlyGoals.controls; let i = index" [formGroupName]="i" class="d-flex">
+              <input matInput placeholder="Description" formControlName="description" type="text" class="description">
+              <mat-form-field class="new-goal">
+                <input matInput [matDatepicker]="picker" placeholder="Start date" formControlName="startDate" required>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-hint>MM/DD/YYYY</mat-hint>
+              </mat-form-field>
+              <mat-chip (click)="onDeleteFormItem('Monthly', i)" class="mt-2">Delete</mat-chip>
+            </div>
+          </div>
+        </div>
+
+        <mat-list-item *ngIf="!monthlyTodoList.length && !monthlyEditingMode">
+          <div>You currently have no monthly goals. Click on edit to add a new goal :)</div>
+        </mat-list-item>
       </mat-list>
     </mat-card-content>
     <mat-card-actions>
-      <button *ngIf="monthlyEditingMode" mat-button>Add</button>
       <button *ngIf="!monthlyEditingMode" mat-button (click)="onEditListItem('monthly')">Edit</button>
-      <button *ngIf="monthlyEditingMode" mat-button>Save</button>
+      <button *ngIf="monthlyEditingMode" mat-button (click)="onSaveGoal(newMonthlyGoals, 'Monthly')">Save</button>
       <button *ngIf="monthlyEditingMode" mat-button (click)="onEditListItem('monthly')">Cancel</button>
     </mat-card-actions>
   </mat-card>
@@ -123,7 +145,7 @@
       </div>
 
       <div *ngIf="weeklyEditingMode" class="example-button-container">
-        <button mat-mini-fab color="primary" matTooltip="Add new goal">
+        <button (click)="onAddItem('Weekly')" mat-mini-fab color="primary" matTooltip="Add new goal">
           <mat-icon>add</mat-icon>
         </button>
       </div>
@@ -134,25 +156,46 @@
     </mat-card-header>
     <mat-card-content>
       <mat-list role="list">
+
+        <mat-list-item *ngIf="!weeklyTodoList.length && !weeklyEditingMode">
+          <div>You currently have no weekly goals. Click on edit to add a new goal :)</div>
+        </mat-list-item>
+
         <mat-list-item *ngFor="let weeklyGoal of weeklyTodoList" role="listitem" class="task-list-item">
-          <div *ngIf="!weeklyEditingMode" class="item-content">{{ weeklyGoal.description }}</div>
-          <input *ngIf="weeklyEditingMode" [(ngModel)]="weeklyGoal.description" class="item-content-input" />
+          <div class="item-content">{{ weeklyGoal.description }}</div>
 
           <mat-chip-list>
             <mat-chip *ngIf="weeklyGoal.isCompleted && !weeklyEditingMode">Completed</mat-chip>
-            <mat-chip *ngIf="weeklyGoal.isCompleted && weeklyEditingMode">Uncomplete</mat-chip>
-            <mat-chip *ngIf="!weeklyGoal.isCompleted && weeklyEditingMode">Complete</mat-chip>
+            <mat-chip *ngIf="weeklyGoal.isCompleted && weeklyEditingMode"
+              (click)="onUpdateGoal(weeklyGoal.id, false)">Uncomplete</mat-chip>
+            <mat-chip *ngIf="!weeklyGoal.isCompleted && weeklyEditingMode"
+              (click)="onUpdateGoal(weeklyGoal.id, true)">Complete</mat-chip>
             <mat-chip class="delete-chip" *ngIf="weeklyEditingMode"
               (click)="onDeleteGoal(weeklyGoal.id)">Delete</mat-chip>
           </mat-chip-list>
+
         </mat-list-item>
+
+        <div [formGroup]="weeklyForm">
+          <div formArrayName="items">
+            <div *ngFor="let goal of newWeeklyGoals.controls; let i = index" [formGroupName]="i" class="d-flex">
+              <input matInput placeholder="Description" formControlName="description" type="text" class="description">
+              <mat-form-field class="new-goal">
+                <input matInput [matDatepicker]="picker" placeholder="Start date" formControlName="startDate" required>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-hint>MM/DD/YYYY</mat-hint>
+              </mat-form-field>
+              <mat-chip (click)="onDeleteFormItem('Weekly', i)" class="mt-2">Delete</mat-chip>
+            </div>
+          </div>
+        </div>
       </mat-list>
 
     </mat-card-content>
     <mat-card-actions>
-      <button *ngIf="weeklyEditingMode" mat-button>Add</button>
       <button *ngIf="!weeklyEditingMode" mat-button (click)="onEditListItem('weekly')">Edit</button>
-      <button *ngIf="weeklyEditingMode" mat-button>Save</button>
+      <button *ngIf="weeklyEditingMode" mat-button (click)="onSaveGoal(newWeeklyGoals, 'Weekly')">Save</button>
       <button *ngIf="weeklyEditingMode" mat-button (click)="onEditListItem('weekly')">Cancel</button>
     </mat-card-actions>
   </mat-card>
@@ -168,7 +211,7 @@
       </div>
 
       <div *ngIf="dailyEditingMode" class="example-button-container">
-        <button mat-mini-fab color="primary" matTooltip="Add new goal">
+        <button (click)="onAddItem('Daily')" mat-mini-fab color="primary" matTooltip="Add new goal">
           <mat-icon>add</mat-icon>
         </button>
       </div>
@@ -179,28 +222,48 @@
     </mat-card-header>
     <mat-card-content>
       <mat-list role="list">
+
+        <mat-list-item *ngIf="!dailyTodoList.length && !dailyEditingMode">
+          <div>You currently have no weekly goals. Click on edit to add a new goal :)</div>
+        </mat-list-item>
+
         <mat-list-item *ngFor="let dailyGoal of dailyTodoList" role="listitem" class="task-list-item">
-          <div *ngIf="!dailyEditingMode" class="item-content">{{ dailyGoal.description }}</div>
-          <input *ngIf="dailyEditingMode" [(ngModel)]="dailyGoal.description" class="item-content-input" />
+          <div class="item-content">{{ dailyGoal.description }}</div>
 
           <mat-chip-list>
             <mat-chip *ngIf="dailyGoal.isCompleted && !dailyEditingMode">Completed</mat-chip>
-            <mat-chip *ngIf="dailyGoal.isCompleted && dailyEditingMode">Uncomplete</mat-chip>
-            <mat-chip *ngIf="!dailyGoal.isCompleted && dailyEditingMode">Complete</mat-chip>
+            <mat-chip *ngIf="dailyGoal.isCompleted && dailyEditingMode"
+              (click)="onUpdateGoal(dailyGoal.id, false)">Uncomplete</mat-chip>
+            <mat-chip *ngIf="!dailyGoal.isCompleted && dailyEditingMode"
+              (click)="onUpdateGoal(dailyGoal.id, true)">Complete</mat-chip>
             <mat-chip class="delete-chip" *ngIf="dailyEditingMode"
               (click)="onDeleteGoal(dailyGoal.id)">Delete</mat-chip>
           </mat-chip-list>
+
         </mat-list-item>
+
+        <div [formGroup]="dailyForm">
+          <div formArrayName="items">
+            <div *ngFor="let goal of newDailyGoals.controls; let i = index" [formGroupName]="i" class="d-flex">
+              <input matInput placeholder="Description" formControlName="description" type="text" class="description">
+              <mat-form-field class="new-goal">
+                <input matInput [matDatepicker]="picker" placeholder="Start date" formControlName="startDate" required>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-hint>MM/DD/YYYY</mat-hint>
+              </mat-form-field>
+              <mat-chip (click)="onDeleteFormItem('Daily',i)" class="mt-2">Delete</mat-chip>
+            </div>
+          </div>
+        </div>
       </mat-list>
     </mat-card-content>
     <mat-card-actions>
-      <button *ngIf="dailyEditingMode" class="btn btn-primary">Add</button>
       <button *ngIf="!dailyEditingMode" mat-button (click)="onEditListItem('daily')">Edit</button>
-      <button *ngIf="dailyEditingMode" mat-button>Save</button>
+      <button *ngIf="dailyEditingMode" mat-button (click)="onSaveGoal(newDailyGoals, 'Daily')">Save</button>
       <button *ngIf="dailyEditingMode" mat-button (click)="onEditListItem('daily')">Cancel</button>
 
     </mat-card-actions>
   </mat-card>
-
 
 </div>
