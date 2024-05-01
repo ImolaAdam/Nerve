@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from 'src/app/component/authentication/auth.service';
-import { UserRank } from 'src/app/shared/enums/user-rank.enum';
 import { User } from 'src/app/shared/models/user.model';
 
 @Component({

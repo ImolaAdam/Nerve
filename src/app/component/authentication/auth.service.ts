@@ -10,6 +10,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { UserDto } from 'src/app/shared/dto/userDto';
 import { EmailService } from '../dashboard/services/email.service';
 import { Timestamp } from 'firebase/firestore';
+import { SnackBarService } from 'src/app/shared/services/snackBar.service';
 
 @Injectable()
 export class AuthService implements OnDestroy {
@@ -23,7 +24,8 @@ export class AuthService implements OnDestroy {
     private router: Router,
     private store: Store,
     private db: AngularFirestore,
-    private emailService: EmailService
+    private emailService: EmailService,
+    private snackBarService: SnackBarService
   ) { }
 
   initAuthListener() {
@@ -118,12 +120,30 @@ export class AuthService implements OnDestroy {
       docRef.update({ userName: newUserName, birthday: newBirthday })
         .then(() => {
           this.getUser(email);
+          this.snackBarService.openSnackBar('Profile updated successfully');
         })
         .catch((error) => {
           // Todo: push error to store & window popup
-          console.error("Error updating document: ", error);
+          this.snackBarService.openSnackBar('Something went wrong');
         }
         );
+    }
+  }
+
+  async onChangeUserPassword(newPassword: string, userId: string) {
+    try {
+      const user = await this.fireAuth.currentUser;
+
+      // Check if newPassword and userId are provided
+      if (userId && newPassword && user) {
+        await user.updatePassword(newPassword);
+        this.snackBarService.openSnackBar('Password changed successfully');
+      }
+
+    } catch (error) {
+      this.snackBarService.openSnackBar('Something went wrong');
+      // Handle error updating password
+      // For example, display error message to the user
     }
   }
 

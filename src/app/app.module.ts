@@ -26,6 +26,7 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore/';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { APP_STATE_NAME, appReducer } from './store/app.reducer';
 import { GoalService } from './component/dashboard/services/goal.service';
+import { SnackBarService } from './shared/services/snackBar.service';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { GoalService } from './component/dashboard/services/goal.service';
     AuthService,
     EmailService,
     FriendService,
-    GoalService
+    GoalService,
+    SnackBarService
   ],
   bootstrap: [AppComponent]
 })

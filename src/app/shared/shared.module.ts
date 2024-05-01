@@ -22,8 +22,8 @@ import { MaterialModule } from './material.module';
     CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory,
-    }),
-  ],
+    })
+    ],
   declarations: [
     TodoListComponent,
     GoalListComponent,

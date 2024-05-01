@@ -46,8 +46,9 @@ export class DashboardMainSettingsComponent implements OnInit, OnDestroy {
     this.authService.onUpdateUserData(this.authUserId, this.authUser.email, this.newUserName, this.newBirthday);
   }
 
-  onpasswordUpdate(_t41: NgForm) {
-    throw new Error('Method not implemented.');
+  onPasswordUpdate(f: NgForm) {
+    this.authService.onChangeUserPassword(f.value.password, this.authUserId);
+    f.resetForm();
   }
 
   ngOnDestroy(): void {
