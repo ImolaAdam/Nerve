@@ -1,5 +1,4 @@
-export interface Friend {
-    id: string
+export interface CreateFriendRequestDto {
     friendOf: string
     friendTo: string
     isAccepted: boolean

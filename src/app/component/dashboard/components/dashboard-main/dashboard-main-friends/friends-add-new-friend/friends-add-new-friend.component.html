@@ -14,9 +14,14 @@
       <mat-list-item *ngFor="let option of filteredOptions">
         <div class="friend-item mt-1">
           <img src="assets/images/duck_with_knife.jpg" alt="Profile Picture">
-          <div>
-            <div class="name" mat-line>{{ option.userName }}</div>
-            <div mat-line>{{ option.birthday }}</div>
+          <div class="d-flex profile">
+            <div>
+              <div class="name" mat-line>{{ option.userName }}</div>
+              <div mat-line>{{ option.birthday }}</div>
+            </div>
+            <mat-chip-list>
+              <mat-chip class="add-friend-chip" (click)="onSendFriendRequest(option.userId)">Add friend</mat-chip>
+            </mat-chip-list>
           </div>
         </div>
       </mat-list-item>

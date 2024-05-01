@@ -4,6 +4,7 @@ import { Store } from "@ngrx/store";
 import { Subject, Subscription, map } from "rxjs";
 import { Friend } from "src/app/shared/models/friend.model";
 import * as DashboardActions from "../dashboard-store/dashboard.actions";
+import { CreateFriendRequestDto } from "src/app/shared/dto/CreateFriendRequestDto";
 
 @Injectable()
 export class FriendService {
@@ -21,9 +22,8 @@ export class FriendService {
 
     }
 
-    sendFriendRequest(friendRequest: Friend) {
-        this.friendList.push(friendRequest);
-        this.friendListChanged.next();
+    onSendNewFriendRequest(friendRequest: CreateFriendRequestDto) {
+        console.log('hi')
 
     }
 

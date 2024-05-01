@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { selectAuthUser } from 'src/app/component/authentication/auth-store/auth.selectors';
 import { selectAllUsers } from 'src/app/component/dashboard/dashboard-store/dashboard.selectors';
 import { FriendService } from 'src/app/component/dashboard/services/friend.service';
+import { CreateFriendRequestDto } from 'src/app/shared/dto/CreateFriendRequestDto';
 import { UserDto } from 'src/app/shared/dto/userDto';
 
 @Component({
@@ -15,6 +16,7 @@ import { UserDto } from 'src/app/shared/dto/userDto';
 export class FriendsAddNewFriendComponent implements OnInit, OnDestroy {
   filter: string = '';
   private subscriptions: Subscription[] = [];
+  private authUserId: string = '';
   value = '';
 
   options: UserDto[] = [];
@@ -32,6 +34,7 @@ export class FriendsAddNewFriendComponent implements OnInit, OnDestroy {
       this.store.select(selectAuthUser).subscribe((authUser) => {
         if (authUser?.userId) {
           this.friendService.onGetAllUsers(authUser.userId);
+          this.authUserId = authUser.userId;
         }
       })
     );
@@ -79,6 +82,16 @@ export class FriendsAddNewFriendComponent implements OnInit, OnDestroy {
         birthday: formattedBirthday // Assign the formatted birthday
       };
     });
+  }
+
+  onSendFriendRequest(userId: string) {
+    let newFriendRequest: CreateFriendRequestDto = {
+      friendOf: this.authUserId,
+      friendTo: userId,
+      isAccepted: false
+    };
+
+    this.friendService.onSendNewFriendRequest(newFriendRequest);
   }
 
   ngOnDestroy(): void {
