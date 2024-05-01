@@ -9,6 +9,7 @@ import { Subject, Subscription } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { UserDto } from 'src/app/shared/dto/userDto';
 import { EmailService } from '../dashboard/services/email.service';
+import { Timestamp } from 'firebase/firestore';
 
 @Injectable()
 export class AuthService implements OnDestroy {
@@ -36,7 +37,7 @@ export class AuthService implements OnDestroy {
         this.emailService.cancelSubscriptions();
         this.isAuthenticated = false;
         this.authChange.next(false);
-        this.router.navigate(['/login']);
+        //this.router.navigate(['/login']);
       }
     });
   }
@@ -44,7 +45,13 @@ export class AuthService implements OnDestroy {
   registerUser(user: User) {
     this.fireAuth.createUserWithEmailAndPassword(user.email, user.password)
       .then(res => {
-        this.db.collection('users').add(user);
+        let newUser: UserDto = {
+          role: user.role,
+          email: user.email,
+          birthday: user.birthday,
+          userName: user.userName,
+        }
+        this.db.collection('users').add(newUser);
       })
       .catch(error => {
         console.log(error);
@@ -67,6 +74,7 @@ export class AuthService implements OnDestroy {
 
   logout() {
     this.fireAuth.signOut();
+    this.router.navigate(['/login']);
   }
 
   getUser(email: string) {
@@ -84,7 +92,7 @@ export class AuthService implements OnDestroy {
               // Access the data of the document
               let user: UserDto = {
                 userId: doc.id,
-                birthday: (doc.data() as any).birthday,
+                birthday: (doc.data() as any).birthday.toDate(),
                 email: (doc.data() as any).email,
                 role: (doc.data() as any).role,
                 userName: (doc.data() as any).userName
@@ -101,6 +109,22 @@ export class AuthService implements OnDestroy {
 
   isUserAuthenticated() {
     return this.isAuthenticated;
+  }
+
+  onUpdateUserData(userId: string, email: string, newUserName: string, newBirthday: Date | Timestamp) {
+    if (newUserName && newBirthday && userId) {
+      const docRef = this.db.collection('users').doc(userId);
+
+      docRef.update({ userName: newUserName, birthday: newBirthday })
+        .then(() => {
+          this.getUser(email);
+        })
+        .catch((error) => {
+          // Todo: push error to store & window popup
+          console.error("Error updating document: ", error);
+        }
+        );
+    }
   }
 
   ngOnDestroy() {

@@ -1,29 +1,60 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
+import { Store } from '@ngrx/store';
+import { Timestamp } from 'firebase/firestore';
+import { Subscription } from 'rxjs';
+import { selectAuthUser } from 'src/app/component/authentication/auth-store/auth.selectors';
+import { AuthService } from 'src/app/component/authentication/auth.service';
+import { UserDto } from 'src/app/shared/dto/userDto';
 
 @Component({
   selector: 'app-dashboard-main-settings',
   templateUrl: './dashboard-main-settings.component.html',
   styleUrls: ['./dashboard-main-settings.component.scss'],
 })
-export class DashboardMainSettingsComponent implements OnInit {
+export class DashboardMainSettingsComponent implements OnInit, OnDestroy {
+  model!: NgbDateStruct;
+  authUser!: UserDto;
+
+  newUserName: string = '';
+  newBirthday!: Date | Timestamp;
+
+  private subscriptions: Subscription[] = [];
+  private authUserId = '';
+
+  constructor(
+    private store: Store,
+    private authService: AuthService
+  ) { }
+
+  ngOnInit() {
+    this.subscriptions.push(
+      this.store.select(selectAuthUser).subscribe((authUser) => {
+        if(authUser?.userId) {
+          this.authUser = authUser;
+          this.newUserName = authUser.userName;
+          this.newBirthday = authUser.birthday;
+          this.authUserId = authUser.userId;
+          console.log(this.authUser)
+        }
+      })
+    );
+  }
+
+  onProfileUpdate(f: NgForm) {
+    this.authService.onUpdateUserData(this.authUserId, this.authUser.email, this.newUserName, this.newBirthday);
+  }
+
   onpasswordUpdate(_t41: NgForm) {
     throw new Error('Method not implemented.');
   }
-  model!: NgbDateStruct;
 
-  onProfileUpdate(_t7: NgForm) {
-    throw new Error('Method not implemented.');
+  ngOnDestroy(): void {
+    if (this.subscriptions) {
+      this.subscriptions.forEach((s) => {
+        s.unsubscribe();
+      });
+    }
   }
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
 }

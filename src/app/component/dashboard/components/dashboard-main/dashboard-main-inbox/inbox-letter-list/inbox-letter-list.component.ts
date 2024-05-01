@@ -39,14 +39,6 @@ export class InboxLetterListComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    /*this.emailSubscription = this.emailService.availableEmailsChanged
-      .subscribe((letters) => {
-        if(letters) {
-          this.letterList = letters.sort((a, b) => b.sentAt.getTime() - a.sentAt.getTime());
-          this.displayedLetters = this.letterList.slice(0, this.pageSize);
-        }
-      });*/
-
     this.subscriptions.push(
       this.store.select(selectInboxLetterList).subscribe((letterList) => {
         if (letterList) {
@@ -92,8 +84,6 @@ export class InboxLetterListComponent implements OnInit, OnDestroy {
   // Opening the letter in a modal
   onOpenLetter(selectedLetter: TemplateRef<Letter>, letter: Letter) {
     this.currentLetter = letter;
-    console.log((!letter.isSeen))
-    console.log((this.pageName != 'Sent'))
 
     if ((!letter.isSeen) && (this.pageName != 'Sent')) {
       this.emailService.setEmailToSeen(letter.id);

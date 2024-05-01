@@ -20,7 +20,7 @@ export class RegistrationComponent {
     let newUser: User = {
       email: form.value.email,
       password: form.value.password,
-      role: UserRank.Beginner,
+      role: 'Beginner',
       birthday: form.value.birthday,
       userName: form.value.userName
     };

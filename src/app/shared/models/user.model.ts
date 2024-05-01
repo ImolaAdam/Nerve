@@ -5,5 +5,5 @@ export interface User {
     password: string
     userName: string
     birthday: Date
-    role: UserRank
+    role: 'Beginner' | 'Medium' | 'Expert'
 }

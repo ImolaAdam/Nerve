@@ -80,7 +80,7 @@ export class DashboardMainGoalsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscriptions.push(
       this.store.select(selectAuthUser).subscribe((user) => {
-        if (user) {
+        if (user?.userId) {
           this.authUserId = user.userId;
           this.goalService.getGoals(this.authUserId);
         }
