@@ -1,14 +1,26 @@
-<div class="modal-header">
-  <h4 class="modal-title">Adding new friend</h4>
-  <button  mat-raised-button color="primary" type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
-</div>
-<div class="modal-body">
-  <p>Search for family- given names or usernames.</p>
-  <div class="search me-2">
-    <input type="text" placeholder="Search.." [(ngModel)]="filter" (input)="onSearchUser()">
-    <span><i class="fa fa-search"></i></span>
-</div>
-</div>
-<div class="modal-footer">
-  <button type="button"  mat-raised-button color="primary" (click)="activeModal.close('Close click')">Close</button>
+<div class="modal-header modal-height" *ngIf="options">
+  <h4 class="modal-title">Add new friend</h4>
+
+  <div class="modal-body">
+    <mat-form-field class="example-form-field">
+      <mat-label>Search for user</mat-label>
+      <input matInput type="text" [(ngModel)]="value" (input)="filterOptions()">
+      <button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="clearInput()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <ng-container>
+      <mat-list-item *ngFor="let option of filteredOptions">
+        <div class="friend-item mt-1">
+          <img src="assets/images/duck_with_knife.jpg" alt="Profile Picture">
+          <div>
+            <div class="name" mat-line>{{ option.userName }}</div>
+            <div mat-line>{{ option.birthday }}</div>
+          </div>
+        </div>
+      </mat-list-item>
+    </ng-container>
+  </div>
+
 </div>

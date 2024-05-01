@@ -1,32 +1,22 @@
 import { Injectable } from "@angular/core";
-import { Subject } from "rxjs";
+import { AngularFirestore } from "@angular/fire/compat/firestore";
+import { Store } from "@ngrx/store";
+import { Subject, Subscription, map } from "rxjs";
 import { Friend } from "src/app/shared/models/friend.model";
+import * as DashboardActions from "../dashboard-store/dashboard.actions";
 
 @Injectable()
 export class FriendService {
     friendListChanged = new Subject<void>();
-    friendList: Friend[] = [
-        { id: '1', friendOf: 'orosz_krem', from: new Date(2000, 2, 10), friendTo: 'orosz_krem', isAccepted: true },
-        { id: '12', friendOf: 'test', from: new Date(2020, 2, 5), friendTo: 'orosz_krem', isAccepted: false },
-        { id: '13', friendOf: 'orosz_krem', from: new Date(2020, 10, 15), friendTo: 'orosz_krem', isAccepted: true },
-        { id: '14', friendOf: 'dsj', from: new Date(2020, 8, 25), friendTo: 'orosz_krem', isAccepted: true },
-        { id: '15', friendOf: 'oroszgf_krem', from: new Date(2000, 2, 10), friendTo: 'orosz_krem', isAccepted: false },
-        { id: '16', friendOf: 'gf', from: new Date(2020, 2, 5), friendTo: 'orosz_krem', isAccepted: true },
-        { id: '17', friendOf: 'orosz_krem', from: new Date(2020, 10, 15), friendTo: 'orosz_krem', isAccepted: true },
-        { id: '18', friendOf: 'orosz_krem', from: new Date(2020, 8, 25), friendTo: 'orosz_krem', isAccepted: true },
-        { id: '19', friendOf: 'hg', from: new Date(2000, 2, 10), friendTo: 'orosz_krem', isAccepted: true },
-        { id: '10', friendOf: 'orosz_krem', from: new Date(2020, 2, 5), friendTo: 'orosz_krem', isAccepted: false },
-        { id: '11', friendOf: 'orosz_krem', from: new Date(2020, 10, 15), friendTo: 'orosz_krem', isAccepted: true },
-        { id: '121', friendOf: 'heidi', from: new Date(2020, 8, 25), friendTo: 'orosz_krem', isAccepted: true },
-        { id: '131', friendOf: 'orosz_krem', from: new Date(2000, 2, 10), friendTo: 'orosz_krem', isAccepted: false },
-        { id: '141', friendOf: 'orosz_krem', from: new Date(2020, 2, 5), friendTo: 'orosz_krem', isAccepted: true },
-        { id: '151', friendOf: 'orosz_krem', from: new Date(2020, 10, 15), friendTo: 'orosz_krem', isAccepted: true },
-        { id: '161', friendOf: 'orosz_krem', from: new Date(2020, 8, 25), friendTo: 'orosz_krem', isAccepted: true },
-    ];
+    friendList: Friend[] = [];
+    private subscriptions: Subscription[] = [];
+
+    constructor(
+        private db: AngularFirestore,
+        private store: Store
+    ) { }
 
     getFriendList() {
-        // returning a copy, not reference type
-        // Sort the friendList by friendOf
         return this.friendList.sort((a, b) => (a.friendOf > b.friendOf) ? 1 : ((b.friendOf > a.friendOf) ? -1 : 0))
 
     }
@@ -55,5 +45,33 @@ export class FriendService {
                 this.friendListChanged.next();
             }
         });
+    }
+
+    onGetAllUsers(authUserId: string) {
+        console.log(authUserId)
+        this.subscriptions.push(this.db.collection('users')
+            .snapshotChanges()
+            .pipe(map(docData => {
+                return docData.map(doc => {
+                    const data = doc.payload.doc.data() as any;
+                    const id = doc.payload.doc.id;
+                    data.id = id;
+                    data.birthday = data.birthday.toDate();
+
+                    return {
+                        ...data
+                    };
+                })
+            }))
+            .subscribe({
+                next: (users) => {
+                    const allUsers = users.filter( u => u.id != authUserId);
+                    this.store.dispatch(DashboardActions.allUsersSet({ allUsers }));
+                },
+                error: (error) => {
+                    this.store.dispatch(DashboardActions.setErrorMessage({ error }));
+                }
+            })
+        );
     }
 }

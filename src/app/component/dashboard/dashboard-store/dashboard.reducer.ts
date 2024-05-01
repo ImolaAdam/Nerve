@@ -2,6 +2,8 @@ import { createReducer, on } from '@ngrx/store';
 import * as DashboardActions from './dashboard.actions'
 import { Letter } from 'src/app/shared/models/letter.model';
 import { Goal } from 'src/app/shared/models/goal.model';
+import { Friend } from 'src/app/shared/models/friend.model';
+import { UserDto } from 'src/app/shared/dto/userDto';
 
 export const DASHBOARD_STATE_NAME = 'dashboard';
 
@@ -19,6 +21,11 @@ export interface DashboardState {
     monthlyGoals: Goal[],
     yearlyGoals: Goal[]
   };
+  friends: {
+    allUsers: UserDto[],
+    friendRequests: Friend[],
+    friends: Friend[]
+  }
 }
 
 export const initialDashboardState: DashboardState = {
@@ -34,11 +41,22 @@ export const initialDashboardState: DashboardState = {
     weeklyGoals: [],
     monthlyGoals: [],
     yearlyGoals: []
+  },
+  friends: {
+    allUsers: [],
+    friendRequests: [],
+    friends: []
   }
 };
 
 export const dashboardReducer = createReducer(
   initialDashboardState,
+  on(DashboardActions.setErrorMessage, (state, { error }) => {
+    return {
+      ...state,
+      error
+    }
+  }),
   on(DashboardActions.setDashboardMenu, (state, { menuName }) => {
     return {
       ...state,
@@ -108,10 +126,38 @@ export const dashboardReducer = createReducer(
       }
     }
   }),
+  on(DashboardActions.allUsersSet, (state, { allUsers }) => {
+    return {
+      ...state,
+      friends: {
+        ...state.friends,
+        allUsers
+      }
+    }
+  }),
+  on(DashboardActions.allFriendsSet, (state, { friends }) => {
+    return {
+      ...state,
+      friends: {
+        ...state.friends,
+        friends
+      }
+    }
+  }),
+  on(DashboardActions.friendRequestSet, (state, { friendRequests }) => {
+    return {
+      ...state,
+      friends: {
+        ...state.friends,
+        friendRequests
+      }
+    }
+  }),
   on(
     DashboardActions.inboxLetterListSet, DashboardActions.sentLetterListSet,
     DashboardActions.dailyGoalsSet, DashboardActions.weeklyGoalsSet,
     DashboardActions.monthlyGoalsSet, DashboardActions.yearlyGoalsSet,
+    DashboardActions.getAllUsers, DashboardActions.getAllFriends, DashboardActions.getFriendRequests,
     (state) => {
     return {
       ...state

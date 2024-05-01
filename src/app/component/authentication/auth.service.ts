@@ -68,7 +68,7 @@ export class AuthService implements OnDestroy {
         this.getUser(authData.email);
       })
       .catch(error => {
-        console.log(error);
+        this.snackBarService.openSnackBar('Something went wrong');
       }
       );
     return user;

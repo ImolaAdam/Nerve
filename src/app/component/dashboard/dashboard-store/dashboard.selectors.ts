@@ -13,3 +13,9 @@ export const selectDailyGoals = createSelector(selectDashboardState, state => st
 export const selectWeeklyGoals = createSelector(selectDashboardState, state => state.goals.weeklyGoals);
 export const selectMonthlyGoals = createSelector(selectDashboardState, state => state.goals.monthlyGoals);
 export const selectYearlyGoals = createSelector(selectDashboardState, state => state.goals.yearlyGoals);
+
+// Friends
+export const selectAllUsers = createSelector(selectDashboardState, state => state.friends.allUsers);
+export const selectFriendRequests = createSelector(selectDashboardState, state => state.friends.friendRequests);
+export const selectFriends = createSelector(selectDashboardState, state => state.friends.friends);
+

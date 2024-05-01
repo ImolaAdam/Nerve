@@ -1,17 +1,45 @@
 .search {
     background-color: white;
     border-radius: 5px;
+
     input {
         border: #82acad !important;
         border-radius: 5px;
         height: 1.8rem;
     }
-    input:focus{
+
+    input:focus {
         outline: #3e6d6e !important;
     }
+
     .fa-search {
         width: 1.5rem;
         padding-left: 5px;
         cursor: pointer;
     }
+}
+
+.modal-height {
+    height: 30rem !important;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-body {
+    width: 30rem;
+    overflow: auto;
+}
+
+.friend-item {
+    display: flex;
+    align-items: center;
+}
+
+.friend-item img {
+    margin-right: 10px; // Spacing between image and text
+    height: 4rem;
+}
+
+img {
+    border-radius: 50%;
 }

@@ -1,6 +1,11 @@
 import { createAction, props } from '@ngrx/store';
+import { UserDto } from 'src/app/shared/dto/userDto';
+import { Friend } from 'src/app/shared/models/friend.model';
 import { Goal } from 'src/app/shared/models/goal.model';
 import { Letter } from 'src/app/shared/models/letter.model';
+
+
+export const setErrorMessage = createAction('[Dashboard] Error Message Catched', props<{ error: string }>());
 
 // Dashboard
 export const setDashboardMenu = createAction('[Dashboard] Set Dashboard Menu', props<{ menuName: string }>());
@@ -24,3 +29,13 @@ export const dailyGoalsSet = createAction('[Dashboard] Daily Goals Are Set');
 export const weeklyGoalsSet = createAction('[Dashboard] Weekly Goals Are Set');
 export const monthlyGoalsSet = createAction('[Dashboard] Monthly Goals Are Set');
 export const yearlyGoalsSet = createAction('[Dashboard] Yearly Goals Are Set');
+
+//Friends
+export const getAllUsers = createAction('[Dashboard] Get All Users');
+export const allUsersSet = createAction('[Dashboard] All Users Set', props<{ allUsers: UserDto[] }>());
+
+export const getFriendRequests = createAction('[Dashboard] Get Friend Requests');
+export const friendRequestSet = createAction('[Dashboard] Friend Requests Set', props<{ friendRequests: Friend[] }>());
+
+export const getAllFriends = createAction('[Dashboard] Get All Friends');
+export const allFriendsSet = createAction('[Dashboard] All Friends Set', props<{ friends: Friend[] }>());
