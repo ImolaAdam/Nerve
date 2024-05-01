@@ -23,32 +23,18 @@ export class FriendService {
     }
 
     onSendNewFriendRequest(friendRequest: CreateFriendRequestDto) {
-        console.log('hi')
-
+        this.db.collection('friends').add(friendRequest);
     }
 
-    deleteFriend(id: string) {
-        const filteredList = this.friendList.filter(l => l.id != id);
-        this.friendList = filteredList;
-        this.friendListChanged.next();
-    }
 
     deleteFriendRequest(id: string) {
-        this.deleteFriend(id);
     }
 
     acceptFriendRequest(id: string) {
-        this.friendList.forEach(f => {
-            if (f.id == id) {
-                console.log(id)
-                f.isAccepted = true;
-                this.friendListChanged.next();
-            }
-        });
+
     }
 
     onGetAllUsers(authUserId: string) {
-        console.log(authUserId)
         this.subscriptions.push(this.db.collection('users')
             .snapshotChanges()
             .pipe(map(docData => {

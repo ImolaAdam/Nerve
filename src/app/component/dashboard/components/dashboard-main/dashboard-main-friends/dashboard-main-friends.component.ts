@@ -49,8 +49,8 @@ export class DashboardMainFriendsComponent implements OnInit, OnDestroy {
   }
 
   onDeleteFriend(id: string): void {
-    this.friendService.deleteFriend(id);
-    this.updateFriendList();
+    //this.friendService.deleteFriend(id);
+   // this.updateFriendList();
   }
 
   onDeleteFriendRequest(id: string): void {
@@ -60,8 +60,8 @@ export class DashboardMainFriendsComponent implements OnInit, OnDestroy {
 
   // Todo: implement functionality
   onSendFriendRequest(newFriend: Friend): void {
-    this.friendService.sendFriendRequest(newFriend);
-    this.updateFriendList();
+   // this.friendService.sendFriendRequest(newFriend);
+   // this.updateFriendList();
   }
 
   onAcceptFriendRequest(id: string) {
