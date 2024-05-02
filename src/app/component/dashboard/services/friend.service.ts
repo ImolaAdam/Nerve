@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, OnDestroy } from "@angular/core";
 import { AngularFirestore } from "@angular/fire/compat/firestore";
 import { Store } from "@ngrx/store";
 import { Subject, Subscription, map } from "rxjs";
@@ -8,7 +8,7 @@ import { CreateFriendRequestDto } from "src/app/shared/dto/CreateFriendRequestDt
 import { UserDto } from "src/app/shared/dto/userDto";
 
 @Injectable()
-export class FriendService {
+export class FriendService implements OnDestroy {
     friendListChanged = new Subject<void>();
     friendList: Friend[] = [];
     private subscriptions: Subscription[] = [];
@@ -19,14 +19,6 @@ export class FriendService {
     ) { }
 
     getFriendList(authUserId: string) {
-        /**
-         *     id: string
-    friendOf: string
-    friendTo: string
-    isAccepted: boolean
-    from?: Date
-         */
-        //return this.friendList.sort((a, b) => (a.friendOf > b.friendOf) ? 1 : ((b.friendOf > a.friendOf) ? -1 : 0))
         this.store.dispatch(DashboardActions.getAllFriends());
         this.store.dispatch(DashboardActions.getFriendRequests());
 
@@ -54,7 +46,7 @@ export class FriendService {
             }))
             .subscribe({
                 next: (friendList) => {
-                    const friendRequests = friendList.filter(f => ((f.friendTo == authUserId) && (!f.isAccepted)));
+                    const friendRequests = friendList.filter(f => ((f.friendTo == authUserId || f.friendOf == authUserId) && (!f.isAccepted)));
                     this.store.dispatch(DashboardActions.friendRequestSet({ friendRequests }));
 
                     const friends = friendList.filter(f => ((f.friendTo == authUserId || f.friendOf == authUserId) && (f.isAccepted)));
@@ -74,6 +66,35 @@ export class FriendService {
 
 
     deleteFriendRequest(id: string) {
+        // Get the reference to the document
+        const docRef = this.db.collection('friends').doc(id);
+
+        // Delete the document
+        docRef.delete()
+            .then(() => {
+                console.log("Document successfully deleted!");
+            })
+            .catch((error) => {
+                // Todo: push error to store & window popup
+                console.error("Error removing document: ", error);
+            }
+            );
+    }
+
+    deleteFriend(id: string) {
+        // Get the reference to the document
+        const docRef = this.db.collection('friends').doc(id);
+
+        // Delete the document
+        docRef.delete()
+            .then(() => {
+                console.log("Document successfully deleted!");
+            })
+            .catch((error) => {
+                // Todo: push error to store & window popup
+                console.error("Error removing document: ", error);
+            }
+            );
     }
 
     acceptFriendRequest(id: string) {
@@ -119,4 +140,13 @@ export class FriendService {
             })
         );
     }
+
+    ngOnDestroy(): void {
+        if(this.subscriptions) {
+            this.subscriptions.forEach(s => {
+                s.unsubscribe()
+            });
+        }
+    }
+
 }

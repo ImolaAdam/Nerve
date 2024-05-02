@@ -1,12 +1,13 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { selectAuthUser } from 'src/app/component/authentication/auth-store/auth.selectors';
-import { selectAllUsers } from 'src/app/component/dashboard/dashboard-store/dashboard.selectors';
+import { selectAllUsers, selectFriendRequests, selectFriends } from 'src/app/component/dashboard/dashboard-store/dashboard.selectors';
 import { FriendService } from 'src/app/component/dashboard/services/friend.service';
 import { CreateFriendRequestDto } from 'src/app/shared/dto/CreateFriendRequestDto';
 import { UserDto } from 'src/app/shared/dto/userDto';
+import { Friend } from 'src/app/shared/models/friend.model';
 
 @Component({
   selector: 'app-friends-add-new-friend',
@@ -21,11 +22,14 @@ export class FriendsAddNewFriendComponent implements OnInit, OnDestroy {
 
   options: UserDto[] = [];
   filteredOptions: any[] = [];
+  friendRequests: Friend[] = [];
+  friends: Friend[] = [];
 
   constructor(
     public activeModal: NgbActiveModal,
     private store: Store,
-    private friendService: FriendService
+    private friendService: FriendService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -40,9 +44,24 @@ export class FriendsAddNewFriendComponent implements OnInit, OnDestroy {
     );
 
     this.subscriptions.push(
+      this.store.select(selectFriends).subscribe((friends) => {
+        if(friends) {
+          this.friends = friends;
+        }
+      })
+    );
+
+    this.subscriptions.push(
       this.store.select(selectAllUsers).subscribe((users) => {
-        if (users.length != 0) {
-          this.options = users;
+        if (users.length != 0 && this.friendRequests && this.authUserId) {
+
+          this.options = users.filter(u =>
+            u.userId !== this.authUserId && // User ID is not the authenticated user's ID
+            !this.friendRequests.some(friend => friend.friendOf === u.userId || friend.friendTo === u.userId) &&
+            !this.friends.some(friend => friend.friendOf === u.userId || friend.friendTo === u.userId)
+            
+          );
+
 
           this.filteredOptions = this.options.map(user => {
             const { birthday, ...rest } = user; // Destructure birthday and rest of the properties
@@ -52,6 +71,14 @@ export class FriendsAddNewFriendComponent implements OnInit, OnDestroy {
               birthday: formattedBirthday // Assign the formatted birthday
             };
           });
+        }
+      })
+    );
+
+    this.subscriptions.push(
+      this.store.select(selectFriendRequests).subscribe((request) => {
+        if (request) {
+          this.friendRequests = request;
         }
       })
     );
@@ -92,6 +119,8 @@ export class FriendsAddNewFriendComponent implements OnInit, OnDestroy {
     };
 
     this.friendService.onSendNewFriendRequest(newFriendRequest);
+    this.filteredOptions = this.filteredOptions.filter(o => o.userId != userId);
+    this.cdr.detectChanges();
   }
 
   ngOnDestroy(): void {

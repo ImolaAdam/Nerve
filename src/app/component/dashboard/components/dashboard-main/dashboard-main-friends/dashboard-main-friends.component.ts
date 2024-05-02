@@ -9,6 +9,7 @@ import { Store } from '@ngrx/store';
 import { selectAuthUser } from 'src/app/component/authentication/auth-store/auth.selectors';
 import { selectAllUsers, selectFriendRequests, selectFriends } from '../../../dashboard-store/dashboard.selectors';
 import { UserDto } from 'src/app/shared/dto/userDto';
+import { MyFriend } from 'src/app/shared/dto/MyFriendDto';
 
 @Component({
   selector: 'app-dashboard-main-friends',
@@ -20,7 +21,7 @@ export class DashboardMainFriendsComponent implements OnInit, OnDestroy {
   authUserId: string = '';
 
   allUsers: UserDto[] = [];
-  friendList: Friend[] = [];
+  friendList: MyFriend[] = [];
   friendRequestList: Friend[] = [];
   filter: string = '';
   filteredFriendList: Friend[] = [];
@@ -59,9 +60,10 @@ export class DashboardMainFriendsComponent implements OnInit, OnDestroy {
 
     this.subscriptions.push(
       this.store.select(selectFriendRequests).subscribe((friendRequestList) => {
-        if (friendRequestList && this.allUsers) {
+        if (friendRequestList && this.allUsers && this.authUserId) {
+          this.friendRequestList = friendRequestList.filter(f => ((f.friendOf != this.authUserId  && !f.isAccepted)));
           // Map through the friendRequestList and replace friendOf and friendTo with userNames
-          this.friendRequestList = friendRequestList.map(friend => {
+          this.friendRequestList = this.friendRequestList.map(friend => {
             const friendOfUser = this.allUsers.find(user => user.userId === friend.friendOf);
 
             return {
@@ -69,7 +71,7 @@ export class DashboardMainFriendsComponent implements OnInit, OnDestroy {
               friendOf: friendOfUser ? friendOfUser.userName : friend.friendOf,
             };
           });
-          console.log(this.friendRequestList)
+          console.log(this.friendRequestList, 'hajjaj')
         }
       })
     );
@@ -79,18 +81,24 @@ export class DashboardMainFriendsComponent implements OnInit, OnDestroy {
         if (friends && this.allUsers && this.authUserId) {
           this.friendList = friends.map(friend => {
             if (friend.friendOf == this.authUserId) {
-              const friendToUser = this.allUsers.find(user => user.userId === friend.friendTo);
+              const userName = this.allUsers.find(user => user.userId === friend.friendTo)?.userName;
+              const email = this.allUsers.find(user => user.userId === friend.friendTo)?.email;
 
               return {
-                ...friend,
-                friendOf: friendToUser ? friendToUser.userName : friend.friendOf,
+                friendUserName: userName ?? 'Unknown',
+                email: email ?? 'Unknown',
+                friendUserId: friend.friendTo,
+                friendShipId: friend.id
               };
 
             } else {
-              const friendOfUser = this.allUsers.find(user => user.userId === friend.friendOf);
+              const userName = this.allUsers.find(user => user.userId === friend.friendOf)?.userName;
+              const email = this.allUsers.find(user => user.userId === friend.friendOf)?.email;
               return {
-                ...friend,
-                friendOf: friendOfUser ? friendOfUser.userName : friend.friendOf,
+                friendUserName: userName ?? 'Unknown',
+                email: email ?? 'Unknown',
+                friendUserId: friend.friendOf,
+                friendShipId: friend.id
               };
             }
 
@@ -100,18 +108,13 @@ export class DashboardMainFriendsComponent implements OnInit, OnDestroy {
     );
   }
 
-  private createFriendRequestList(friendList: Friend[], allUsers: UserDto[]) {
-
-  }
-
   onAddNewFriend(): void {
     const modalRef = this.modalService.open(FriendsAddNewFriendComponent);
     modalRef.componentInstance.name = 'World';
   }
 
   onDeleteFriend(id: string): void {
-    //this.friendService.deleteFriend(id);
-    // this.updateFriendList();
+    this.friendService.deleteFriend(id);
   }
 
   onDeleteFriendRequest(id: string): void {
@@ -119,23 +122,10 @@ export class DashboardMainFriendsComponent implements OnInit, OnDestroy {
     //this.updateFriendList();
   }
 
-  // Todo: implement functionality
-  onSendFriendRequest(newFriend: Friend): void {
-    // this.friendService.sendFriendRequest(newFriend);
-    // this.updateFriendList();
-  }
-
   onAcceptFriendRequest(id: string) {
     this.friendService.acceptFriendRequest(id);
     //this.updateFriendList();
   }
-
-  /* updateFriendList() {
-     this.friendList = this.friendService.getFriendList();
-     this.friendRequestList = this.friendList.filter(f => f.isAccepted == false);
-     this.friendList = this.friendList.filter(f => f.isAccepted == true);
-     this.filteredFriendList = this.friendList.slice(0, this.pageSize);
-   }*/
 
   // Filtering the frind list based on the search input
   // It is delayed by 1 sec
@@ -167,7 +157,7 @@ export class DashboardMainFriendsComponent implements OnInit, OnDestroy {
     const endIndex = startIndex + event.pageSize;
 
     // Update the list of letters to display
-    this.filteredFriendList = this.friendList.slice(startIndex, endIndex);
+    //this.filteredFriendList = this.friendList.slice(startIndex, endIndex);
   }
 
   ngOnDestroy(): void {

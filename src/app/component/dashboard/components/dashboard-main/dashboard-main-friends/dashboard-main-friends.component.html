@@ -44,11 +44,11 @@
             <div class="friend-item">
                 <img src="assets/images/duck_with_knife.jpg" alt="Profile Picture">
                 <div>
-                    <span class="name" mat-line>{{ friend.friendOf }}</span>
-                    <span mat-line>Since: {{ friend.from | date:'yyyy/MM/dd' }}</span>
+                    <span class="name" mat-line>{{ friend.friendUserName }}</span>
+                    <span mat-line>Email: {{ friend.email }}</span>
                 </div>
                 <div class="acceptance-buttons">
-                    <button mat-icon-button matTooltip="Delete friend" (click)="onDeleteFriend(friend.id)" [matTooltipShowDelay]="500"
+                    <button mat-icon-button matTooltip="Delete friend" (click)="onDeleteFriend(friend.friendShipId)" [matTooltipShowDelay]="500"
                         [matTooltipHideDelay]="1000" class="reject">
                         <mat-icon class="reject">clear</mat-icon>
                     </button>
