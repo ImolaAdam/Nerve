@@ -71,7 +71,6 @@ export class DashboardMainFriendsComponent implements OnInit, OnDestroy {
               friendOf: friendOfUser ? friendOfUser.userName : friend.friendOf,
             };
           });
-          console.log(this.friendRequestList, 'hajjaj')
         }
       })
     );
@@ -131,7 +130,6 @@ export class DashboardMainFriendsComponent implements OnInit, OnDestroy {
   // It is delayed by 1 sec
   onFilterFriendList() {
     setTimeout(() => {
-      console.log(this.filter);
       /*if (this.filter && this.friendList.length > 0) {
         const lowerCasedFilter = this.filter.toLocaleLowerCase();
         this.filteredFriendList = this.friendList.filter(f => {

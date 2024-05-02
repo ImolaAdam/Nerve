@@ -168,8 +168,6 @@ export class DashboardMainGoalsComponent implements OnInit, OnDestroy {
       }
     });
 
-    console.log(goals.value[0].description)
-
     switch (goalType) {
       case 'Yearly':
         this.newYearlyGoals.clear();

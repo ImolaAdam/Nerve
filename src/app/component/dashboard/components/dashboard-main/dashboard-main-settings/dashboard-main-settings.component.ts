@@ -36,7 +36,6 @@ export class DashboardMainSettingsComponent implements OnInit, OnDestroy {
           this.newUserName = authUser.userName;
           this.newBirthday = authUser.birthday;
           this.authUserId = authUser.userId;
-          console.log(this.authUser)
         }
       })
     );

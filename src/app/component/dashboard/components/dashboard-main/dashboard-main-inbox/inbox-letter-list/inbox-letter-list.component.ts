@@ -64,7 +64,6 @@ export class InboxLetterListComponent implements OnInit, OnDestroy {
         if (user) {
           this.userEmail = user.email;
           this.emailService.getAvailableEmails(this.userEmail, this.pageName);
-          console.log(user.email)
         }
       });
 
@@ -134,7 +133,6 @@ export class InboxLetterListComponent implements OnInit, OnDestroy {
         sub.unsubscribe();
       })
     }
-    console.log('onD')
   }
 
 }
