@@ -5,6 +5,10 @@ import { FriendsAddNewFriendComponent } from './friends-add-new-friend/friends-a
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { FriendService } from '../../../services/friend.service';
 import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { selectAuthUser } from 'src/app/component/authentication/auth-store/auth.selectors';
+import { selectAllUsers, selectFriendRequests, selectFriends } from '../../../dashboard-store/dashboard.selectors';
+import { UserDto } from 'src/app/shared/dto/userDto';
 
 @Component({
   selector: 'app-dashboard-main-friends',
@@ -12,12 +16,17 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./dashboard-main-friends.component.scss'],
 })
 export class DashboardMainFriendsComponent implements OnInit, OnDestroy {
-  private friendServiceSub: Subscription | undefined;
+  private subscriptions: Subscription[] = [];
+  authUserId: string = '';
 
+  allUsers: UserDto[] = [];
   friendList: Friend[] = [];
   friendRequestList: Friend[] = [];
   filter: string = '';
   filteredFriendList: Friend[] = [];
+  filteredFriendRequestList: Friend[] = [];
+  myFriends: UserDto[] = [];
+
   length = 50;
   pageSize = 10;
   pageSizeOptions = [10, 15, 25];
@@ -25,56 +34,108 @@ export class DashboardMainFriendsComponent implements OnInit, OnDestroy {
 
   constructor(
     private modalService: NgbModal,
-    private friendService: FriendService
+    private friendService: FriendService,
+    private store: Store
   ) { }
 
   ngOnInit() {
-    this.friendList = this.friendService.getFriendList();
+    this.subscriptions.push(
+      this.store.select(selectAuthUser).subscribe((authUser) => {
+        if (authUser?.userId) {
+          this.authUserId = authUser.userId;
+          this.friendService.onGetAllUsers(authUser.userId);
+          this.friendService.getFriendList(this.authUserId);
+        }
+      })
+    );
 
-    if (this.friendList.length !== 0) {
-      this.friendRequestList = this.friendList.filter(f => f.isAccepted == false);
-      this.friendList = this.friendList.filter(f => f.isAccepted == true);
-      this.filteredFriendList = this.friendList.slice(0, this.pageSize);
-    }
+    this.subscriptions.push(
+      this.store.select(selectAllUsers).subscribe((allUsers) => {
+        if (allUsers) {
+          this.allUsers = allUsers;
+        }
+      })
+    );
 
-    this.friendServiceSub = this.friendService.friendListChanged.subscribe(() => {
-      this.updateFriendList();
-    });
+    this.subscriptions.push(
+      this.store.select(selectFriendRequests).subscribe((friendRequestList) => {
+        if (friendRequestList && this.allUsers) {
+          // Map through the friendRequestList and replace friendOf and friendTo with userNames
+          this.friendRequestList = friendRequestList.map(friend => {
+            const friendOfUser = this.allUsers.find(user => user.userId === friend.friendOf);
+
+            return {
+              ...friend,
+              friendOf: friendOfUser ? friendOfUser.userName : friend.friendOf,
+            };
+          });
+          console.log(this.friendRequestList)
+        }
+      })
+    );
+
+    this.subscriptions.push(
+      this.store.select(selectFriends).subscribe((friends) => {
+        if (friends && this.allUsers && this.authUserId) {
+          this.friendList = friends.map(friend => {
+            if (friend.friendOf == this.authUserId) {
+              const friendToUser = this.allUsers.find(user => user.userId === friend.friendTo);
+
+              return {
+                ...friend,
+                friendOf: friendToUser ? friendToUser.userName : friend.friendOf,
+              };
+
+            } else {
+              const friendOfUser = this.allUsers.find(user => user.userId === friend.friendOf);
+              return {
+                ...friend,
+                friendOf: friendOfUser ? friendOfUser.userName : friend.friendOf,
+              };
+            }
+
+          });
+        }
+      })
+    );
+  }
+
+  private createFriendRequestList(friendList: Friend[], allUsers: UserDto[]) {
+
   }
 
   onAddNewFriend(): void {
-    console.log('add')
     const modalRef = this.modalService.open(FriendsAddNewFriendComponent);
     modalRef.componentInstance.name = 'World';
   }
 
   onDeleteFriend(id: string): void {
     //this.friendService.deleteFriend(id);
-   // this.updateFriendList();
+    // this.updateFriendList();
   }
 
   onDeleteFriendRequest(id: string): void {
     this.friendService.deleteFriendRequest(id);
-    this.updateFriendList();
+    //this.updateFriendList();
   }
 
   // Todo: implement functionality
   onSendFriendRequest(newFriend: Friend): void {
-   // this.friendService.sendFriendRequest(newFriend);
-   // this.updateFriendList();
+    // this.friendService.sendFriendRequest(newFriend);
+    // this.updateFriendList();
   }
 
   onAcceptFriendRequest(id: string) {
     this.friendService.acceptFriendRequest(id);
-    this.updateFriendList();
+    //this.updateFriendList();
   }
 
-  updateFriendList() {
-    this.friendList = this.friendService.getFriendList();
-    this.friendRequestList = this.friendList.filter(f => f.isAccepted == false);
-    this.friendList = this.friendList.filter(f => f.isAccepted == true);
-    this.filteredFriendList = this.friendList.slice(0, this.pageSize);
-  }
+  /* updateFriendList() {
+     this.friendList = this.friendService.getFriendList();
+     this.friendRequestList = this.friendList.filter(f => f.isAccepted == false);
+     this.friendList = this.friendList.filter(f => f.isAccepted == true);
+     this.filteredFriendList = this.friendList.slice(0, this.pageSize);
+   }*/
 
   // Filtering the frind list based on the search input
   // It is delayed by 1 sec
@@ -110,7 +171,11 @@ export class DashboardMainFriendsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.friendServiceSub?.unsubscribe();
+    if (this.subscriptions) {
+      this.subscriptions.forEach((s) => {
+        s.unsubscribe();
+      });
+    }
   }
 
 }

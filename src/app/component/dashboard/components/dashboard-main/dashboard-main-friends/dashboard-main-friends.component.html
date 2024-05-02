@@ -1,4 +1,4 @@
-<mat-list>
+<mat-list *ngIf="!!friendList">
     <div class="header-container">
         <div mat-subheader>Friend requests</div>
         <button mat-raised-button color="primary" class="compose-btn me-2" (click)="onAddNewFriend()"><i
@@ -10,7 +10,6 @@
                 <img src="assets/images/duck_with_knife.jpg" alt="Profile Picture">
                 <div>
                     <span class="name" mat-line>{{ requestFriend.friendOf }}</span>
-                    <span mat-line>{{ requestFriend.friendOf }}</span>
                 </div>
                 <div class="acceptance-buttons">
                     <button mat-icon-button matTooltip="Accept friend request" (click)="onAcceptFriendRequest(requestFriend.id)" [matTooltipShowDelay]="500"
@@ -40,8 +39,8 @@
         </div>
     </div>
 
-    <ng-container *ngIf="filteredFriendList.length > 0; else noFriends">
-        <mat-list-item *ngFor="let friend of filteredFriendList">
+    <ng-container *ngIf="friendList.length > 0; else noFriends">
+        <mat-list-item *ngFor="let friend of friendList">
             <div class="friend-item">
                 <img src="assets/images/duck_with_knife.jpg" alt="Profile Picture">
                 <div>
