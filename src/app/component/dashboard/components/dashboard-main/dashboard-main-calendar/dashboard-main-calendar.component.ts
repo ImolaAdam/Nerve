@@ -11,6 +11,8 @@ import {
   CalendarView,
 } from 'angular-calendar';
 import { EventColor } from 'calendar-utils';
+import { MatDialog } from '@angular/material/dialog';
+import { CalendarAddEventsComponent } from './calendar-add-events/calendar-add-events.component';
 
 export type Colors = Record<string, EventColor>;
 
@@ -35,14 +37,18 @@ export class DashboardMainCalendarComponent implements OnInit {
       secondary: '#FDF1BA',
     },
   };
-  constructor(private modal: NgbModal) { }
+  constructor(
+    private modal: NgbModal,
+    public dialog: MatDialog
+  ) { }
 
   ngOnInit() {
   }
 
   @ViewChild('modalContent', { static: true }) modalContent!: TemplateRef<any>;
+  @ViewChild('addEventModal', { static: true }) addEventModal!: TemplateRef<any>;
 
-  view: CalendarView = CalendarView.Month;
+  view: CalendarView = CalendarView.Week;
 
   CalendarView = CalendarView;
 
@@ -155,7 +161,13 @@ export class DashboardMainCalendarComponent implements OnInit {
 
   //Todo: add modal
   addEvent(): void {
-    this.events = [
+    const dialogRef = this.dialog.open(CalendarAddEventsComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  
+    /*this.events = [
       ...this.events,
       {
         title: 'New event',
@@ -168,7 +180,7 @@ export class DashboardMainCalendarComponent implements OnInit {
           afterEnd: true,
         },
       },
-    ];
+    ];*/
   }
 
   deleteEvent(eventToDelete: CalendarEvent) {

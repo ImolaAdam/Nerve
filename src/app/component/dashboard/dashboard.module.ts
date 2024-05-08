@@ -15,6 +15,7 @@ import { DashboardMainGoalsComponent } from './components/dashboard-main/dashboa
 import { FriendsAddNewFriendComponent } from './components/dashboard-main/dashboard-main-friends/friends-add-new-friend/friends-add-new-friend.component';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CalendarAddEventsComponent } from './components/dashboard-main/dashboard-main-calendar/calendar-add-events/calendar-add-events.component';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     InboxLetterListComponent,
     DashboardMainSettingsComponent,
     DashboardMainTemplatesComponent,
-    DashboardSidebarComponent,    
+    DashboardSidebarComponent,
+    CalendarAddEventsComponent
   ],
   exports: [
     DashboardComponent,

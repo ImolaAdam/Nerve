@@ -18,6 +18,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatDialogModule} from '@angular/material/dialog';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
         MatSidenavModule,
         MatToolbarModule,
         MatSnackBarModule,
-        MatAutocompleteModule
+        MatAutocompleteModule,
+        MatDialogModule
     ],
     exports: [
         MatSliderModule,
@@ -61,7 +63,8 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
         MatSidenavModule,
         MatToolbarModule,
         MatSnackBarModule,
-        MatAutocompleteModule
+        MatAutocompleteModule,
+        MatDialogModule
     ]
 })
 export class MaterialModule { }

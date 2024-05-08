@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>Create new calendar events</h2>
+<mat-dialog-content class="mat-typography dialog">
+  <h3>Form</h3>
+  <button (click)="onAddItem()" mat-mini-fab color="primary" matTooltip="Add new goal">
+    <mat-icon>add</mat-icon>
+  </button>
+  <div [formGroup]="eventForm">
+    <div formArrayName="items">
+      <div *ngFor="let event of newEvents.controls; let i = index" [formGroupName]="i" class="d-flex">
+        <input matInput placeholder="Description" formControlName="description" type="text" class="description">
+        <mat-form-field class="new-goal">
+          <input matInput [matDatepicker]="picker" placeholder="Start date" formControlName="startDate" required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-hint>MM/DD/YYYY</mat-hint>
+        </mat-form-field>
+        <mat-chip (click)="onDeleteFormItem(i)" class="mt-2">Delete</mat-chip>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Install</button>
+</mat-dialog-actions>

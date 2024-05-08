@@ -30,7 +30,7 @@ export interface DashboardState {
 
 export const initialDashboardState: DashboardState = {
   error: null,
-  currentMenu: 'Dashboard',
+  currentMenu: 'Calendar',
   letters: {
     pageName: 'Inbox',
     inbox: [],
