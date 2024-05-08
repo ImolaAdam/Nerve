@@ -33,10 +33,10 @@ $orange: (
 
 // mandatory stuff for theming
 $primary: mat-palette($main, 600, 700, 800, 900);
-$palette-accent: mat-palette($orange, 600, 700, 800, 900);
+$warning: mat-palette($orange, 600, 700, 800, 900);
 
 // include the custom theme components into a theme object
-$theme: mat-light-theme($primary, $palette-accent);
+$theme: mat-light-theme($primary, $warning);
 
 // include the custom theme object into the angular material theme
 @include angular-material-theme($theme);

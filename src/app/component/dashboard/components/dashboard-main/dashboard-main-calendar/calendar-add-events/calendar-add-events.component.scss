@@ -1,4 +1,25 @@
 .dialog {
-    width: 70rem;
+    width: 65rem;
     height: 50rem;
+}
+
+.input-field {
+    width: 13rem;
+    margin-right: 1rem;
+}
+
+.mat-button-warning {
+    color: #5F071C;
+    background-color: #fbd0da;
+}
+
+.mat-button-warning:hover {
+    background-color: #f58aa3;
+    color: white;
+}
+
+.chip {
+    width: 5rem;
+    cursor: pointer;
+    padding-left: 1.2rem;
 }

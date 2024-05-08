@@ -1,25 +1,53 @@
-<h2 mat-dialog-title>Create new calendar events</h2>
+<div mat-dialog-title class="d-flex justify-content-between">
+  <h2>Generate events based on:</h2>
+  <form [formGroup]="techniqueForm">
+    <mat-checkbox formControlName="Pomodoro" class="me-5" (change)="setTechnique('Pomodoro', $event.checked)">Pomodoro Technique</mat-checkbox>
+    <mat-checkbox formControlName="Ratio" class="me-5" (change)="setTechnique('Ratio', $event.checked)">52/17 Ratio</mat-checkbox>
+    <mat-checkbox formControlName="None" class="me-5" (change)="setTechnique('None', $event.checked)">None</mat-checkbox>
+  </form>
+</div>
 <mat-dialog-content class="mat-typography dialog">
-  <h3>Form</h3>
-  <button (click)="onAddItem()" mat-mini-fab color="primary" matTooltip="Add new goal">
-    <mat-icon>add</mat-icon>
-  </button>
+  <div class="d-flex justify-content-between">
+    <h3>Form</h3>
+    <button (click)="onAddItem()" mat-mini-fab color="primary" matTooltip="Add new event">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+
+  <div *ngIf="!newEvents.controls.length" class="mt-3">Click on the add button to create new elements, then click on the
+    generate button.</div>
+
   <div [formGroup]="eventForm">
     <div formArrayName="items">
       <div *ngFor="let event of newEvents.controls; let i = index" [formGroupName]="i" class="d-flex">
-        <input matInput placeholder="Description" formControlName="description" type="text" class="description">
-        <mat-form-field class="new-goal">
+
+        <mat-form-field class="input-field">
+          <mat-label>Task name</mat-label>
+          <input matInput placeholder="Learn English" formControlName="name" type="text" required>
+        </mat-form-field>
+
+        <mat-form-field class="input-field">
           <input matInput [matDatepicker]="picker" placeholder="Start date" formControlName="startDate" required>
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
           <mat-hint>MM/DD/YYYY</mat-hint>
         </mat-form-field>
-        <mat-chip (click)="onDeleteFormItem(i)" class="mt-2">Delete</mat-chip>
+
+        <mat-form-field class="input-field">
+          <mat-label>Duration (in minutes)</mat-label>
+          <input matInput placeholder="35" formControlName="duration" type="number" required>
+        </mat-form-field>
+
+        <mat-checkbox class="input-field" formControlName="isImportant">Important</mat-checkbox>
+
+        <mat-chip-list>
+          <mat-chip (click)="onDeleteFormItem(i)" class="mt-2 chip">Delete</mat-chip>
+        </mat-chip-list>
       </div>
     </div>
   </div>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Install</button>
+  <button mat-button mat-dialog-close class="mat-button-warning">Cancel</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial color="primary">Generate schedule</button>
 </mat-dialog-actions>
