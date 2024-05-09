@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { selectAuthUser } from 'src/app/component/authentication/auth-store/auth.selectors';
@@ -78,6 +78,20 @@ export class CalendarAddEventsComponent implements OnInit, OnDestroy {
     });
 
     this.newEvents.push(newEvent);
+  }
+
+  onGenerateEvents(events: FormArray) {
+    switch (this.technique) {
+      case 'Pomodoro':
+        console.log(this.technique, events.value)
+        break;
+      case 'Ratio':
+        console.log(this.technique, events.value)
+        break;
+      case 'None':
+        console.log(this.technique, events.value)
+        break;
+    }
   }
 
   ngOnDestroy(): void {
