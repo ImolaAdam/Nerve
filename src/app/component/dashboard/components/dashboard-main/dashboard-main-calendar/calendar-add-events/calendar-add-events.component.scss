@@ -6,6 +6,19 @@
 .input-field {
     width: 13rem;
     margin-right: 1rem;
+
+    .duration {
+        width: 10rem;
+    }
+}
+
+.input-field-minute {
+    width: 6rem;
+    margin-right: 1rem;
+}
+
+.important {
+    padding-top: 0.8rem !important;
 }
 
 .mat-button-warning {

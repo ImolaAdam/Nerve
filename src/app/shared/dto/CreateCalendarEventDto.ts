@@ -3,5 +3,6 @@ export interface CreateCalendarEventDto {
     startDate: Date;
     endDate: Date;
     name: string;
-    isImportant: boolean
+    type: string;
+    //isImportant: boolean
 }

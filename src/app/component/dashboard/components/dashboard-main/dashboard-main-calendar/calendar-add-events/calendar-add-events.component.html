@@ -19,7 +19,7 @@
 
   <div [formGroup]="eventForm">
     <div formArrayName="items">
-      <div *ngFor="let event of newEvents.controls; let i = index" [formGroupName]="i" class="d-flex">
+      <div *ngFor="let event of newEvents.controls; let i = index" [formGroupName]="i" class="d-flex mt-2">
 
         <mat-form-field class="input-field">
           <mat-label>Task name</mat-label>
@@ -32,13 +32,17 @@
           <mat-datepicker #picker></mat-datepicker>
           <mat-hint>MM/DD/YYYY</mat-hint>
         </mat-form-field>
+        
+        <mat-form-field class="input-field-minute">
+          <input matInput type="time" placeholder="HH:mm" formControlName="startTime" required>
+        </mat-form-field>
 
-        <mat-form-field class="input-field">
+        <mat-form-field class="input-field duration">
           <mat-label>Duration (in minutes)</mat-label>
           <input matInput placeholder="35" formControlName="duration" type="number" required>
         </mat-form-field>
 
-        <mat-checkbox class="input-field" formControlName="isImportant">Important</mat-checkbox>
+        <mat-checkbox class="input-field-minute important" formControlName="isImportant">Important</mat-checkbox>
 
         <mat-chip-list>
           <mat-chip (click)="onDeleteFormItem(i)" class="mt-2 chip">Delete</mat-chip>
