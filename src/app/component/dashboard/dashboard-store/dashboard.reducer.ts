@@ -4,6 +4,7 @@ import { Letter } from 'src/app/shared/models/letter.model';
 import { Goal } from 'src/app/shared/models/goal.model';
 import { Friend } from 'src/app/shared/models/friend.model';
 import { UserDto } from 'src/app/shared/dto/userDto';
+import { CalendarEventDto } from 'src/app/shared/dto/CalendarEventDto';
 
 export const DASHBOARD_STATE_NAME = 'dashboard';
 
@@ -25,6 +26,9 @@ export interface DashboardState {
     allUsers: UserDto[],
     friendRequests: Friend[],
     friends: Friend[]
+  };
+  calendarEvents: {
+    monthlyEvents: CalendarEventDto[]
   }
 }
 
@@ -46,6 +50,9 @@ export const initialDashboardState: DashboardState = {
     allUsers: [],
     friendRequests: [],
     friends: []
+  },
+  calendarEvents: {
+    monthlyEvents: []
   }
 };
 
@@ -153,11 +160,21 @@ export const dashboardReducer = createReducer(
       }
     }
   }),
+  on(DashboardActions.monthlyEventsset, (state, { monthlyEvents }) => {
+    return {
+      ...state,
+      calendarEvents: {
+        ...state.calendarEvents,
+        monthlyEvents
+      }
+    }
+  }),
   on(
     DashboardActions.inboxLetterListSet, DashboardActions.sentLetterListSet,
     DashboardActions.dailyGoalsSet, DashboardActions.weeklyGoalsSet,
     DashboardActions.monthlyGoalsSet, DashboardActions.yearlyGoalsSet,
     DashboardActions.getAllUsers, DashboardActions.getAllFriends, DashboardActions.getFriendRequests,
+    DashboardActions.getMonthlyEvents,
     (state) => {
     return {
       ...state

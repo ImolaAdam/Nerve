@@ -5,6 +5,8 @@ import { Subscription } from 'rxjs';
 import { selectAuthUser } from 'src/app/component/authentication/auth-store/auth.selectors';
 import { CalendarService } from 'src/app/component/dashboard/services/calendar.service';
 import { CreateCalendarEventDto } from 'src/app/shared/dto/CreateCalendarEventDto';
+import * as DashboardActions from '../../../../dashboard-store/dashboard.actions';
+import { selectCalendarEvents } from 'src/app/component/dashboard/dashboard-store/dashboard.selectors';
 
 @Component({
   selector: 'app-calendar-add-events',
@@ -47,7 +49,14 @@ export class CalendarAddEventsComponent implements OnInit, OnDestroy {
           console.log(this.authUserId)
         }
       })
-    )
+    );
+
+    // Todo: finish
+    this.subscriptions.push(
+      this.store.select(selectCalendarEvents).subscribe((event) => {
+
+      })
+    );
   }
 
   get newEvents() {
@@ -181,6 +190,7 @@ export class CalendarAddEventsComponent implements OnInit, OnDestroy {
 
     }
     if (newCalendarEvents.length != 0) {
+      console.log(summaryOfMinutes)
       this.calendarService.createNewEvents(newCalendarEvents, summaryOfMinutes);
     }
   }

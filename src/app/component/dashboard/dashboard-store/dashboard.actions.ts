@@ -1,4 +1,5 @@
 import { createAction, props } from '@ngrx/store';
+import { CalendarEventDto } from 'src/app/shared/dto/CalendarEventDto';
 import { UserDto } from 'src/app/shared/dto/userDto';
 import { Friend } from 'src/app/shared/models/friend.model';
 import { Goal } from 'src/app/shared/models/goal.model';
@@ -39,3 +40,8 @@ export const friendRequestSet = createAction('[Dashboard] Friend Requests Set', 
 
 export const getAllFriends = createAction('[Dashboard] Get All Friends');
 export const allFriendsSet = createAction('[Dashboard] All Friends Set', props<{ friends: Friend[] }>());
+
+// Calendar
+export const getMonthlyEvents = createAction('[Dashboard] Get Monthly Events');
+export const monthlyEventsset = createAction('[Dashboard] Monthly Events Set', props<{ monthlyEvents: CalendarEventDto[] }>());
+

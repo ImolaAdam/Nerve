@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ChangeDetectionStrategy, ViewChild, TemplateRef } from '@angular/core';
-import { startOfDay, endOfDay, subDays, addDays, endOfMonth, isSameDay, isSameMonth, addHours,
-} from 'date-fns';
-import { Subject } from 'rxjs';
+import { isSameDay, isSameMonth } from 'date-fns';
+import { Subject, Subscription } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
   CalendarEvent,
@@ -13,6 +12,10 @@ import {
 import { EventColor } from 'calendar-utils';
 import { MatDialog } from '@angular/material/dialog';
 import { CalendarAddEventsComponent } from './calendar-add-events/calendar-add-events.component';
+import { CalendarService } from '../../../services/calendar.service';
+import { Store } from '@ngrx/store';
+import { selectAuthUser } from 'src/app/component/authentication/auth-store/auth.selectors';
+import { selectCalendarEvents } from '../../../dashboard-store/dashboard.selectors';
 
 export type Colors = Record<string, EventColor>;
 
@@ -22,7 +25,12 @@ export type Colors = Record<string, EventColor>;
   templateUrl: './dashboard-main-calendar.component.html',
   styleUrls: ['./dashboard-main-calendar.component.scss']
 })
-export class DashboardMainCalendarComponent implements OnInit {
+export class DashboardMainCalendarComponent implements OnInit, OnDestroy {
+  private subs: Subscription[] = [];
+  private authUserId: string = '';
+
+  events: CalendarEvent[] = [];
+
   colors: Colors = {
     red: {
       primary: '#ad2121',
@@ -39,10 +47,44 @@ export class DashboardMainCalendarComponent implements OnInit {
   };
   constructor(
     private modal: NgbModal,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private calendarService: CalendarService,
+    private store: Store
   ) { }
 
   ngOnInit() {
+    this.subs.push(
+      this.store.select(selectAuthUser).subscribe((user) => {
+        if (user?.userId) {
+          this.authUserId = user.userId;
+          this.calendarService.getCalendarEvents(this.authUserId);
+        }
+      })
+    );
+
+    this.subs.push(
+      this.store.select(selectCalendarEvents).subscribe((events) => {
+        if (events.length > 0) {
+          let formattedEvents: CalendarEvent[] = [];
+          events.forEach(e => {
+            const event: CalendarEvent = {
+              id: e.documentId,
+              start: e.start,
+              end: e.end,
+              title: e.title,
+              color: e.color,
+              actions: this.actions,
+              resizable: e.resizable,
+              draggable: e.draggable,
+            };
+
+            formattedEvents.push(event);
+          });
+          this.events = formattedEvents;
+        }
+      })
+    );
+
   }
 
   @ViewChild('modalContent', { static: true }) modalContent!: TemplateRef<any>;
@@ -79,47 +121,6 @@ export class DashboardMainCalendarComponent implements OnInit {
 
   refresh = new Subject<void>();
 
-  events: CalendarEvent[] = [
-    {
-      start: subDays(startOfDay(new Date()), 1),
-      end: addDays(new Date(), 1),
-      title: 'A 3 day event',
-      color: { ...this.colors.red },
-      actions: this.actions,
-      allDay: true,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true,
-      },
-      draggable: true,
-    },
-    {
-      start: startOfDay(new Date()),
-      title: 'An event with no end date',
-      color: { ...this.colors.yellow },
-      actions: this.actions,
-    },
-    {
-      start: subDays(endOfMonth(new Date()), 3),
-      end: addDays(endOfMonth(new Date()), 3),
-      title: 'A long event that spans 2 months',
-      color: { ...this.colors.blue },
-      allDay: true,
-    },
-    {
-      start: addHours(startOfDay(new Date()), 2),
-      end: addHours(new Date(), 2),
-      title: 'A draggable and resizable event',
-      color: { ...this.colors.yellow },
-      actions: this.actions,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true,
-      },
-      draggable: true,
-    },
-  ];
-
   activeDayIsOpen: boolean = true;
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
@@ -155,8 +156,19 @@ export class DashboardMainCalendarComponent implements OnInit {
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
-    this.modalData = { event, action };
-    this.modal.open(this.modalContent, { size: 'lg' });
+    if (action == 'Deleted' && event.id && event.end) {
+      const start = new Date(event.start);
+      const end = new Date(event.end);
+
+      // Calculate the duration in milliseconds
+      const durationMs = Math.abs(start.getTime() - end.getTime());
+
+      // Convert milliseconds to minutes
+      const durationMinutes = durationMs / (1000 * 60);
+
+      const docId = event.id.toString();
+      this.calendarService.deleteCalendarEvent(docId, this.authUserId, durationMinutes);
+    }
   }
 
   //Todo: add modal
@@ -166,7 +178,7 @@ export class DashboardMainCalendarComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
     });
-  
+
     /*this.events = [
       ...this.events,
       {
@@ -193,6 +205,14 @@ export class DashboardMainCalendarComponent implements OnInit {
 
   closeOpenMonthViewDay() {
     this.activeDayIsOpen = false;
+  }
+
+  ngOnDestroy(): void {
+    if (this.subs.length > 0) {
+      this.subs.forEach(s => {
+        s.unsubscribe();
+      });
+    }
   }
 
 }

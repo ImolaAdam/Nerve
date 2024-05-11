@@ -1,4 +1,3 @@
-import { state } from '@angular/animations';
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import { DASHBOARD_STATE_NAME, DashboardState } from './dashboard.reducer';
 
@@ -19,3 +18,5 @@ export const selectAllUsers = createSelector(selectDashboardState, state => stat
 export const selectFriendRequests = createSelector(selectDashboardState, state => state.friends.friendRequests);
 export const selectFriends = createSelector(selectDashboardState, state => state.friends.friends);
 
+// Calendar
+export const selectCalendarEvents = createSelector(selectDashboardState, state => state.calendarEvents.monthlyEvents);

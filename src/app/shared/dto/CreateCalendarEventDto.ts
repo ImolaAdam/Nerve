@@ -4,5 +4,4 @@ export interface CreateCalendarEventDto {
     endDate: Date;
     name: string;
     type: string;
-    //isImportant: boolean
 }
