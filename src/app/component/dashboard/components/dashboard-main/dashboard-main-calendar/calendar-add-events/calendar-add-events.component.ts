@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { selectAuthUser } from 'src/app/component/authentication/auth-store/auth.selectors';
@@ -18,30 +18,31 @@ export class CalendarAddEventsComponent implements OnInit, OnDestroy {
 
   private authUserId: string = '';
   private subscriptions: Subscription[] = [];
-  technique: string = '';
+  technique: string = 'Pomodoro';
+  generateStartDate = new Date();
+  generatetartTime!: number;
 
   constructor(
     private fb: FormBuilder,
     private store: Store
-
   ) {
     this.eventForm = this.fb.group({
       items: this.fb.array([])
     });
 
     this.techniqueForm = this.fb.group({
-      Pomodoro: [false], // Initialize form control values
+      Pomodoro: [true],
       Ratio: [false],
-      None: [false]
+      Custom: [false]
     });
   }
 
   ngOnInit() {
-
     this.subscriptions.push(
       this.store.select(selectAuthUser).subscribe((user) => {
         if (user?.userId) {
           this.authUserId = user.userId;
+          console.log(this.authUserId)
         }
       })
     )
@@ -86,13 +87,13 @@ export class CalendarAddEventsComponent implements OnInit, OnDestroy {
     switch (this.technique) {
       case 'Pomodoro':
         // rank -> duration
-        console.log(this.technique, events.value)
+        this.createPomodoroCalendarEvents(events.value);
         break;
       case 'Ratio':
         // rank -> duration
-        console.log(this.technique, events.value)
+        this.createRatioCalendarEvents(events.value);
         break;
-      case 'None':
+      case 'Custom':
         // create calendar event for the packege
         // start date for every event + duration
         this.createBasicCalendarEvents(events.value);
@@ -100,7 +101,39 @@ export class CalendarAddEventsComponent implements OnInit, OnDestroy {
     }
   }
 
-  // None option
+  // 25-minute focused study sessions followed by a 5-minute break
+  createPomodoroCalendarEvents(events: any) {
+    if (events) {
+      const startDate = this.calculateStartDate(this.generateStartDate, this.generatetartTime);
+      console.log(startDate)
+    }
+
+    //Todo: generate schedule (event + break)
+  }
+
+  //52 minutes of focused work followed by a generous 17-minute
+  createRatioCalendarEvents(events: any) {
+    if (events) {
+      const startDate = this.calculateStartDate(this.generateStartDate, this.generatetartTime);
+      console.log(startDate)
+    }
+
+    //Todo: generate schedule (event + break)
+  }
+
+  // Creating date from date + hour:minute
+  calculateStartDate(generateStartDate: Date, generatetartTime: number): Date {
+    const formattedStartDate = new Date(this.generateStartDate);
+
+    const startTimeString = this.generatetartTime.toString();
+    const [hours, minutes] = startTimeString.split(':').map(Number);
+
+    formattedStartDate.setHours(hours);
+    formattedStartDate.setMinutes(minutes);
+    return formattedStartDate;
+  }
+
+  // Custom option
   createBasicCalendarEvents(events: any) {
     let newCalendarEvents: CreateCalendarEventDto[] = [];
     if (events) {
@@ -124,13 +157,14 @@ export class CalendarAddEventsComponent implements OnInit, OnDestroy {
           startDate: formattedStartDate,
           endDate: formattedEndDate,
           userId: this.authUserId,
-          type: 'None'
+          type: 'Custom'
         };
 
         newCalendarEvents.push(newEvent);
       });
 
     }
+    console.log(newCalendarEvents)
   }
 
   combineDate(date: Date, time: any): Date {

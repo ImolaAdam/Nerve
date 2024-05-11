@@ -1,14 +1,36 @@
 <div mat-dialog-title class="d-flex justify-content-between">
   <h2>Generate events based on:</h2>
   <form [formGroup]="techniqueForm">
-    <mat-checkbox formControlName="Pomodoro" class="me-5" (change)="setTechnique('Pomodoro', $event.checked)">Pomodoro Technique</mat-checkbox>
-    <mat-checkbox formControlName="Ratio" class="me-5" (change)="setTechnique('Ratio', $event.checked)">52/17 Ratio</mat-checkbox>
-    <mat-checkbox formControlName="None" class="me-5" (change)="setTechnique('None', $event.checked)">None</mat-checkbox>
+    <mat-checkbox formControlName="Pomodoro" class="method me-4"
+      (change)="setTechnique('Pomodoro', $event.checked)">Pomodoro Technique
+      <mat-icon class="ps-3" matTooltip="25-minute focused sessions, 5 min breaks"
+        matTooltipClass="tooltip-html">help</mat-icon></mat-checkbox>
+    <mat-checkbox formControlName="Ratio" class="method me-4" (change)="setTechnique('Ratio', $event.checked)">52/17
+      Ratio
+      <mat-icon class="ps-3" matTooltip="52 minutes of focused work, 17 min breaks">help</mat-icon></mat-checkbox>
+    <mat-checkbox formControlName="Custom" class="method me-4 custom"
+      (change)="setTechnique('Custom', $event.checked)">Custom
+      <mat-icon class="ps-3" matTooltip="Your custom schedule">help</mat-icon></mat-checkbox>
   </form>
 </div>
 <mat-dialog-content class="mat-typography dialog">
   <div class="d-flex justify-content-between">
-    <h3>Form</h3>
+    <div *ngIf="technique != 'Custom'" class="d-flex">
+      <h3 class="pe-2">Start date:</h3>
+
+      <mat-form-field class="input-field">
+        <input matInput [matDatepicker]="picker" placeholder="Start date" [(ngModel)]="generateStartDate" required>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-hint>MM/DD/YYYY</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field class="input-field-minute">
+        <input matInput type="time" placeholder="HH:mm" [(ngModel)]="generatetartTime" required>
+      </mat-form-field>
+    </div>
+
+
     <button (click)="onAddItem()" mat-mini-fab color="primary" matTooltip="Add new event">
       <mat-icon>add</mat-icon>
     </button>
@@ -26,14 +48,14 @@
           <input matInput placeholder="Learn English" formControlName="name" type="text" required>
         </mat-form-field>
 
-        <mat-form-field class="input-field">
+        <mat-form-field class="input-field" *ngIf="technique=='Custom'">
           <input matInput [matDatepicker]="picker" placeholder="Start date" formControlName="startDate" required>
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
           <mat-hint>MM/DD/YYYY</mat-hint>
         </mat-form-field>
-        
-        <mat-form-field class="input-field-minute">
+
+        <mat-form-field class="input-field-minute" *ngIf="technique=='Custom'">
           <input matInput type="time" placeholder="HH:mm" formControlName="startTime" required>
         </mat-form-field>
 
@@ -53,5 +75,6 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close class="mat-button-warning">Cancel</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial color="primary" (click)="onGenerateEvents(newEvents)">Generate schedule</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial color="primary"
+    (click)="onGenerateEvents(newEvents)">Generate schedule</button>
 </mat-dialog-actions>
