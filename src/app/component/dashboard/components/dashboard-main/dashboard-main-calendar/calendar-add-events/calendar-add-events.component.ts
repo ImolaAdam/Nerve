@@ -3,6 +3,7 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { selectAuthUser } from 'src/app/component/authentication/auth-store/auth.selectors';
+import { CalendarService } from 'src/app/component/dashboard/services/calendar.service';
 import { CreateCalendarEventDto } from 'src/app/shared/dto/CreateCalendarEventDto';
 
 @Component({
@@ -24,7 +25,8 @@ export class CalendarAddEventsComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private store: Store
+    private store: Store,
+    private calendarService: CalendarService
   ) {
     this.eventForm = this.fb.group({
       items: this.fb.array([])
@@ -136,6 +138,7 @@ export class CalendarAddEventsComponent implements OnInit, OnDestroy {
   // Custom option
   createBasicCalendarEvents(events: any) {
     let newCalendarEvents: CreateCalendarEventDto[] = [];
+    let summaryOfMinutes = 0;
     if (events) {
       events.forEach((e: any) => {
         const formattedStartDate = new Date(e.startDate);
@@ -149,8 +152,19 @@ export class CalendarAddEventsComponent implements OnInit, OnDestroy {
 
         const durationInMinutes = e.duration;
 
-        // Set the end date by adding the duration to the start date's minutes
-        const formattedEndDate = new Date(formattedStartDate.getTime() + durationInMinutes * 60000);
+        // Clone the start date to avoid modifying it directly
+        const formattedEndDate = new Date(formattedStartDate.getTime());
+
+        // Increment hours and minutes separately
+        formattedEndDate.setHours(formattedEndDate.getHours() + Math.floor(durationInMinutes / 60));
+        formattedEndDate.setMinutes(formattedEndDate.getMinutes() + (durationInMinutes % 60));
+
+        // Check if the end time exceeds 24 hours
+        if (formattedEndDate.getHours() >= 24) {
+          // Adjust the date accordingly
+          formattedEndDate.setDate(formattedEndDate.getDate() + 1);
+          formattedEndDate.setHours(formattedEndDate.getHours() - 24);
+        }
 
         const newEvent: CreateCalendarEventDto = {
           name: e.name,
@@ -161,10 +175,14 @@ export class CalendarAddEventsComponent implements OnInit, OnDestroy {
         };
 
         newCalendarEvents.push(newEvent);
+        summaryOfMinutes += e.duration;
       });
 
+
     }
-    console.log(newCalendarEvents)
+    if (newCalendarEvents.length != 0) {
+      this.calendarService.createNewEvents(newCalendarEvents, summaryOfMinutes);
+    }
   }
 
   combineDate(date: Date, time: any): Date {
