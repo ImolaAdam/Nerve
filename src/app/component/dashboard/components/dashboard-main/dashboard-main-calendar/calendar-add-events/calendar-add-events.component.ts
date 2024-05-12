@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
@@ -28,7 +28,8 @@ export class CalendarAddEventsComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private store: Store,
-    private calendarService: CalendarService
+    private calendarService: CalendarService,
+    private cdr: ChangeDetectorRef
   ) {
     this.eventForm = this.fb.group({
       items: this.fb.array([])
@@ -97,16 +98,12 @@ export class CalendarAddEventsComponent implements OnInit, OnDestroy {
   onGenerateEvents(events: FormArray) {
     switch (this.technique) {
       case 'Pomodoro':
-        // rank -> duration
-        this.createPomodoroCalendarEvents(events.value);
+        this.createRatioCalendarEvents(events.value);
         break;
       case 'Ratio':
-        // rank -> duration
         this.createRatioCalendarEvents(events.value);
         break;
       case 'Custom':
-        // create calendar event for the packege
-        // start date for every event + duration
         this.createBasicCalendarEvents(events.value);
         break;
     }
@@ -162,18 +159,16 @@ export class CalendarAddEventsComponent implements OnInit, OnDestroy {
         }
       });
 
-      console.log(newCalendarEvents);
-      console.log(summaryOfMinutes);
       if (newCalendarEvents.length != 0) {
-        console.log(summaryOfMinutes)
         this.calendarService.createNewEvents(newCalendarEvents, summaryOfMinutes);
+        this.cdr.detectChanges();
       }
     }
   }
 
   //52 minutes of focused work followed by a generous 17-minute
   createRatioCalendarEvents(events: any) {
-    if (events) {
+    if (events && events.length > 0) {
       if (events.length > 0) {
         let startDate = this.calculateStartDate(this.generateStartDate, this.generatetartTime);
         let newCalendarEvents: CreateCalendarEventDto[] = [];
@@ -199,7 +194,7 @@ export class CalendarAddEventsComponent implements OnInit, OnDestroy {
               startDate: workStartDate,
               endDate: workEndDate,
               userId: this.authUserId,
-              type: 'Ratio'
+              type: 'Pomodoro'
             };
             newCalendarEvents.push(workEvent);
 
@@ -211,26 +206,24 @@ export class CalendarAddEventsComponent implements OnInit, OnDestroy {
               startDate: breakStartDate,
               endDate: breakEndDate,
               userId: this.authUserId,
-              type: 'Ratio'
+              type: 'Pomodoro'
             };
             newCalendarEvents.push(breakEvent);
 
             // Update startDate for the next session
-            startDate = new Date(breakEndDate.getTime() + 52 * 60000); // Move start date to after the next work session
+            startDate = new Date(breakEndDate.getTime());
           }
         });
 
-        console.log(newCalendarEvents);
-        console.log(summaryOfMinutes);
         if (newCalendarEvents.length != 0) {
-          console.log(summaryOfMinutes)
           this.calendarService.createNewEvents(newCalendarEvents, summaryOfMinutes);
+          this.cdr.detectChanges();
         }
       }
     }
-
-    //Todo: generate schedule (event + break)
   }
+
+
 
   // Creating date from date + hour:minute
   calculateStartDate(generateStartDate: Date, generatetartTime: number): Date {
@@ -290,8 +283,8 @@ export class CalendarAddEventsComponent implements OnInit, OnDestroy {
 
     }
     if (newCalendarEvents.length != 0) {
-      console.log(summaryOfMinutes)
       this.calendarService.createNewEvents(newCalendarEvents, summaryOfMinutes);
+      this.cdr.detectChanges();
     }
   }
 

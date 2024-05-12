@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ChangeDetectionStrategy, ViewChild, TemplateRef } from '@angular/core';
 import { isSameDay, isSameMonth } from 'date-fns';
 import { Subject, Subscription } from 'rxjs';
@@ -49,7 +49,8 @@ export class DashboardMainCalendarComponent implements OnInit, OnDestroy {
     private modal: NgbModal,
     public dialog: MatDialog,
     private calendarService: CalendarService,
-    private store: Store
+    private store: Store,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -81,6 +82,7 @@ export class DashboardMainCalendarComponent implements OnInit, OnDestroy {
             formattedEvents.push(event);
           });
           this.events = formattedEvents;
+          this.cdr.detectChanges();
         }
       })
     );
