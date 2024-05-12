@@ -114,19 +114,119 @@ export class CalendarAddEventsComponent implements OnInit, OnDestroy {
 
   // 25-minute focused study sessions followed by a 5-minute break
   createPomodoroCalendarEvents(events: any) {
-    if (events) {
-      const startDate = this.calculateStartDate(this.generateStartDate, this.generatetartTime);
-      console.log(startDate)
-    }
+    if (events.length > 0) {
+      let startDate = this.calculateStartDate(this.generateStartDate, this.generatetartTime);
+      let newCalendarEvents: CreateCalendarEventDto[] = [];
+      let summaryOfMinutes = 0;
 
-    //Todo: generate schedule (event + break)
+      events.forEach((e: any) => {
+        const fullSessions: number = Math.floor(e.duration / 25); // Full 25-minute work sessions
+        const remainingMinutes: number = e.duration % 25; // Remaining minutes after full sessions
+        const totalSessions = remainingMinutes > 0 ? fullSessions + 1 : fullSessions;
+        const totalBreaks = totalSessions - 1; // One less break than work session
+
+        const workMinutes = fullSessions * 25 + (remainingMinutes >= 10 ? 25 : remainingMinutes);
+        const breakMinutes = totalBreaks * 5;
+
+        console.log(totalSessions)
+
+        summaryOfMinutes += workMinutes + breakMinutes;
+
+        for (let i = 0; i < totalSessions; i++) {
+          // Create new work session event
+          const workStartDate = new Date(startDate);
+          const workEndDate = new Date(workStartDate.getTime() + 25 * 60000);
+          const workEvent: CreateCalendarEventDto = {
+            name: e.name,
+            startDate: workStartDate,
+            endDate: workEndDate,
+            userId: this.authUserId,
+            type: 'Pomodoro'
+          };
+          newCalendarEvents.push(workEvent);
+
+          // Create new break session event
+          const breakStartDate = new Date(workEndDate);
+          const breakEndDate = new Date(breakStartDate.getTime() + 5 * 60000);
+          const breakEvent: CreateCalendarEventDto = {
+            name: 'Break',
+            startDate: breakStartDate,
+            endDate: breakEndDate,
+            userId: this.authUserId,
+            type: 'Pomodoro'
+          };
+          newCalendarEvents.push(breakEvent);
+
+          // Update startDate for the next session
+          startDate = new Date(breakEndDate.getTime() + 25 * 60000); // Move start date to after the next work session
+        }
+      });
+
+      console.log(newCalendarEvents);
+      console.log(summaryOfMinutes);
+      if (newCalendarEvents.length != 0) {
+        console.log(summaryOfMinutes)
+        this.calendarService.createNewEvents(newCalendarEvents, summaryOfMinutes);
+      }
+    }
   }
 
   //52 minutes of focused work followed by a generous 17-minute
   createRatioCalendarEvents(events: any) {
     if (events) {
-      const startDate = this.calculateStartDate(this.generateStartDate, this.generatetartTime);
-      console.log(startDate)
+      if (events.length > 0) {
+        let startDate = this.calculateStartDate(this.generateStartDate, this.generatetartTime);
+        let newCalendarEvents: CreateCalendarEventDto[] = [];
+        let summaryOfMinutes = 0;
+
+        events.forEach((e: any) => {
+          const fullSessions: number = Math.floor(e.duration / 52); // Full 52-minute work sessions
+          const remainingMinutes: number = e.duration % 52; // Remaining minutes after full sessions
+          const totalSessions = remainingMinutes > 0 ? fullSessions + 1 : fullSessions;
+          const totalBreaks = totalSessions - 1; // One less break than work session
+
+          const workMinutes = fullSessions * 52 + remainingMinutes;
+          const breakMinutes = totalBreaks * 17;
+
+          summaryOfMinutes += workMinutes + breakMinutes;
+
+          for (let i = 0; i < totalSessions; i++) {
+            // Create new work session event
+            const workStartDate = new Date(startDate);
+            const workEndDate = new Date(workStartDate.getTime() + 52 * 60000);
+            const workEvent: CreateCalendarEventDto = {
+              name: e.name,
+              startDate: workStartDate,
+              endDate: workEndDate,
+              userId: this.authUserId,
+              type: 'Ratio'
+            };
+            newCalendarEvents.push(workEvent);
+
+            // Create new break session event
+            const breakStartDate = new Date(workEndDate);
+            const breakEndDate = new Date(breakStartDate.getTime() + 17 * 60000);
+            const breakEvent: CreateCalendarEventDto = {
+              name: 'Break',
+              startDate: breakStartDate,
+              endDate: breakEndDate,
+              userId: this.authUserId,
+              type: 'Ratio'
+            };
+            newCalendarEvents.push(breakEvent);
+
+            // Update startDate for the next session
+            startDate = new Date(breakEndDate.getTime() + 52 * 60000); // Move start date to after the next work session
+          }
+        });
+
+        console.log(newCalendarEvents);
+        console.log(summaryOfMinutes);
+        if (newCalendarEvents.length != 0) {
+          console.log(summaryOfMinutes)
+          this.calendarService.createNewEvents(newCalendarEvents, summaryOfMinutes);
+        }
+      }
     }
 
     //Todo: generate schedule (event + break)
