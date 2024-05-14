@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Goal } from '../../models/goal.model';
 import { GoalService } from 'src/app/component/dashboard/services/goal.service';
 
@@ -9,9 +9,9 @@ export type TodoList = { name: string; isCompleted: boolean; disappear: boolean 
   templateUrl: './todo-list.component.html',
   styleUrls: ['./todo-list.component.scss']
 })
-export class TodoListComponent implements OnInit {
+export class TodoListComponent implements OnInit, OnChanges {
   @Input() goalList: Goal[] = [];
-  //@Output() updateGoals = new EventEmitter<{ updateGoalList: Goal[], listType: string }>();
+  copiedGoals: Goal[] = [];
 
   constructor(
     private goalService: GoalService,
@@ -19,8 +19,20 @@ export class TodoListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.goalList)
-   }
+    this.copyGoals(); // Call a method to copy goals
+  }
+  
+  copyGoals() {
+    if (this.goalList.length > 0) {
+      this.copiedGoals = [...this.goalList]; // Copy the array using the spread operator
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.goalList && changes.goalList.currentValue) {
+      this.copyGoals();
+    }
+  }
 
   // If the task is disappearable we remove it from the list
   onCompleteTask(goal: Goal): void {

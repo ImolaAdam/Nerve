@@ -28,6 +28,7 @@ import { APP_STATE_NAME, appReducer } from './store/app.reducer';
 import { GoalService } from './component/dashboard/services/goal.service';
 import { SnackBarService } from './shared/services/snackBar.service';
 import { CalendarService } from './component/dashboard/services/calendar.service';
+import { DashboardService } from './component/dashboard/services/dashboard.service';
 
 @NgModule({
   declarations: [
@@ -71,7 +72,8 @@ import { CalendarService } from './component/dashboard/services/calendar.service
     FriendService,
     GoalService,
     SnackBarService,
-    CalendarService
+    CalendarService,
+    DashboardService
   ],
   bootstrap: [AppComponent]
 })

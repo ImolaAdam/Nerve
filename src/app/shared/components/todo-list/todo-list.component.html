@@ -1,6 +1,6 @@
 <div class="container" *ngIf="goalList">
   <ul>
-    <li *ngFor="let goal of goalList" class="mb-1">
+    <li *ngFor="let goal of copiedGoals" class="mb-1">
       <mat-checkbox [(ngModel)]="goal.isCompleted" (ngModelChange)="onCompleteTask(goal)"
         [ngClass]="{'completed': goal.isCompleted}">{{goal.description}}
       </mat-checkbox>

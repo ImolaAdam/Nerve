@@ -86,3 +86,25 @@
     font-size: 2rem;
     font-weight: 500;
 }
+
+/* Media query for screens 768px or less */
+@media (max-width: 768px) {
+    .container {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(8, auto);
+        grid-template-areas:
+            "c1"
+            "c2"
+            "c3"
+            "c4"
+            "c5"
+            "c6"
+            "c7"
+            "c8";
+    }
+
+    .card {
+        grid-area: unset;
+        min-height: 8rem;
+    }
+}
