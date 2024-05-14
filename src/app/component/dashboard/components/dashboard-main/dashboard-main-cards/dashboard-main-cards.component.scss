@@ -8,15 +8,13 @@
     gap: 20px;
     grid-area: main;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
     grid-template-areas:
         "c1 c1 c2 c2 c3 c3"
         "c4 c4 c5 c5 c6 c6"
         "c4 c4 c5 c5 c6 c6"
         "c4 c4 c7 c7 c8 c8"
-        "c4 c4 c7 c7 c8 c8"
-        "c9 c9 c9 c10 c10 c10"
-        "c9 c9 c9 c10 c10 c10";
+        "c4 c4 c7 c7 c8 c8";
 }
 
 .card:nth-child(1) {
@@ -51,14 +49,6 @@
     grid-area: c8;
 }
 
-.card:nth-child(9) {
-    grid-area: c9;
-}
-
-.card:nth-child(10) {
-    grid-area: c10;
-}
-
 .card-body {
     padding: 1rem;
     overflow: hidden;
@@ -77,6 +67,14 @@
 
 .centered {
     text-align: center;
+}
+
+.centered-title {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }
 
 .card-title {

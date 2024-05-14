@@ -1,43 +1,3 @@
-/*
-.container {
-    height: 100vh;
-    max-width: unset;
-    max-height: unset;
-    min-width: 500px;
-    padding: unset;
-    display: grid;
-    grid-template-columns: 20% 1fr;
-    grid-template-rows: 60px 1fr;
-    grid-template-areas: "sidebar header" "sidebar main";
-    //overflow: hidden !important;
-    background-color:black;
-}
-
-.header {
-    // grid-area: header;
-    grid-column: 2 / 3;
-    grid-row: 1 / 2;
-    background-color: white;
-}
-
-.sidebar {
-    // background-color: rgb(185, 152, 112);
-    // grid-area: sidebar;
-    grid-column: 1 / 2;
-    grid-row: 1 / 3;
-    //background-color: #518587;
-    background-color: #82ACAD;
-}
-
-.main {
-    background-color: #BED3D4;
-    grid-column: 2 / 3;
-    grid-row: 2 / 3;
-    display: grid;
-    // grid-area: main;
-    overflow: hidden;
-    grid-area: main;
-}*/
 mat-sidenav-container {
     width: 100%;
     height: 100%;
@@ -50,4 +10,8 @@ mat-toolbar, mat-sidenav-container, app-dashboard-header {
 mat-sidenav {
     width: 20%;
     height: 100%;
+}
+
+main {
+    height: 90% !important;
 }

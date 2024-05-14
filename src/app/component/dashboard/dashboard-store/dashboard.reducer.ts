@@ -34,7 +34,7 @@ export interface DashboardState {
 
 export const initialDashboardState: DashboardState = {
   error: null,
-  currentMenu: 'Calendar',
+  currentMenu: 'Dashboard',
   letters: {
     pageName: 'Inbox',
     inbox: [],

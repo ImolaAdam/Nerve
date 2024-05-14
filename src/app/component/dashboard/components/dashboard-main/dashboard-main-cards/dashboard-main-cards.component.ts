@@ -1,67 +1,89 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
 import { TodoList } from 'src/app/shared/components/todo-list/todo-list.component';
+import { Goal } from 'src/app/shared/models/goal.model';
+import { GoalService } from '../../../services/goal.service';
+import { selectAuthUser } from 'src/app/component/authentication/auth-store/auth.selectors';
+import { selectDailyGoals, selectMonthlyGoals, selectWeeklyGoals, selectYearlyGoals } from '../../../dashboard-store/dashboard.selectors';
+import { UserDto } from 'src/app/shared/dto/userDto';
 
 @Component({
   selector: 'app-dashboard-main-cards',
   templateUrl: './dashboard-main-cards.component.html',
   styleUrls: ['./dashboard-main-cards.component.scss']
 })
-export class DashboardMainCardsComponent implements OnInit {
-  dailyTodoList: TodoList[] = [
-    { name: 'Do homework', isCompleted: false, disappear: true },
-    { name: 'Buy present', isCompleted: false, disappear: true },
-    { name: 'Relax, u dont have to kill yourself', isCompleted: false, disappear: true },
-    { name: 'Mephi food', isCompleted: false, disappear: true },
-    { name: 'Another one', isCompleted: false, disappear: true },
-    { name: 'Again', isCompleted: false, disappear: true },
-    { name: 'Do homework', isCompleted: false, disappear: true },
-    { name: 'Do homework', isCompleted: false, disappear: true },
-  ];
+export class DashboardMainCardsComponent implements OnInit, OnDestroy {
+  subscriptions: Subscription[] = [];
+  private authUserId: string = '';
+  authUser: UserDto | undefined;
 
-  weeklyTodoList: TodoList[] = [
-    { name: 'Do homework', isCompleted: false, disappear: false },
-    { name: 'Buy present', isCompleted: false, disappear: false },
-    { name: 'Relax, u dont have to kill yourself', isCompleted: true, disappear: false },
-    { name: 'Mephi food', isCompleted: false, disappear: false },
-    { name: 'Another one', isCompleted: false, disappear: false },
-  ];
+  dailyTodoList: Goal[] = [];
+  weeklyTodoList: Goal[] = [];
+  monthlyTodoList: Goal[] = [];
+  yearlyTodoList: Goal[] = [];
 
-  monthlyTodoList: TodoList[] = [
-    { name: 'Visit Makó', isCompleted: false, disappear: false },
-    { name: 'Paint room', isCompleted: false, disappear: false },
-    { name: 'Relax, u dont have to kill yourself', isCompleted: true, disappear: false },
-    { name: 'Order Mephi food <3', isCompleted: false, disappear: false },
-  ];
+  constructor(
+    private store: Store,
+    private goalService: GoalService,
+  ) { }
 
-  yearlyTodoList: TodoList[] = [
-    { name: 'Loose 10kg', isCompleted: false, disappear: false },
-    { name: 'Buy a guitar', isCompleted: false, disappear: false },
-    { name: 'Go to the Netherlands', isCompleted: false, disappear: false },
-  ];
+  ngOnInit() {
+    this.subscriptions.push(
+      this.store.select(selectAuthUser).subscribe((user) => {
+        if (user?.userId && user.role) {
+          this.authUserId = user.userId;
+          this.goalService.getGoals(this.authUserId);
+          this.authUser = user;
+        }
+      })
+    );
 
-  onUpdateToDoList(completedTask: TodoList, listType: string) {
-    let fileteredTaskList: TodoList[] = [];
-    switch (listType) {
-      case 'daily':
-        fileteredTaskList = this.dailyTodoList.filter( t => t.name !== completedTask.name );
-        this.dailyTodoList = fileteredTaskList;
-        break;
-      case 'weekly':
-        fileteredTaskList = this.weeklyTodoList.filter( t => t.name !== completedTask.name );
-        this.weeklyTodoList = fileteredTaskList;
-        break;
-      case 'monthly':
-        console.log('monthly')
-        break;
-      case 'yearly':
-        console.log('yearly')
-        break;
+    this.subscriptions.push(
+      this.store.select(selectDailyGoals).subscribe((goals => {
+        if (goals) {
+          this.dailyTodoList = goals;
+        }
+      }))
+    );
+
+    this.subscriptions.push(
+      this.store.select(selectYearlyGoals).subscribe((goals => {
+        if (goals) {
+          this.yearlyTodoList = goals;
+        }
+      }))
+    );
+
+    this.subscriptions.push(
+      this.store.select(selectWeeklyGoals).subscribe((goals => {
+        if (goals) {
+          this.weeklyTodoList = goals;
+        }
+      }))
+    );
+
+    this.subscriptions.push(
+      this.store.select(selectMonthlyGoals).subscribe((goals => {
+        if (goals) {
+          this.monthlyTodoList = goals;
+        }
+      }))
+    );
+  }
+
+  onUpdateGoal(goalId: string, value: boolean) {
+    if (goalId) {
+      this.goalService.onUpdateGoal(goalId, value);
     }
   }
 
-  constructor() { }
-
-  ngOnInit() {
+  ngOnDestroy(): void {
+    if (this.subscriptions) {
+      this.subscriptions.forEach((sub) => {
+        sub.unsubscribe();
+      });
+    }
   }
 
 }
