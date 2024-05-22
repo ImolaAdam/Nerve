@@ -1,11 +1,12 @@
 import { Injectable, OnDestroy } from "@angular/core";
 import { AngularFirestore } from "@angular/fire/compat/firestore";
 import { Store } from "@ngrx/store";
-import { Subscription, first, from, map } from "rxjs";
+import { Subscription, map } from "rxjs";
 import { CalendarEventDto } from "src/app/shared/dto/CalendarEventDto";
 import { CreateCalendarEventDto } from "src/app/shared/dto/CreateCalendarEventDto";
 import { Colors } from "../components/dashboard-main/dashboard-main-calendar/dashboard-main-calendar.component";
 import * as DashboardActions from '../dashboard-store/dashboard.actions';
+import { SnackBarService } from "src/app/shared/services/snackBar.service";
 
 interface StudiedMinutes {
     minutes: number;
@@ -33,7 +34,8 @@ export class CalendarService implements OnDestroy {
 
     constructor(
         private db: AngularFirestore,
-        private store: Store
+        private store: Store,
+        private snackBarService: SnackBarService
     ) { }
 
     createNewEvents(newEvents: CreateCalendarEventDto[], sumOfMinutes: number) {
@@ -76,25 +78,28 @@ export class CalendarService implements OnDestroy {
 
                         doc.ref.set({ minutes: newMinutes, userId: userId }, { merge: true })
                             .then(() => {
-                                console.log("Document successfully updated!");
+                                this.snackBarService.openSnackBar('Studied hours updated');
                             })
                             .catch(error => {
-                                console.error("Error updating document: ", error);
+                                this.store.dispatch(DashboardActions.setErrorMessage({ error }));
+                                this.snackBarService.openSnackBar('Something went wrong');
                             });
                     });
                 } else {
                     // If no matching document is found, create a new one
                     collectionRef.add({ minutes: sumOfMinutes, userId })
                         .then(() => {
-                            console.log("New document created!");
+                            this.snackBarService.openSnackBar('Studied hours updated');
                         })
                         .catch(error => {
-                            console.error("Error creating document: ", error);
+                            this.store.dispatch(DashboardActions.setErrorMessage({ error }));
+                            this.snackBarService.openSnackBar('Something went wrong');
                         });
                 }
             })
             .catch(error => {
-                console.error("Error querying documents: ", error);
+                this.store.dispatch(DashboardActions.setErrorMessage({ error }));
+                this.snackBarService.openSnackBar('Something went wrong');
             });
     }
 
@@ -143,6 +148,7 @@ export class CalendarService implements OnDestroy {
                 },
                 error: (error) => {
                     this.store.dispatch(DashboardActions.setErrorMessage({ error }));
+                    this.snackBarService.openSnackBar('Something went wrong');
                 }
             })
         );
@@ -156,12 +162,13 @@ export class CalendarService implements OnDestroy {
         docRef.delete()
             .then(() => {
                 this.updateStudiedMinutes(userId, lostMinutes, true);
+                this.snackBarService.openSnackBar('Event deleted');
             })
             .catch(error => {
                 this.store.dispatch(DashboardActions.setErrorMessage({ error }));
+                this.snackBarService.openSnackBar('Something went wrong');
             });
     }
-
 
     ngOnDestroy(): void {
         if (this.subscriptions) {

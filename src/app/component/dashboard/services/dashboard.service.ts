@@ -33,7 +33,6 @@ export class DashboardService implements OnDestroy {
                 .subscribe({
                     next: (statistic: any) => {
                         numberOfHoursStudied = Math.floor(statistic[0].minutes / 60);
-                        console.log(numberOfHoursStudied);
                         resolve(numberOfHoursStudied); // Resolve the promise with the correct value
                     },
                     error: (error) => {

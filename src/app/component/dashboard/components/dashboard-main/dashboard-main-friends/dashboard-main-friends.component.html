@@ -1,12 +1,12 @@
 <mat-list *ngIf="!!friendList">
     <div class="header-container">
         <div mat-subheader>Friend requests</div>
-        <button mat-raised-button color="primary" class="compose-btn me-2" (click)="onAddNewFriend()"><i
-                class="fa-solid fa-pen pe-2"></i>Add new friend</button>
+        <button mat-raised-button color="primary" class="compose-btn me-2 new-friend" (click)="onAddNewFriend()"><i
+                class="fa-solid fa-pen pe-2 new-friend"></i>Add new friend</button>
     </div>
     <ng-container *ngIf="friendRequestList.length > 0; else noRequests">
         <mat-list-item *ngFor="let requestFriend of friendRequestList">
-            <div class="friend-item">
+            <div class="friend-item mt-4">
                 <img src="assets/images/duck_with_knife.jpg" alt="Profile Picture">
                 <div>
                     <span class="name" mat-line>{{ requestFriend.friendOf }}</span>

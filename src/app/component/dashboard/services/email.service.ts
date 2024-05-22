@@ -5,6 +5,7 @@ import { Letter } from "src/app/shared/models/letter.model";
 import { NewEmail } from "src/app/shared/models/new-email.model";
 import * as DashboardActions from "../dashboard-store/dashboard.actions";
 import { Store } from "@ngrx/store";
+import { SnackBarService } from "src/app/shared/services/snackBar.service";
 
 @Injectable()
 export class EmailService {
@@ -14,7 +15,8 @@ export class EmailService {
 
     constructor(
         private db: AngularFirestore,
-        private store: Store
+        private store: Store,
+        private snackbarService: SnackBarService
     ) { }
 
     getAvailableEmails(email: string, pageName: string) {
@@ -42,7 +44,8 @@ export class EmailService {
                     this.store.dispatch(DashboardActions.setSentLetterList({ letterList: sent }));
                 }
             }, error => {
-                console.log(error, 'error email service')
+                this.store.dispatch(DashboardActions.setErrorMessage({ error }));
+                this.snackbarService.openSnackBar('Something went wrong');
             })
         );
     }
@@ -66,7 +69,8 @@ export class EmailService {
                 this.availableEmails = letters;
                 this.availableEmailsChanged.next([...this.availableEmails]);
             }, error => {
-                console.log(error, 'error email service')
+                this.store.dispatch(DashboardActions.setErrorMessage({ error }));
+                this.snackbarService.openSnackBar('Something went wrong');
             })
         );
     }
@@ -74,6 +78,7 @@ export class EmailService {
     sendNewEmail(newEmail: NewEmail) {
         if (newEmail) {
             this.db.collection('letters').add(newEmail);
+            this.snackbarService.openSnackBar('Email sent');
         }
     }
 
@@ -88,11 +93,11 @@ export class EmailService {
         // Delete the document
         docRef.delete()
             .then(() => {
-                console.log("Document successfully deleted!");
+                this.snackbarService.openSnackBar('Letter deleted');
             })
             .catch((error) => {
-                // Todo: push error to store & window popup
-                console.error("Error removing document: ", error);
+                this.store.dispatch(DashboardActions.setErrorMessage({ error }));
+                this.snackbarService.openSnackBar('Something went wrong');
             }
             );
     }
@@ -102,11 +107,11 @@ export class EmailService {
 
         docRef.update({ isSeen: true })
             .then(() => {
-                console.log("Document successfully updated!");
+                //console.log("Document successfully updated!");
             })
             .catch((error) => {
-                // Todo: push error to store & window popup
-                console.error("Error updating document: ", error);
+                this.store.dispatch(DashboardActions.setErrorMessage({ error }));
+                this.snackbarService.openSnackBar('Something went wrong');
             }
             );
     }

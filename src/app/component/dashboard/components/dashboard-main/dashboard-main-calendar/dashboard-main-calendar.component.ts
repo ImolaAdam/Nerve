@@ -45,6 +45,7 @@ export class DashboardMainCalendarComponent implements OnInit, OnDestroy {
       secondary: '#FDF1BA',
     },
   };
+
   constructor(
     private modal: NgbModal,
     public dialog: MatDialog,
@@ -178,23 +179,9 @@ export class DashboardMainCalendarComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(CalendarAddEventsComponent);
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+      //console.log(`Dialog result: ${result}`);
     });
 
-    /*this.events = [
-      ...this.events,
-      {
-        title: 'New event',
-        start: startOfDay(new Date()),
-        end: endOfDay(new Date()),
-        color: this.colors.red,
-        draggable: true,
-        resizable: {
-          beforeStart: true,
-          afterEnd: true,
-        },
-      },
-    ];*/
   }
 
   deleteEvent(eventToDelete: CalendarEvent) {

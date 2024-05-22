@@ -6,6 +6,7 @@ import { Friend } from "src/app/shared/models/friend.model";
 import * as DashboardActions from "../dashboard-store/dashboard.actions";
 import { CreateFriendRequestDto } from "src/app/shared/dto/CreateFriendRequestDto";
 import { UserDto } from "src/app/shared/dto/userDto";
+import { SnackBarService } from "src/app/shared/services/snackBar.service";
 
 @Injectable()
 export class FriendService implements OnDestroy {
@@ -15,7 +16,8 @@ export class FriendService implements OnDestroy {
 
     constructor(
         private db: AngularFirestore,
-        private store: Store
+        private store: Store,
+        private snackbarService: SnackBarService
     ) { }
 
     getFriendList(authUserId: string) {
@@ -72,11 +74,11 @@ export class FriendService implements OnDestroy {
         // Delete the document
         docRef.delete()
             .then(() => {
-                console.log("Document successfully deleted!");
+                //console.log("Document successfully deleted!");
             })
             .catch((error) => {
-                // Todo: push error to store & window popup
-                console.error("Error removing document: ", error);
+                this.store.dispatch(DashboardActions.setErrorMessage({ error }));
+                this.snackbarService.openSnackBar('Something went wrong');
             }
             );
     }
@@ -88,11 +90,11 @@ export class FriendService implements OnDestroy {
         // Delete the document
         docRef.delete()
             .then(() => {
-                console.log("Document successfully deleted!");
+                this.snackbarService.openSnackBar('Friend deleted');
             })
             .catch((error) => {
-                // Todo: push error to store & window popup
-                console.error("Error removing document: ", error);
+                this.store.dispatch(DashboardActions.setErrorMessage({ error }));
+                this.snackbarService.openSnackBar('Something went wrong');
             }
             );
     }
@@ -102,11 +104,11 @@ export class FriendService implements OnDestroy {
 
         docRef.update({ isAccepted: true })
             .then(() => {
-                console.log("Document successfully updated!");
+                this.snackbarService.openSnackBar('Friend request accepted');
             })
             .catch((error) => {
-                // Todo: push error to store & window popup
-                console.error("Error updating document: ", error);
+                this.store.dispatch(DashboardActions.setErrorMessage({ error }));
+                this.snackbarService.openSnackBar('Something went wrong');
             }
             );
     }
@@ -136,13 +138,14 @@ export class FriendService implements OnDestroy {
                 },
                 error: (error) => {
                     this.store.dispatch(DashboardActions.setErrorMessage({ error }));
+                    this.snackbarService.openSnackBar('Something went wrong');
                 }
             })
         );
     }
 
     ngOnDestroy(): void {
-        if(this.subscriptions) {
+        if (this.subscriptions) {
             this.subscriptions.forEach(s => {
                 s.unsubscribe()
             });

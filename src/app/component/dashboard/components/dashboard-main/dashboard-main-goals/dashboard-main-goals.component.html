@@ -56,7 +56,9 @@
                 <mat-datepicker #picker></mat-datepicker>
                 <mat-hint>MM/DD/YYYY</mat-hint>
               </mat-form-field>
-              <mat-chip (click)="onDeleteFormItem('Yearly', i)" class="mt-2">Delete</mat-chip>
+              <mat-chip-list>
+                <mat-chip (click)="onDeleteFormItem('Yearly', i)" class="mt-2">Delete</mat-chip>
+              </mat-chip-list>
             </div>
           </div>
         </div>

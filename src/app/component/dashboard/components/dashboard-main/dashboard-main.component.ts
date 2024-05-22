@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { TodoList } from 'src/app/shared/components/todo-list/todo-list.component';
-import { filter, first, Observable, Subject, takeUntil } from 'rxjs';
+import { filter, Subject, takeUntil } from 'rxjs';
 import { selectMenu } from '../../dashboard-store/dashboard.selectors';
 
 @Component({

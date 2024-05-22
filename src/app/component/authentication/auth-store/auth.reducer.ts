@@ -5,7 +5,7 @@ import { UserDto } from 'src/app/shared/dto/userDto';
 export const AUTH_STATE_NAME = 'auth';
 
 export interface AuthState {
-    errorMessage: string | null;
+    error: string | null;
     token: string | null;
     user: UserDto | null;
 }
@@ -13,7 +13,7 @@ export interface AuthState {
 export const initialAuthState: AuthState = {
     user: null,
     token: null,
-    errorMessage: null,
+    error: null,
 };
 
 export const authReducer = createReducer(
@@ -51,6 +51,12 @@ export const authReducer = createReducer(
         return {
             ...state,
             user: null
+        }
+    }),
+    on(AuthActions.setErrorMessage, (state, { error }) => {
+        return {
+            ...state,
+            error
         }
     })
 );

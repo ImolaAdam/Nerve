@@ -56,7 +56,7 @@ export class AuthService implements OnDestroy {
         this.db.collection('users').add(newUser);
       })
       .catch(error => {
-        console.log(error);
+        this.store.dispatch(AuthActions.setErrorMessage({ error }));
       }
       );
   }
@@ -69,6 +69,7 @@ export class AuthService implements OnDestroy {
       })
       .catch(error => {
         this.snackBarService.openSnackBar('Something went wrong');
+        this.store.dispatch(AuthActions.setErrorMessage({ error }));
       }
       );
     return user;
@@ -105,7 +106,9 @@ export class AuthService implements OnDestroy {
             });
           }
         },
-        error: (e) => console.error('Error getting user:', e)
+        error: (error) => {
+          this.store.dispatch(AuthActions.setErrorMessage({ error }));
+        }
       })
   }
 
@@ -125,6 +128,7 @@ export class AuthService implements OnDestroy {
         .catch((error) => {
           // Todo: push error to store & window popup
           this.snackBarService.openSnackBar('Something went wrong');
+          this.store.dispatch(AuthActions.setErrorMessage({ error }));
         }
         );
     }
@@ -142,8 +146,6 @@ export class AuthService implements OnDestroy {
 
     } catch (error) {
       this.snackBarService.openSnackBar('Something went wrong');
-      // Handle error updating password
-      // For example, display error message to the user
     }
   }
 

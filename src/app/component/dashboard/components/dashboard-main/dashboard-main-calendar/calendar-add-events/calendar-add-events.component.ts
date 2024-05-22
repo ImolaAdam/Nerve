@@ -47,7 +47,6 @@ export class CalendarAddEventsComponent implements OnInit, OnDestroy {
       this.store.select(selectAuthUser).subscribe((user) => {
         if (user?.userId) {
           this.authUserId = user.userId;
-          console.log(this.authUserId)
         }
       })
     );
@@ -98,7 +97,7 @@ export class CalendarAddEventsComponent implements OnInit, OnDestroy {
   onGenerateEvents(events: FormArray) {
     switch (this.technique) {
       case 'Pomodoro':
-        this.createRatioCalendarEvents(events.value);
+        this.createPomodoroCalendarEvents(events.value);
         break;
       case 'Ratio':
         this.createRatioCalendarEvents(events.value);
@@ -124,8 +123,6 @@ export class CalendarAddEventsComponent implements OnInit, OnDestroy {
 
         const workMinutes = fullSessions * 25 + (remainingMinutes >= 10 ? 25 : remainingMinutes);
         const breakMinutes = totalBreaks * 5;
-
-        console.log(totalSessions)
 
         summaryOfMinutes += workMinutes + breakMinutes;
 
@@ -194,7 +191,7 @@ export class CalendarAddEventsComponent implements OnInit, OnDestroy {
               startDate: workStartDate,
               endDate: workEndDate,
               userId: this.authUserId,
-              type: 'Pomodoro'
+              type: 'Ratio'
             };
             newCalendarEvents.push(workEvent);
 
@@ -206,7 +203,7 @@ export class CalendarAddEventsComponent implements OnInit, OnDestroy {
               startDate: breakStartDate,
               endDate: breakEndDate,
               userId: this.authUserId,
-              type: 'Pomodoro'
+              type: 'Ratio'
             };
             newCalendarEvents.push(breakEvent);
 

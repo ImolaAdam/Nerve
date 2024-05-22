@@ -1,39 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AuthService } from 'src/app/component/authentication/auth.service';
+import * as DashboardActions from '../dashboard-store/dashboard.actions';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
-  //destroyed$ = new Subject<boolean>();
+export class DashboardComponent implements OnDestroy
+ {
   
-  constructor(private auth: AuthService, private store: Store,) { }
+  constructor(private store: Store,) { }
 
-  ngOnInit(): void {
-    /*
-    this.store
-    .select(selectMenu)
-    .pipe(
-      filter((v) => v !== null),
-      takeUntil(this.destroyed$)
-    )
-    .subscribe((menuName) => (this.curentMenuName = menuName));
-    */
-  }
-
-  signOut() {
-    //this.auth.signOut();
-  }
-
-
-  /*
+  
   ngOnDestroy(): void {
-    this.destroyed$.next(true);
-    this.destroyed$.complete();
-    //this.store.dispatch(DashboardActions.clearDashboard());
+    this.store.dispatch(DashboardActions.clearDashboardState());
   }
-  */
+  
 }
