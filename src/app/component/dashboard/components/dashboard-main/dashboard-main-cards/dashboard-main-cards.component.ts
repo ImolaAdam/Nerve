@@ -25,6 +25,7 @@ export class DashboardMainCardsComponent implements OnInit, OnDestroy {
   yearlyTodoList: Goal[] = [];
   studiedHours: number = 0;
   numberOfCoffee: number = 0;
+  hoursUntilNextRank = 0;
 
   numOfCompletedGoals = {
     daily: 0,
@@ -51,6 +52,9 @@ export class DashboardMainCardsComponent implements OnInit, OnDestroy {
             .then((numberOfHours: number) => {
               this.studiedHours = numberOfHours;
               this.numberOfCoffee = Math.floor(this.studiedHours / 4);
+              this.hoursUntilNextRank = (100 - this.studiedHours);
+
+              if (user.role == 'Expert') this.hoursUntilNextRank = 0;
             })
             .catch((error) => {
               this.store.dispatch(DashboardActions.setErrorMessage({ error }))

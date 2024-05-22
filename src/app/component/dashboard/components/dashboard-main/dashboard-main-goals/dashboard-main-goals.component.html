@@ -9,12 +9,13 @@
         <img mat-card-avatar src="././././assets/images/goal.png" alt="Goal avatar" class="goal-avatar">
         <div class="title-subtitle">
           <mat-card-title>Yearly goals</mat-card-title>
-          <mat-card-subtitle>Maximum 3 goals</mat-card-subtitle>
+          <mat-card-subtitle>Maximum {{ limits.yearlyLimit }} goals</mat-card-subtitle>
         </div>
       </div>
 
       <div *ngIf="yearlyEditingMode" class="example-button-container">
-        <button (click)="onAddItem('Yearly')" mat-mini-fab color="primary" matTooltip="Add new goal">
+        <button (click)="onAddItem('Yearly')" mat-mini-fab color="primary" matTooltip="Add new goal"
+          [disabled]="(yearlyTodoList.length+newYearlyGoals.controls.length) >= limits.yearlyLimit">
           <mat-icon>add</mat-icon>
         </button>
       </div>
@@ -78,12 +79,13 @@
         <img mat-card-avatar src="././././assets/images/goal.png" alt="Goal avatar" class="goal-avatar">
         <div class="title-subtitle">
           <mat-card-title>Monthly goals</mat-card-title>
-          <mat-card-subtitle>Maximum 4 goals</mat-card-subtitle>
+          <mat-card-subtitle>Maximum {{ limits.monthlyLimit }} goals</mat-card-subtitle>
         </div>
       </div>
 
       <div *ngIf="monthlyEditingMode" class="example-button-container">
-        <button (click)="onAddItem('Monthly')" mat-mini-fab color="primary" matTooltip="Add new goal">
+        <button (click)="onAddItem('Monthly')" mat-mini-fab color="primary" matTooltip="Add new goal"
+          [disabled]="(monthlyTodoList.length+newMonthlyGoals.controls.length) >= limits.monthlyLimit">
           <mat-icon>add</mat-icon>
         </button>
       </div>
@@ -142,12 +144,13 @@
         <img mat-card-avatar src="././././assets/images/goal.png" alt="Goal avatar" class="goal-avatar">
         <div class="title-subtitle">
           <mat-card-title>Weekly goals</mat-card-title>
-          <mat-card-subtitle>Maximum 2 goals</mat-card-subtitle>
+          <mat-card-subtitle>Maximum {{ limits.weeklyLimit }} goals</mat-card-subtitle>
         </div>
       </div>
 
       <div *ngIf="weeklyEditingMode" class="example-button-container">
-        <button (click)="onAddItem('Weekly')" mat-mini-fab color="primary" matTooltip="Add new goal">
+        <button (click)="onAddItem('Weekly')" mat-mini-fab color="primary" matTooltip="Add new goal"
+          [disabled]="(weeklyTodoList.length+newWeeklyGoals.controls.length) >= limits.weeklyLimit">
           <mat-icon>add</mat-icon>
         </button>
       </div>
@@ -208,12 +211,13 @@
         <img mat-card-avatar src="././././assets/images/goal.png" alt="Goal avatar" class="goal-avatar">
         <div class="title-subtitle">
           <mat-card-title>Daily todo</mat-card-title>
-          <mat-card-subtitle>Maximum 15 tasks per day</mat-card-subtitle>
+          <mat-card-subtitle>Maximum {{ limits.dailyLimit }} tasks per day</mat-card-subtitle>
         </div>
       </div>
 
       <div *ngIf="dailyEditingMode" class="example-button-container">
-        <button (click)="onAddItem('Daily')" mat-mini-fab color="primary" matTooltip="Add new goal">
+        <button (click)="onAddItem('Daily')" mat-mini-fab color="primary" matTooltip="Add new goal"
+          [disabled]="(dailyTodoList.length+newDailyGoals.controls.length) >= limits.dailyLimit">
           <mat-icon>add</mat-icon>
         </button>
       </div>

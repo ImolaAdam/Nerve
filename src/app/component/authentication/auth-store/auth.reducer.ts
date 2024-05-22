@@ -8,39 +8,18 @@ export interface AuthState {
     error: string | null;
     token: string | null;
     user: UserDto | null;
+    studiedHurs: number
 }
 
 export const initialAuthState: AuthState = {
     user: null,
     token: null,
     error: null,
+    studiedHurs: 0
 };
 
 export const authReducer = createReducer(
     initialAuthState,
-    /*on(AuthActions.loggedInWithFirebase,
-        AuthActions.forgotPassword,
-        AuthActions.registerWithFirebaseStart,
-        (state) => {
-        return {
-            ...state,
-            errorMessage: null
-        };
-    }),
-    on(AuthActions.loggedInWithFirebase, (state, { user }) => {
-        return {
-            ...state,
-            user: user,
-            errorMessage: null
-        }
-    }),
-    on(AuthActions.firebaseLoginError, (state, { errorMessage }) => {
-        return {
-            ...state,
-            errorMessage: errorMessage
-        }
-    }),*/
-
     on(AuthActions.login, (state, { user }) => {
         return {
             ...state,
@@ -57,6 +36,12 @@ export const authReducer = createReducer(
         return {
             ...state,
             error
+        }
+    }),
+    on(AuthActions.setStudiedHours, (state, { studiedHours }) => {
+        return {
+            ...state,
+            studiedHours
         }
     })
 );

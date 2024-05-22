@@ -3,6 +3,7 @@ import { AngularFirestore } from "@angular/fire/compat/firestore";
 import { Store } from "@ngrx/store";
 import { Subscription, map } from "rxjs";
 import * as DashboardActions from '../dashboard-store/dashboard.actions';
+import * as AuthActions from '../../authentication/auth-store/auth.actions';
 
 @Injectable()
 export class DashboardService implements OnDestroy {
@@ -16,7 +17,7 @@ export class DashboardService implements OnDestroy {
     async getNumberOfStuiedHours(userId: string): Promise<number> {
         return new Promise<number>((resolve, reject) => {
             let numberOfHoursStudied: number = 0;
-    
+
             this.subscriptions.push(this.db.collection('studiedMinutes')
                 .snapshotChanges()
                 .pipe(map(docData => {
@@ -24,7 +25,7 @@ export class DashboardService implements OnDestroy {
                         const data = doc.payload.doc.data() as any;
                         const id = doc.payload.doc.id;
                         data.id = id;
-    
+
                         return {
                             ...data
                         };
@@ -33,6 +34,7 @@ export class DashboardService implements OnDestroy {
                 .subscribe({
                     next: (statistic: any) => {
                         numberOfHoursStudied = Math.floor(statistic[0].minutes / 60);
+                        this.store.dispatch(AuthActions.setStudiedHours({ studiedHours: numberOfHoursStudied }));
                         resolve(numberOfHoursStudied); // Resolve the promise with the correct value
                     },
                     error: (error) => {
@@ -43,7 +45,6 @@ export class DashboardService implements OnDestroy {
             );
         });
     }
-    
 
     ngOnDestroy(): void {
         if (this.subscriptions.length > 0) {

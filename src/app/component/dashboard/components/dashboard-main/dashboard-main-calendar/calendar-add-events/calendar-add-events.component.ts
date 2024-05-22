@@ -2,10 +2,9 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
-import { selectAuthUser } from 'src/app/component/authentication/auth-store/auth.selectors';
+import { selectAuthUser, selectStudiedHours } from 'src/app/component/authentication/auth-store/auth.selectors';
 import { CalendarService } from 'src/app/component/dashboard/services/calendar.service';
 import { CreateCalendarEventDto } from 'src/app/shared/dto/CreateCalendarEventDto';
-import * as DashboardActions from '../../../../dashboard-store/dashboard.actions';
 import { selectCalendarEvents } from 'src/app/component/dashboard/dashboard-store/dashboard.selectors';
 
 @Component({
@@ -24,6 +23,11 @@ export class CalendarAddEventsComponent implements OnInit, OnDestroy {
   technique: string = 'Pomodoro';
   generateStartDate = new Date();
   generatetartTime!: number;
+
+  authRank = {
+    userRole: '',
+    studiedHours: 0
+  }
 
   constructor(
     private fb: FormBuilder,
@@ -47,16 +51,18 @@ export class CalendarAddEventsComponent implements OnInit, OnDestroy {
       this.store.select(selectAuthUser).subscribe((user) => {
         if (user?.userId) {
           this.authUserId = user.userId;
+          this.authRank.userRole = user.role;
         }
       })
     );
 
-    // Todo: finish
     this.subscriptions.push(
-      this.store.select(selectCalendarEvents).subscribe((event) => {
-
+      this.store.select(selectStudiedHours).subscribe((s) => {
+        if (s) {
+          this.authRank.studiedHours = s;
+        }
       })
-    );
+    )
   }
 
   get newEvents() {
@@ -157,7 +163,7 @@ export class CalendarAddEventsComponent implements OnInit, OnDestroy {
       });
 
       if (newCalendarEvents.length != 0) {
-        this.calendarService.createNewEvents(newCalendarEvents, summaryOfMinutes);
+        this.calendarService.createNewEvents(newCalendarEvents, summaryOfMinutes, this.authRank.userRole);
         this.cdr.detectChanges();
       }
     }
@@ -213,7 +219,7 @@ export class CalendarAddEventsComponent implements OnInit, OnDestroy {
         });
 
         if (newCalendarEvents.length != 0) {
-          this.calendarService.createNewEvents(newCalendarEvents, summaryOfMinutes);
+          this.calendarService.createNewEvents(newCalendarEvents, summaryOfMinutes, this.authRank.userRole);
           this.cdr.detectChanges();
         }
       }
@@ -280,7 +286,7 @@ export class CalendarAddEventsComponent implements OnInit, OnDestroy {
 
     }
     if (newCalendarEvents.length != 0) {
-      this.calendarService.createNewEvents(newCalendarEvents, summaryOfMinutes);
+      this.calendarService.createNewEvents(newCalendarEvents, summaryOfMinutes, this.authRank.userRole);
       this.cdr.detectChanges();
     }
   }

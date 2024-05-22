@@ -3,7 +3,7 @@ import { ThemePalette } from '@angular/material/core';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
-import { selectAuthUser } from 'src/app/component/authentication/auth-store/auth.selectors';
+import { selectAuthUser, selectStudiedHours } from 'src/app/component/authentication/auth-store/auth.selectors';
 import { GoalService } from '../../../services/goal.service';
 import { selectDailyGoals, selectMonthlyGoals, selectWeeklyGoals, selectYearlyGoals } from '../../../dashboard-store/dashboard.selectors';
 import { Goal } from 'src/app/shared/models/goal.model';
@@ -20,6 +20,13 @@ export class DashboardMainGoalsComponent implements OnInit, OnDestroy {
   weeklyTodoList: Goal[] = [];
   monthlyTodoList: Goal[] = [];
   yearlyTodoList: Goal[] = [];
+
+  limits = {
+    dailyLimit: 0,
+    weeklyLimit: 0,
+    monthlyLimit: 0,
+    yearlyLimit: 0
+  }
 
   yearlyForm = this.fb.group({
     items: this.fb.array([])
@@ -39,6 +46,7 @@ export class DashboardMainGoalsComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
   private authUserId: string = '';
+  authUserRole = '';
 
   spinnerColor: ThemePalette = 'primary';
   spinnerMode: ProgressSpinnerMode = 'determinate';
@@ -83,6 +91,8 @@ export class DashboardMainGoalsComponent implements OnInit, OnDestroy {
         if (user?.userId) {
           this.authUserId = user.userId;
           this.goalService.getGoals(this.authUserId);
+          this.authUserRole = user.role;
+          this.calculateGoalLimits(user.role);
         }
       })
     );
@@ -142,6 +152,36 @@ export class DashboardMainGoalsComponent implements OnInit, OnDestroy {
     const percent: number = (completedTasks / (list.length)) * 100;
 
     return percent;
+  }
+
+  calculateGoalLimits(rank: string) {
+    switch (rank) {
+      case 'Beginner':
+        this.limits = {
+          dailyLimit: 7,
+          weeklyLimit: 2,
+          monthlyLimit: 4,
+          yearlyLimit: 3
+        };
+        break;
+      case 'Medium':
+        this.limits = {
+          dailyLimit: 8,
+          weeklyLimit: 3,
+          monthlyLimit: 5,
+          yearlyLimit: 4
+        };
+        break;
+      case 'Expert':
+        this.limits = {
+          dailyLimit: 10,
+          weeklyLimit: 4,
+          monthlyLimit: 6,
+          yearlyLimit: 5
+        };
+        break;
+      default:
+    }
   }
 
   onEditListItem(title: string) {
